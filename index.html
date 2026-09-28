@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
+<title>LEVEL UP</title>
+
+<style>
+:root{
+  --bg:#070b16;
+  --panel:#10172a;
+  --panel2:#151e35;
+  --text:#f5f7ff;
+  --muted:#8f9ab4;
+  --line:rgba(255,255,255,.08);
+  --accent:#7c5cff;
+  --accent2:#25d6a2;
+  --danger:#ff5d73;
+  --gold:#ffc857;
+  --shadow:0 18px 50px rgba(0,0,0,.28);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 20% 0%,rgba(124,92,255,.20),transparent 35%),
+    radial-gradient(circle at 100% 20%,rgba(37,214,162,.10),transparent 30%),
+    var(--bg);
+  min-height:100vh;
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.hidden{display:none!important}
+
+.app{
+  width:min(1100px,100%);
+  margin:auto;
+  padding:18px 16px 100px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:23px;
+}
+
+.logo span{color:var(--accent)}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:white;
+  border-radius:13px;
+  padding:10px 13px;
+}
+
+.hero{
+  background:linear-gradient(145deg,rgba(124,92,255,.22),rgba(255,255,255,.035));
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+
+.hero-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
+}
+
+.hello{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.hero h1{
+  margin:4px 0 5px;
+  font-size:34px;
+}
+
+.level{
+  color:#cfc8ff;
+  font-weight:700;
+}
+
+.xp-number{
+  font-size:34px;
+  font-weight:900;
+  text-align:right;
+}
+
+.xp-label{
+  color:var(--muted);
+  font-size:12px;
+  text-align:right;
+}
+
+.progress{
+  height:9px;
+  background:rgba(255,255,255,.07);
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:20px;
+}
+
+.progress>div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--accent),#a98fff);
+  border-radius:99px;
+  transition:.4s;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px;
+}
+
+.stat{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:13px;
+}
+
+.stat b{
+  display:block;
+  font-size:20px;
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:28px 2px 12px;
+}
+
+.section-title h2{
+  font-size:19px;
+  margin:0;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.directions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.direction{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:21px;
+  padding:18px;
+  min-height:160px;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+  transition:.2s;
+}
+
+.direction:hover{
+  transform:translateY(-2px);
+  border-color:rgba(124,92,255,.45);
+}
+
+.direction.locked{
+  opacity:.5;
+}
+
+.dir-icon{
+  font-size:30px;
+}
+
+.dir-name{
+  font-weight:800;
+  margin-top:9px;
+}
+
+.dir-level{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.dir-bar{
+  margin-top:15px;
+  height:6px;
+  background:rgba(255,255,255,.08);
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.dir-bar div{
+  height:100%;
+  background:var(--accent);
+}
+
+.week-card{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+  background:linear-gradient(145deg,rgba(37,214,162,.10),rgba(255,255,255,.035));
+  box-shadow:var(--shadow);
+}
+
+.week-head{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:99px;
+  background:rgba(255,255,255,.07);
+  color:#d8def0;
+  font-size:12px;
+}
+
+.task-text{
+  font-size:22px;
+  line-height:1.35;
+  font-weight:800;
+  margin:18px 0;
+}
+
+.task-meta{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.primary{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:14px 18px;
+  background:linear-gradient(135deg,var(--accent),#9a82ff);
+  color:white;
+  font-weight:800;
+  margin-top:20px;
+  box-shadow:0 8px 25px rgba(124,92,255,.25);
+}
+
+.primary:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:11px 14px;
+  background:rgba(255,255,255,.05);
+  color:white;
+}
+
+.daily{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.daily-card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+  background:var(--panel);
+}
+
+.daily-card .emoji{
+  font-size:28px;
+}
+
+.daily-card h3{
+  margin:8px 0 4px;
+}
+
+.daily-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.daily-card button{
+  margin-top:15px;
+  width:100%;
+}
+
+.done{
+  background:rgba(37,214,162,.12)!important;
+  border-color:rgba(37,214,162,.35)!important;
+}
+
+.achievements{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.achievement{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  background:var(--panel);
+  opacity:.38;
+}
+
+.achievement.unlocked{
+  opacity:1;
+  border-color:rgba(255,200,87,.3);
+}
+
+.achievement .a-icon{
+  font-size:27px;
+}
+
+.achievement b{
+  display:block;
+  margin-top:8px;
+}
+
+.achievement small{
+  color:var(--muted);
+}
+
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.history-item{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  background:var(--panel);
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.history-item b{
+  display:block;
+}
+
+.history-item span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.xp{
+  color:#bcaeff;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.auth-screen{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.auth-card{
+  width:min(430px,100%);
+  background:rgba(16,23,42,.88);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+}
+
+.auth-logo{
+  text-align:center;
+  font-weight:1000;
+  font-size:36px;
+  letter-spacing:3px;
+  margin-bottom:6px;
+}
+
+.auth-logo span{color:var(--accent)}
+
+.auth-sub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:25px;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+.field label{
+  display:block;
+  color:#b9c1d6;
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.field input,.field select{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px 14px;
+  color:white;
+  background:#0b1121;
+  outline:none;
+}
+
+.field input:focus,.field select:focus{
+  border-color:var(--accent);
+}
+
+.auth-switch{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:15px;
+}
+
+.link{
+  color:#bcaeff;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.error{
+  background:rgba(255,93,115,.10);
+  border:1px solid rgba(255,93,115,.25);
+  color:#ff9aaa;
+  border-radius:13px;
+  padding:10px;
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+
+.modal-card{
+  width:min(760px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#0e1528;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.modal-head h2{margin:0}
+
+.admin-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.admin-list{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.admin-task{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:13px;
+  background:rgba(255,255,255,.035);
+}
+
+.admin-task-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.admin-task small{
+  color:var(--muted);
+}
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#161f36;
+  border:1px solid var(--line);
+  padding:12px 17px;
+  border-radius:14px;
+  z-index:200;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  box-shadow:var(--shadow);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:25px;
+  border:1px dashed var(--line);
+  border-radius:17px;
+}
+
+@media(max-width:800px){
+  .directions{grid-template-columns:repeat(2,1fr)}
+  .achievements{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:550px){
+  .app{padding:13px 12px 90px}
+  .hero{padding:19px}
+  .hero h1{font-size:28px}
+  .xp-number{font-size:27px}
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  .stat{padding:10px}
+  .stat b{font-size:17px}
+  .directions{grid-template-columns:1fr 1fr}
+  .direction{min-height:145px;padding:15px}
+  .daily{grid-template-columns:1fr}
+  .achievements{grid-template-columns:1fr 1fr}
+  .admin-grid{grid-template-columns:1fr}
+  .task-text{font-size:19px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUTH -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+
+    <div class="auth-logo">LEVEL <span>UP</span></div>
+    <div class="auth-sub">Становись сильнее каждую неделю</div>
+
+    <div id="authError" class="error hidden"></div>
+
+    <div id="loginForm">
+
+      <div class="field">
+        <label>Email</label>
+        <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+
+      <button class="primary" id="loginBtn">Войти</button>
+
+      <div class="auth-switch">
+        Нет аккаунта?
+        <span class="link" id="showRegister">Создать</span>
+      </div>
+
+    </div>
+
+    <div id="registerForm" class="hidden">
+
+      <div class="field">
+        <label>Имя / ник</label>
+        <input id="regName" maxlength="30" placeholder="Например, Юра">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="regEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input id="regPassword" type="password" autocomplete="new-password" placeholder="Минимум 6 символов">
+      </div>
+
+      <button class="primary" id="registerBtn">Создать аккаунт</button>
+
+      <div class="auth-switch">
+        Уже есть аккаунт?
+        <span class="link" id="showLogin">Войти</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- APP -->
+<div id="app" class="app hidden">
+
+  <div class="topbar">
+    <div class="logo">LEVEL <span>UP</span></div>
+
+    <div class="top-actions">
+      <button id="adminBtn" class="icon-btn hidden">👑</button>
+      <button id="logoutBtn" class="icon-btn">Выйти</button>
+    </div>
+  </div>
+
+  <section class="hero">
+
+    <div class="hero-top">
+      <div>
+        <div class="hello">Добро пожаловать</div>
+        <h1 id="playerName">Игрок</h1>
+        <div class="level" id="overallLevel">Уровень 1</div>
+      </div>
+
+      <div>
+        <div class="xp-number" id="totalXP">0 XP</div>
+        <div class="xp-label">общий опыт</div>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div id="overallProgress"></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <b id="streak">0 🔥</b>
+        <span>недель подряд</span>
+      </div>
+
+      <div class="stat">
+        <b id="completedCount">0</b>
+        <span>заданий выполнено</span>
+      </div>
+
+      <div class="stat">
+        <b id="achievementCount">0</b>
+        <span>достижений</span>
+      </div>
+    </div>
+
+  </section>
+
+
+  <div class="section-title">
+    <h2>Твои направления</h2>
+    <span>4 сферы развития</span>
+  </div>
+
+  <section id="directions" class="directions"></section>
+
+
+  <div class="section-title">
+    <h2>🔥 Задание недели</h2>
+    <span id="weekLabel"></span>
+  </div>
+
+  <section id="weeklyCard" class="week-card"></section>
+
+
+  <div class="section-title">
+    <h2>☀️ Каждый день</h2>
+    <span>+20 XP в день</span>
+  </div>
+
+  <section class="daily">
+
+    <div id="prayerCard" class="daily-card">
+      <div class="emoji">🙏</div>
+      <h3>Молитва</h3>
+      <p>Проведи время в личной молитве.</p>
+      <button id="prayerBtn" class="secondary">+10 XP</button>
+    </div>
+
+    <div id="bibleCard" class="daily-card">
+      <div class="emoji">📖</div>
+      <h3>Библия</h3>
+      <p>Прочитай хотя бы одну главу.</p>
+      <button id="bibleBtn" class="secondary">+10 XP</button>
+    </div>
+
+  </section>
+
+
+  <div class="section-title">
+    <h2>🏆 Достижения</h2>
+  </div>
+
+  <section id="achievements" class="achievements"></section>
+
+
+  <div class="section-title">
+    <h2>📜 История</h2>
+  </div>
+
+  <section id="history" class="history"></section>
+
+</div>
+
+
+<!-- ADMIN MODAL -->
+<div id="adminModal" class="modal hidden">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+      <h2>👑 Админка</h2>
+      <button id="closeAdmin" class="icon-btn">✕</button>
+    </div>
+
+    <div class="badge">Управление заданиями LEVEL UP</div>
+
+    <div class="section-title">
+      <h2>Добавить задание</h2>
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="field">
+        <label>Направление</label>
+        <select id="taskDirection">
+          <option value="spirit">✝️ Дух</option>
+          <option value="strength">💪 Сила</option>
+          <option value="mind">🧠 Ум</option>
+          <option value="soul">❤️ Душа</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Уровень</label>
+        <select id="taskLevel">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="field">
+        <label>XP</label>
+        <input id="taskXP" type="number" min="1" max="1000" value="100">
+      </div>
+
+      <div class="field">
+        <label>Статус</label>
+        <select id="taskActive">
+          <option value="true">Активно</option>
+          <option value="false">Выключено</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="field">
+      <label>Текст задания</label>
+      <input id="taskText" maxlength="250" placeholder="Например: Прочитать Евангелие от Иоанна, 1 главу">
+    </div>
+
+    <button id="addTaskBtn" class="primary">Добавить задание</button>
+
+    <div style="margin-top:12px">
+      <button id="seedTasksBtn" class="secondary" style="width:100%">
+        ⚡ Загрузить базовые задания
+      </button>
+    </div>
+
+    <div class="section-title">
+      <h2>Все задания</h2>
+    </div>
+
+    <div id="adminTasks" class="admin-list"></div>
+
+  </div>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script type="module">
+
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+}
+  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  serverTimestamp,
+  runTransaction
+}
+  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAgb8Y0sKVQ7D7aCPLSzSndPAvXzHJqOI0",
+  authDomain: "level-up-d19f9.firebaseapp.com",
+  projectId: "level-up-d19f9",
+  storageBucket: "level-up-d19f9.firebasestorage.app",
+  messagingSenderId: "365165896928",
+  appId: "1:365165896928:web:c1c52d6d9475a5ac331c85"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const db = getFirestore(appFirebase);
+
+
+/* =========================================================
+   GAME CONFIG
+========================================================= */
+
+const DIRECTION_NAMES = {
+  spirit: "✝️ Дух",
+  strength: "💪 Сила",
+  mind: "🧠 Ум",
+  soul: "❤️ Душа"
+};
+
+const DIRECTION_ICONS = {
+  spirit: "✝️",
+  strength: "💪",
+  mind: "🧠",
+  soul: "❤️"
+};
+
+const BASE_TASKS = [
+
+  {
+    direction:"spirit",
+    level:1,
+    xp:100,
+    text:"Прочитать Евангелие от Иоанна, 1 главу"
+  },
+  {
+    direction:"spirit",
+    level:2,
+    xp:150,
+    text:"Запомнить Псалом 1"
+  },
+  {
+    direction:"spirit",
+    level:3,
+    xp:200,
+    text:"Сходить на собрание"
+  },
+  {
+    direction:"spirit",
+    level:4,
+    xp:250,
+    text:"Рассказать Евангелие близкому человеку"
+  },
+
+  {
+    direction:"soul",
+    level:1,
+    xp:100,
+    text:"Погулять 30 минут одному без телефона"
+  },
+  {
+    direction:"soul",
+    level:2,
+    xp:150,
+    text:"Помочь родителям по дому 3 раза"
+  },
+  {
+    direction:"soul",
+    level:3,
+    xp:200,
+    text:"Сделать сюрприз маме или папе"
+  },
+  {
+    direction:"soul",
+    level:4,
+    xp:250,
+    text:"Сделать 3 добрых поступка, о которых никто не просил и за которые ничего не ожидаешь получить"
+  },
+
+  {
+    direction:"strength",
+    level:1,
+    xp:100,
+    text:"Пробежать 1 км или присесть 100 раз"
+  },
+  {
+    direction:"strength",
+    level:2,
+    xp:150,
+    text:"Пробежать 3 км или присесть 500 раз"
+  },
+  {
+    direction:"strength",
+    level:3,
+    xp:200,
+    text:"Пробежать 5 км или сделать 2 тренировки в зале"
+  },
+  {
+    direction:"strength",
+    level:4,
+    xp:250,
+    text:"Пробежать 3 км и сделать 2 тренировки в зале"
+  },
+
+  {
+    direction:"mind",
+    level:1,
+    xp:100,
+    text:"Выучить 10 слов на одном иностранном языке (не эстонском и не английском)"
+  },
+  {
+    direction:"mind",
+    level:2,
+    xp:150,
+    text:"Запомнить столицы 20 стран"
+  },
+  {
+    direction:"mind",
+    level:3,
+    xp:200,
+    text:"Выучить наизусть любой стихотворный текст не из Библии"
+  },
+  {
+    direction:"mind",
+    level:4,
+    xp:250,
+    text:"Прочитать книгу «Маленький принц»"
+  }
+
+];
+
+
+const ACHIEVEMENTS = [
+  {
+    id:"first",
+    icon:"🌱",
+    title:"Первый шаг",
+    text:"Выполнить первое недельное задание",
+    check:p => p.completedCount >= 1
+  },
+  {
+    id:"streak3",
+    icon:"🔥",
+    title:"В ритме",
+    text:"3 недели подряд",
+    check:p => p.streak >= 3
+  },
+  {
+    id:"streak10",
+    icon:"🏆",
+    title:"Постоянство",
+    text:"10 недель подряд",
+    check:p => p.streak >= 10
+  },
+  {
+    id:"spirit4",
+    icon:"✝️",
+    title:"Сильный дух",
+    text:"Дух — уровень 4",
+    check:p => p.directions.spirit.level >= 4
+  },
+  {
+    id:"strength4",
+    icon:"💪",
+    title:"Сильное тело",
+    text:"Сила — уровень 4",
+    check:p => p.directions.strength.level >= 4
+  },
+  {
+    id:"mind4",
+    icon:"🧠",
+    title:"Острый ум",
+    text:"Ум — уровень 4",
+    check:p => p.directions.mind.level >= 4
+  },
+  {
+    id:"soul4",
+    icon:"❤️",
+    title:"Большое сердце",
+    text:"Душа — уровень 4",
+    check:p => p.directions.soul.level >= 4
+  },
+  {
+    id:"level10",
+    icon:"🌟",
+    title:"LEVEL UP",
+    text:"Общий уровень 10",
+    check:p => overallLevel(p.totalXP) >= 10
+  }
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+let player = null;
+let currentTask = null;
+let currentHistory = [];
+let allTasks = [];
+let isAdmin = false;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function showToast(text){
+  const el = $("toast");
+  el.textContent = text;
+  el.classList.add("show");
+
+  setTimeout(() => {
+    el.classList.remove("show");
+  }, 2600);
+}
+
+function showAuthError(text){
+  $("authError").textContent = text;
+  $("authError").classList.remove("hidden");
+}
+
+function clearAuthError(){
+  $("authError").classList.add("hidden");
+}
+
+function overallLevel(xp){
+  return Math.floor((xp || 0) / 500) + 1;
+}
+
+function overallProgress(xp){
+  return (xp || 0) % 500;
+}
+
+function directionLevel(xp){
+  if(xp >= 600) return 4;
+  if(xp >= 400) return 3;
+  if(xp >= 200) return 2;
+  return 1;
+}
+
+function directionProgress(xp){
+  const level = directionLevel(xp);
+
+  if(level >= 4){
+    return Math.min(100, Math.round(((xp - 600) / 200) * 100));
+  }
+
+  const start = (level - 1) * 200;
+  return Math.min(100, Math.round(((xp - start) / 200) * 100));
+}
+
+function dateKey(date = new Date()){
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,"0");
+  const d = String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+
+function weekKey(date = new Date()){
+  const d = new Date(date);
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - day + 1);
+
+  return dateKey(d);
+}
+
+function formatDate(value){
+  if(!value) return "";
+
+  if(typeof value === "string"){
+    const d = new Date(value);
+    if(!Number.isNaN(d.getTime())){
+      return d.toLocaleDateString("ru-RU");
+    }
+  }
+
+  if(value?.toDate){
+    return value.toDate().toLocaleDateString("ru-RU");
+  }
+
+  return "";
+}
+
+function emptyDirections(){
+  return {
+    spirit:{xp:0,level:1},
+    strength:{xp:0,level:1},
+    mind:{xp:0,level:1},
+    soul:{xp:0,level:1}
+  };
+}
+
+function defaultPlayer(name,email){
+  return {
+    name,
+    email,
+    role:"user",
+    totalXP:0,
+    streak:0,
+    lastCompletedWeek:"",
+    selectedDirection:"",
+    selectedTaskId:"",
+    selectedWeek:"",
+    completedCount:0,
+
+    daily:{
+      date:dateKey(),
+      prayer:false,
+      bible:false
+    },
+
+    directions:emptyDirections(),
+
+    createdAt:serverTimestamp(),
+    updatedAt:serverTimestamp()
+  };
+}
+
+
+/* =========================================================
+   AUTH UI
+========================================================= */
+
+$("showRegister").onclick = () => {
+  clearAuthError();
+  $("loginForm").classList.add("hidden");
+  $("registerForm").classList.remove("hidden");
+};
+
+$("showLogin").onclick = () => {
+  clearAuthError();
+  $("registerForm").classList.add("hidden");
+  $("loginForm").classList.remove("hidden");
+};
+
+
+$("loginBtn").onclick = async () => {
+
+  clearAuthError();
+
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  if(!email || !password){
+    showAuthError("Заполни email и пароль.");
+    return;
+  }
+
+  try{
+
+    await signInWithEmailAndPassword(auth,email,password);
+
+  }catch(error){
+
+    console.error(error);
+
+    const messages = {
+      "auth/invalid-credential":"Неверный email или пароль.",
+      "auth/invalid-email":"Некорректный email.",
+      "auth/too-many-requests":"Слишком много попыток. Попробуй позже."
+    };
+
+    showAuthError(messages[error.code] || "Не удалось войти.");
+
+  }
+};
+
+
+$("registerBtn").onclick = async () => {
+
+  clearAuthError();
+
+  const name = $("regName").value.trim();
+  const email = $("regEmail").value.trim();
+  const password = $("regPassword").value;
+
+  if(name.length < 2){
+    showAuthError("Напиши имя или ник.");
+    return;
+  }
+
+  if(password.length < 6){
+    showAuthError("Пароль должен быть минимум 6 символов.");
+    return;
+  }
+
+  try{
+
+    const credential =
+      await createUserWithEmailAndPassword(auth,email,password);
+
+    const user = credential.user;
+
+    await setDoc(
+      doc(db,"users",user.uid),
+      defaultPlayer(name,email)
+    );
+
+    showToast("Аккаунт создан!");
+
+  }catch(error){
+
+    console.error(error);
+
+    const messages = {
+      "auth/email-already-in-use":"Этот email уже зарегистрирован.",
+      "auth/invalid-email":"Некорректный email.",
+      "auth/weak-password":"Пароль слишком слабый."
+    };
+
+    showAuthError(messages[error.code] || "Не удалось создать аккаунт.");
+
+  }
+};
+
+
+$("logoutBtn").onclick = async () => {
+  await signOut(auth);
+};
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+onAuthStateChanged(auth, async user => {
+
+  if(!user){
+
+    currentUser = null;
+    player = null;
+
+    $("authScreen").classList.remove("hidden");
+    $("app").classList.add("hidden");
+
+    return;
+  }
+
+  currentUser = user;
+
+  try{
+
+    await loadPlayer();
+
+    await checkAdmin();
+
+    $("authScreen").classList.add("hidden");
+    $("app").classList.remove("hidden");
+
+    await loadTasks();
+    await loadHistory();
+
+    render();
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast("Ошибка загрузки данных.");
+
+  }
+
+});
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+async function loadPlayer(){
+
+  const ref = doc(db,"users",currentUser.uid);
+  const snap = await getDoc(ref);
+
+  if(!snap.exists()){
+
+    player = defaultPlayer(
+      currentUser.email?.split("@")[0] || "Игрок",
+      currentUser.email || ""
+    );
+
+    await setDoc(ref,player);
+
+  }else{
+
+    player = snap.data();
+
+    player.directions = {
+      ...emptyDirections(),
+      ...(player.directions || {})
+    };
+
+    player.daily = {
+      date:dateKey(),
+      prayer:false,
+      bible:false,
+      ...(player.daily || {})
+    };
+
+    if(player.daily.date !== dateKey()){
+
+      player.daily = {
+        date:dateKey(),
+        prayer:false,
+        bible:false
+      };
+
+      await updateDoc(ref,{
+        daily:player.daily,
+        updatedAt:serverTimestamp()
+      });
+    }
+  }
+
+
+  // Новый календарный недельный цикл
+  const currentWeek = weekKey();
+
+  if(player.selectedWeek && player.selectedWeek !== currentWeek){
+
+    player.selectedDirection = "";
+    player.selectedTaskId = "";
+    player.selectedWeek = "";
+
+    await updateDoc(ref,{
+      selectedDirection:"",
+      selectedTaskId:"",
+      selectedWeek:"",
+      updatedAt:serverTimestamp()
+    });
+  }
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+async function checkAdmin(){
+
+  isAdmin = false;
+
+  try{
+
+    const snap =
+      await getDoc(doc(db,"admins",currentUser.uid));
+
+    isAdmin =
+      snap.exists() &&
+      snap.data().active === true;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+  $("adminBtn").classList.toggle("hidden",!isAdmin);
+}
+
+
+$("adminBtn").onclick = async () => {
+
+  if(!isAdmin) return;
+
+  $("adminModal").classList.remove("hidden");
+
+  await renderAdminTasks();
+};
+
+$("closeAdmin").onclick = () => {
+  $("adminModal").classList.add("hidden");
+};
+
+
+/* =========================================================
+   TASKS
+========================================================= */
+
+async function loadTasks(){
+
+  const snapshot = await getDocs(collection(db,"tasks"));
+
+  allTasks = snapshot.docs.map(d => ({
+    id:d.id,
+    ...d.data()
+  }));
+
+}
+
+async function renderAdminTasks(){
+
+  await loadTasks();
+
+  const box = $("adminTasks");
+
+  if(!allTasks.length){
+
+    box.innerHTML =
+      `<div class="empty">Заданий пока нет.</div>`;
+
+    return;
+  }
+
+  box.innerHTML = "";
+
+  allTasks
+    .sort((a,b) =>
+      String(a.direction).localeCompare(String(b.direction))
+      || Number(a.level)-Number(b.level)
+    )
+    .forEach(task => {
+
+      const div = document.createElement("div");
+      div.className = "admin-task";
+
+      div.innerHTML = `
+        <div class="admin-task-top">
+          <b>${escapeHtml(DIRECTION_NAMES[task.direction] || task.direction)}
+             · уровень ${Number(task.level)}
+          </b>
+
+          <span class="xp">+${Number(task.xp)} XP</span>
+        </div>
+
+        <div style="margin-top:7px">
+          ${escapeHtml(task.text)}
+        </div>
+
+        <small>
+          ${task.active === false ? "⛔ выключено" : "✅ активно"}
+        </small>
+
+        <div style="margin-top:10px">
+          <button class="secondary delete-task" data-id="${task.id}">
+            Удалить
+          </button>
+        </div>
+      `;
+
+      box.appendChild(div);
+    });
+
+
+  document.querySelectorAll(".delete-task").forEach(btn => {
+
+    btn.onclick = async () => {
+
+      if(!confirm("Удалить это задание?")) return;
+
+      try{
+
+        await deleteDoc(
+          doc(db,"tasks",btn.dataset.id)
+        );
+
+        showToast("Задание удалено.");
+
+        await renderAdminTasks();
+        await loadTasks();
+
+      }catch(error){
+
+        console.error(error);
+        showToast("Не удалось удалить.");
+
+      }
+
+    };
+
+  });
+
+}
+
+
+$("addTaskBtn").onclick = async () => {
+
+  if(!isAdmin) return;
+
+  const direction = $("taskDirection").value;
+  const level = Number($("taskLevel").value);
+  const xp = Number($("taskXP").value);
+  const text = $("taskText").value.trim();
+  const active = $("taskActive").value === "true";
+
+  if(!text){
+    showToast("Напиши текст задания.");
+    return;
+  }
+
+  if(!xp || xp < 1){
+    showToast("Укажи XP.");
+    return;
+  }
+
+  try{
+
+    await addDoc(collection(db,"tasks"),{
+      direction,
+      level,
+      xp,
+      text,
+      active,
+      createdAt:serverTimestamp()
+    });
+
+    $("taskText").value = "";
+
+    showToast("Задание добавлено.");
+
+    await renderAdminTasks();
+    await loadTasks();
+
+  }catch(error){
+
+    console.error(error);
+    showToast("Не удалось добавить задание.");
+
+  }
+
+};
+
+
+$("seedTasksBtn").onclick = async () => {
+
+  if(!isAdmin) return;
+
+  if(!confirm("Загрузить базовые задания?")) return;
+
+  try{
+
+    for(const task of BASE_TASKS){
+
+      await addDoc(collection(db,"tasks"),{
+        ...task,
+        active:true,
+        createdAt:serverTimestamp()
+      });
+
+    }
+
+    showToast("Базовые задания загружены.");
+
+    await renderAdminTasks();
+    await loadTasks();
+
+    render();
+
+  }catch(error){
+
+    console.error(error);
+    showToast("Ошибка загрузки заданий.");
+
+  }
+
+};
+
+
+/* =========================================================
+   CHOOSE WEEKLY DIRECTION
+========================================================= */
+
+async function chooseDirection(direction){
+
+  if(player.selectedDirection){
+    showToast("На этой неделе направление уже выбрано.");
+    return;
+  }
+
+  const level =
+    player.directions[direction]?.level || 1;
+
+  const available =
+    allTasks.filter(task =>
+      task.active !== false &&
+      task.direction === direction &&
+      Number(task.level) === Number(level)
+    );
+
+  if(!available.length){
+
+    showToast(
+      `Для «${DIRECTION_NAMES[direction]}» пока нет задания уровня ${level}.`
+    );
+
+    return;
+  }
+
+  // Не выбираем то же самое задание, если есть альтернативы
+  let candidates = available;
+
+  const previousTaskIds =
+    currentHistory
+      .map(item => item.taskId)
+      .filter(Boolean);
+
+  const unused =
+    available.filter(task =>
+      !previousTaskIds.includes(task.id)
+    );
+
+  if(unused.length){
+    candidates = unused;
+  }
+
+  const selected =
+    candidates[Math.floor(Math.random()*candidates.length)];
+
+  player.selectedDirection = direction;
+  player.selectedTaskId = selected.id;
+  player.selectedWeek = weekKey();
+
+  await updateDoc(
+    doc(db,"users",currentUser.uid),
+    {
+      selectedDirection:direction,
+      selectedTaskId:selected.id,
+      selectedWeek:weekKey(),
+      updatedAt:serverTimestamp()
+    }
+  );
+
+  currentTask = selected;
+
+  showToast("Направление выбрано!");
+
+  render();
+}
+
+
+/* =========================================================
+   COMPLETE WEEKLY TASK
+========================================================= */
+
+async function completeWeeklyTask(){
+
+  if(!player.selectedDirection || !currentTask){
+    return;
+  }
+
+  if(player.lastCompletedWeek === weekKey()){
+
+    showToast("Задание этой недели уже выполнено.");
+
+    return;
+  }
+
+  const oldWeek = player.lastCompletedWeek;
+  const currentWeek = weekKey();
+
+  let newStreak = 1;
+
+  if(oldWeek){
+
+    const previous =
+      new Date(oldWeek + "T00:00:00");
+
+    previous.setDate(previous.getDate() + 7);
+
+    if(dateKey(previous) === currentWeek){
+      newStreak = (player.streak || 0) + 1;
+    }
+
+  }
+
+  const direction = player.selectedDirection;
+
+  const oldDir =
+    player.directions[direction] || {xp:0,level:1};
+
+  const newDirXP =
+    Number(oldDir.xp || 0) + Number(currentTask.xp);
+
+  const newDir = {
+    xp:newDirXP,
+    level:directionLevel(newDirXP)
+  };
+
+  const newDirections = {
+    ...player.directions,
+    [direction]:newDir
+  };
+
+  const newTotalXP =
+    Number(player.totalXP || 0) + Number(currentTask.xp);
+
+  const newCompletedCount =
+    Number(player.completedCount || 0) + 1;
+
+  const historyData = {
+    taskId:currentTask.id,
+    direction,
+    directionName:DIRECTION_NAMES[direction],
+    taskText:currentTask.text,
+    xp:Number(currentTask.xp),
+    week:currentWeek,
+    completedAt:serverTimestamp()
+  };
+
+  try{
+
+    // Обновляем профиль
+    await updateDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        totalXP:newTotalXP,
+        completedCount:newCompletedCount,
+        streak:newStreak,
+        lastCompletedWeek:currentWeek,
+        directions:newDirections,
+        selectedDirection:"",
+        selectedTaskId:"",
+        selectedWeek:"",
+        updatedAt:serverTimestamp()
+      }
+    );
+
+    // Сохраняем историю
+    await addDoc(
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "history"
+      ),
+      historyData
+    );
+
+    player.totalXP = newTotalXP;
+    player.completedCount = newCompletedCount;
+    player.streak = newStreak;
+    player.lastCompletedWeek = currentWeek;
+    player.directions = newDirections;
+    player.selectedDirection = "";
+    player.selectedTaskId = "";
+    player.selectedWeek = "";
+
+    currentTask = null;
+
+    await loadHistory();
+
+    showToast(`🔥 +${currentTask?.xp || historyData.xp} XP!`);
+
+    render();
+
+  }catch(error){
+
+    console.error(error);
+    showToast("Не удалось сохранить выполнение.");
+
+  }
+}
+
+
+/* =========================================================
+   DAILY XP
+========================================================= */
+
+async function claimDaily(type){
+
+  if(type !== "prayer" && type !== "bible") return;
+
+  if(player.daily?.[type]){
+
+    showToast("Сегодня этот бонус уже получен.");
+
+    return;
+  }
+
+  const oldTotal = Number(player.totalXP || 0);
+  const newTotal = oldTotal + 10;
+
+  const newDaily = {
+    ...(player.daily || {}),
+    date:dateKey(),
+    [type]:true
+  };
+
+  await updateDoc(
+    doc(db,"users",currentUser.uid),
+    {
+      totalXP:newTotal,
+      daily:newDaily,
+      updatedAt:serverTimestamp()
+    }
+  );
+
+  player.totalXP = newTotal;
+  player.daily = newDaily;
+
+  showToast("+10 XP!");
+
+  render();
+}
+
+
+$("prayerBtn").onclick =
+  () => claimDaily("prayer");
+
+$("bibleBtn").onclick =
+  () => claimDaily("bible");
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+async function loadHistory(){
+
+  try{
+
+    const q = query(
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "history"
+      ),
+      orderBy("completedAt","desc"),
+      limit(50)
+    );
+
+    const snapshot = await getDocs(q);
+
+    currentHistory =
+      snapshot.docs.map(d => ({
+        id:d.id,
+        ...d.data()
+      }));
+
+  }catch(error){
+
+    console.error(error);
+
+    // Если индекс ещё не готов, пробуем простой запрос
+    const snapshot = await getDocs(
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "history"
+      )
+    );
+
+    currentHistory =
+      snapshot.docs.map(d => ({
+        id:d.id,
+        ...d.data()
+      }))
+      .sort((a,b) => {
+
+        const ad =
+          a.completedAt?.toMillis?.() || 0;
+
+        const bd =
+          b.completedAt?.toMillis?.() || 0;
+
+        return bd-ad;
+      })
+      .slice(0,50);
+  }
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  if(!player) return;
+
+  $("playerName").textContent =
+    player.name || "Игрок";
+
+  const totalXP =
+    Number(player.totalXP || 0);
+
+  const level =
+    overallLevel(totalXP);
+
+  const progress =
+    overallProgress(totalXP);
+
+  $("overallLevel").textContent =
+    `Уровень ${level}`;
+
+  $("totalXP").textContent =
+    `${totalXP} XP`;
+
+  $("overallProgress").style.width =
+    `${(progress/500)*100}%`;
+
+  $("streak").textContent =
+    `${player.streak || 0} 🔥`;
+
+  $("completedCount").textContent =
+    player.completedCount || 0;
+
+  const unlocked =
+    ACHIEVEMENTS.filter(a => a.check(player));
+
+  $("achievementCount").textContent =
+    unlocked.length;
+
+  renderDirections();
+  renderWeekly();
+  renderDaily();
+  renderAchievements();
+  renderHistory();
+}
+
+
+function renderDirections(){
+
+  const box = $("directions");
+
+  box.innerHTML = "";
+
+  const selected =
+    player.selectedDirection;
+
+  Object.entries(DIRECTION_NAMES).forEach(([key,name]) => {
+
+    const state =
+      player.directions[key] || {xp:0,level:1};
+
+    const locked =
+      selected && selected !== key;
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "direction" + (locked ? " locked" : "");
+
+    div.innerHTML = `
+      <div class="dir-icon">${DIRECTION_ICONS[key]}</div>
+
+      <div class="dir-name">
+        ${escapeHtml(name.replace(/^.+? /,""))}
+      </div>
+
+      <div class="dir-level">
+        Уровень ${state.level}
+      </div>
+
+      <div class="dir-bar">
+        <div style="width:${directionProgress(Number(state.xp||0))}%"></div>
+      </div>
+
+      <div style="color:var(--muted);font-size:11px;margin-top:8px">
+        ${Number(state.xp||0)} XP
+      </div>
+    `;
+
+    if(!selected){
+
+      div.style.cursor = "pointer";
+
+      div.onclick =
+        () => chooseDirection(key);
+
+    }
+
+    box.appendChild(div);
+
+  });
+}
+
+
+function renderWeekly(){
+
+  const box = $("weeklyCard");
+
+  $("weekLabel").textContent =
+    `неделя с ${formatWeekLabel()}`;
+
+  if(player.lastCompletedWeek === weekKey()){
+
+    box.innerHTML = `
+      <div style="text-align:center;padding:20px">
+        <div style="font-size:45px">🎉</div>
+        <h3>Задание недели выполнено!</h3>
+        <p style="color:var(--muted)">
+          Следующее задание появится с новой недели.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  if(!player.selectedDirection){
+
+    box.innerHTML = `
+      <div class="badge">1 задание · 1 направление</div>
+
+      <div class="task-text">
+        Выбери направление развития
+      </div>
+
+      <div class="task-meta">
+        После выбора остальные направления будут заблокированы
+        до следующей недели.
+      </div>
+
+      <button class="primary"
+        onclick="document.getElementById('directions').scrollIntoView({behavior:'smooth'})">
+        Выбрать направление
+      </button>
+    `;
+
+    return;
+  }
+
+  const task =
+    allTasks.find(t =>
+      t.id === player.selectedTaskId
+    );
+
+  if(!task){
+
+    box.innerHTML = `
+      <div class="empty">
+        Задание не найдено. Попроси администратора проверить задания.
+      </div>
+    `;
+
+    return;
+  }
+
+  currentTask = task;
+
+  box.innerHTML = `
+    <div class="week-head">
+      <div class="badge">
+        ${DIRECTION_NAMES[player.selectedDirection]}
+      </div>
+
+      <div class="xp">
+        +${Number(task.xp)} XP
+      </div>
+    </div>
+
+    <div class="task-text">
+      ${escapeHtml(task.text)}
+    </div>
+
+    <div class="task-meta">
+      Уровень задания: ${Number(task.level)}
+    </div>
+
+    <button id="completeTaskBtn" class="primary">
+      Я выполнил задание
+    </button>
+  `;
+
+  $("completeTaskBtn").onclick =
+    completeWeeklyTask;
+}
+
+
+function renderDaily(){
+
+  const prayerDone =
+    player.daily?.prayer === true;
+
+  const bibleDone =
+    player.daily?.bible === true;
+
+  $("prayerCard").classList.toggle(
+    "done",
+    prayerDone
+  );
+
+  $("bibleCard").classList.toggle(
+    "done",
+    bibleDone
+  );
+
+  $("prayerBtn").disabled = prayerDone;
+  $("bibleBtn").disabled = bibleDone;
+
+  $("prayerBtn").textContent =
+    prayerDone ? "✓ Получено" : "+10 XP";
+
+  $("bibleBtn").textContent =
+    bibleDone ? "✓ Получено" : "+10 XP";
+}
+
+
+function renderAchievements(){
+
+  const box = $("achievements");
+
+  box.innerHTML = "";
+
+  ACHIEVEMENTS.forEach(a => {
+
+    const unlocked =
+      a.check(player);
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "achievement" +
+      (unlocked ? " unlocked" : "");
+
+    div.innerHTML = `
+      <div class="a-icon">${a.icon}</div>
+      <b>${escapeHtml(a.title)}</b>
+      <small>${escapeHtml(a.text)}</small>
+    `;
+
+    box.appendChild(div);
+
+  });
+}
+
+
+function renderHistory(){
+
+  const box = $("history");
+
+  if(!currentHistory.length){
+
+    box.innerHTML =
+      `<div class="empty">
+        Здесь появятся выполненные недельные задания.
+      </div>`;
+
+    return;
+  }
+
+  box.innerHTML = "";
+
+  currentHistory.forEach(item => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "history-item";
+
+    div.innerHTML = `
+      <div>
+        <b>${escapeHtml(item.taskText || "Задание")}</b>
+        <span>
+          ${escapeHtml(item.directionName || "")}
+          · ${formatDate(item.completedAt)}
+        </span>
+      </div>
+
+      <div class="xp">
+        +${Number(item.xp || 0)} XP
+      </div>
+    `;
+
+    box.appendChild(div);
+
+  });
+}
+
+
+function formatWeekLabel(){
+
+  const d =
+    new Date(weekKey()+"T00:00:00");
+
+  return d.toLocaleDateString(
+    "ru-RU",
+    {
+      day:"numeric",
+      month:"long"
+    }
+  );
+}
+
+
+/* =========================================================
+   SECURITY / HTML
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   GLOBALS FOR BUTTONS
+========================================================= */
+
+window.chooseDirection = chooseDirection;
+
+
+/* =========================================================
+   START
+========================================================= */
+
+console.log("LEVEL UP loaded.");
+
+</script>
+
+</body>
+</html>
