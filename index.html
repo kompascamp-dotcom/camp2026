@@ -718,6 +718,10 @@ button{cursor:pointer}
 
 <body>
 
+<!-- =====================================================
+     AUTH
+====================================================== -->
+
 <div id="authScreen" class="auth-screen">
 
   <div class="auth-card">
@@ -764,13 +768,10 @@ button{cursor:pointer}
       </button>
 
       <div class="auth-switch">
-
         Нет аккаунта?
-
         <span class="link" id="showRegister">
           Создать
         </span>
-
       </div>
 
     </div>
@@ -814,13 +815,10 @@ button{cursor:pointer}
       </button>
 
       <div class="auth-switch">
-
         Уже есть аккаунт?
-
         <span class="link" id="showLogin">
           Войти
         </span>
-
       </div>
 
     </div>
@@ -829,6 +827,10 @@ button{cursor:pointer}
 
 </div>
 
+
+<!-- =====================================================
+     APP
+====================================================== -->
 
 <div id="app" class="app hidden">
 
@@ -1022,6 +1024,10 @@ button{cursor:pointer}
 
 </div>
 
+
+<!-- =====================================================
+     ADMIN MODAL
+====================================================== -->
 
 <div id="adminModal" class="modal hidden">
 
@@ -1290,6 +1296,10 @@ button{cursor:pointer}
 
 
 <script type="module">
+
+/* =========================================================
+   FIREBASE IMPORTS
+========================================================= */
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -1576,6 +1586,21 @@ let allTasks = [];
 
 let isAdmin = false;
 
+/*
+   ВАЖНО:
+   appReady не даёт автоматическому сбросу
+   вмешиваться в процесс входа и начальной загрузки.
+*/
+
+let appReady = false;
+
+/*
+   Защита от одновременного запуска
+   нескольких проверок ежедневного сброса.
+*/
+
+let dailyResetRunning = false;
+
 
 /* =========================================================
    HELPERS
@@ -1587,33 +1612,47 @@ const $ =
 
 function showToast(text){
 
-  const el = $("toast");
+  const el =
+    $("toast");
 
-  el.textContent = text;
+  el.textContent =
+    text;
 
-  el.classList.add("show");
+  el.classList.add(
+    "show"
+  );
 
-  setTimeout(() => {
+  setTimeout(
+    () => {
 
-    el.classList.remove("show");
+      el.classList.remove(
+        "show"
+      );
 
-  },2600);
+    },
+    2600
+  );
 
 }
 
 
 function showAuthError(text){
 
-  $("authError").textContent = text;
+  $("authError").textContent =
+    text;
 
-  $("authError").classList.remove("hidden");
+  $("authError")
+    .classList
+    .remove("hidden");
 
 }
 
 
 function clearAuthError(){
 
-  $("authError").classList.add("hidden");
+  $("authError")
+    .classList
+    .add("hidden");
 
 }
 
@@ -1636,11 +1675,14 @@ function overallProgress(xp){
 
 function directionLevel(xp){
 
-  if(xp >= 600) return 4;
+  if(xp >= 600)
+    return 4;
 
-  if(xp >= 400) return 3;
+  if(xp >= 400)
+    return 3;
 
-  if(xp >= 200) return 2;
+  if(xp >= 200)
+    return 2;
 
   return 1;
 
@@ -1676,18 +1718,28 @@ function directionProgress(xp){
 }
 
 
-function dateKey(date = new Date()){
+function dateKey(
+  date = new Date()
+){
 
   const y =
     date.getFullYear();
 
   const m =
-    String(date.getMonth()+1)
-      .padStart(2,"0");
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
 
   const d =
-    String(date.getDate())
-      .padStart(2,"0");
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
 
   return `${y}-${m}-${d}`;
 
@@ -1698,28 +1750,39 @@ function dateKey(date = new Date()){
    PERSONAL WEEK
 ========================================================= */
 
-function personalWeekKey(date = new Date()){
+function personalWeekKey(
+  date = new Date()
+){
 
   if(!player?.startDate){
 
-    return dateKey(date);
+    return dateKey(
+      date
+    );
 
   }
 
   const start =
     new Date(
-      player.startDate + "T00:00:00"
+      player.startDate +
+      "T00:00:00"
     );
 
   const current =
     new Date(date);
 
   start.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
   current.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
   const diffDays =
@@ -1750,14 +1813,22 @@ function personalWeekKey(date = new Date()){
 
 function formatDate(value){
 
-  if(!value) return "";
+  if(!value)
+    return "";
 
-  if(typeof value === "string"){
+  if(
+    typeof value ===
+    "string"
+  ){
 
     const d =
       new Date(value);
 
-    if(!Number.isNaN(d.getTime())){
+    if(
+      !Number.isNaN(
+        d.getTime()
+      )
+    ){
 
       return d.toLocaleDateString(
         "ru-RU"
@@ -1771,7 +1842,9 @@ function formatDate(value){
 
     return value
       .toDate()
-      .toLocaleDateString("ru-RU");
+      .toLocaleDateString(
+        "ru-RU"
+      );
 
   }
 
@@ -1809,7 +1882,10 @@ function emptyDirections(){
 }
 
 
-function defaultPlayer(name,email){
+function defaultPlayer(
+  name,
+  email
+){
 
   return {
 
@@ -1833,11 +1909,13 @@ function defaultPlayer(name,email){
 
     completedCount:0,
 
-    startDate:dateKey(),
+    startDate:
+      dateKey(),
 
     daily:{
 
-      date:dateKey(),
+      date:
+        dateKey(),
 
       prayer:false,
 
@@ -1909,7 +1987,10 @@ $("loginBtn").onclick =
       $("loginPassword")
         .value;
 
-    if(!email || !password){
+    if(
+      !email ||
+      !password
+    ){
 
       showAuthError(
         "Заполни email и пароль."
@@ -1929,7 +2010,9 @@ $("loginBtn").onclick =
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       const messages = {
 
@@ -1973,7 +2056,9 @@ $("registerBtn").onclick =
       $("regPassword")
         .value;
 
-    if(name.length < 2){
+    if(
+      name.length < 2
+    ){
 
       showAuthError(
         "Напиши имя или ник."
@@ -1983,7 +2068,9 @@ $("registerBtn").onclick =
 
     }
 
-    if(password.length < 6){
+    if(
+      password.length < 6
+    ){
 
       showAuthError(
         "Пароль должен быть минимум 6 символов."
@@ -2026,7 +2113,9 @@ $("registerBtn").onclick =
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       const messages = {
 
@@ -2054,7 +2143,15 @@ $("registerBtn").onclick =
 $("logoutBtn").onclick =
   async () => {
 
-    await signOut(auth);
+    appReady =
+      false;
+
+    dailyResetRunning =
+      false;
+
+    await signOut(
+      auth
+    );
 
   };
 
@@ -2067,11 +2164,24 @@ onAuthStateChanged(
   auth,
   async user => {
 
+    /*
+       Если пользователь вышел,
+       полностью выключаем фоновые проверки.
+    */
+
     if(!user){
 
-      currentUser = null;
+      currentUser =
+        null;
 
-      player = null;
+      player =
+        null;
+
+      appReady =
+        false;
+
+      dailyResetRunning =
+        false;
 
       $("authScreen")
         .classList
@@ -2085,13 +2195,34 @@ onAuthStateChanged(
 
     }
 
-    currentUser = user;
+    /*
+       Пока приложение загружается,
+       автоматический daily reset выключен.
+    */
+
+    appReady =
+      false;
+
+    currentUser =
+      user;
 
     try{
 
+      /*
+         1. Загружаем игрока
+      */
+
       await loadPlayer();
 
+      /*
+         2. Проверяем администратора
+      */
+
       await checkAdmin();
+
+      /*
+         3. Показываем приложение
+      */
 
       $("authScreen")
         .classList
@@ -2101,15 +2232,41 @@ onAuthStateChanged(
         .classList
         .remove("hidden");
 
+      /*
+         4. Загружаем задания
+      */
+
       await loadTasks();
 
+      /*
+         5. Загружаем историю
+      */
+
       await loadHistory();
+
+      /*
+         6. Теперь приложение полностью готово.
+         Только после этого разрешаем
+         автоматический daily reset.
+      */
+
+      appReady =
+        true;
+
+      /*
+         7. Первый render.
+      */
 
       render();
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
+
+      appReady =
+        false;
 
       showToast(
         "Ошибка загрузки данных."
@@ -2135,7 +2292,9 @@ async function loadPlayer(){
     );
 
   const snap =
-    await getDoc(ref);
+    await getDoc(
+      ref
+    );
 
   if(!snap.exists()){
 
@@ -2156,6 +2315,11 @@ async function loadPlayer(){
     player =
       snap.data();
 
+    /*
+       Гарантируем наличие всех
+       четырёх направлений.
+    */
+
     player.directions = {
 
       ...emptyDirections(),
@@ -2167,12 +2331,20 @@ async function loadPlayer(){
 
     /* =====================================================
        DAILY RESET
-       Проверяем именно сохранённую дату игрока.
-       Если наступил новый день — оба бонуса сбрасываются.
     ====================================================== */
 
     const today =
       dateKey();
+
+    /*
+       Если:
+       - daily отсутствует
+       ИЛИ
+       - дата старого daily не совпадает
+         с сегодняшней
+
+       создаём новый daily.
+    */
 
     if(
       !player.daily ||
@@ -2207,6 +2379,11 @@ async function loadPlayer(){
 
     }else{
 
+      /*
+         Если день тот же самый,
+         сохраняем только настоящие boolean.
+      */
+
       player.daily = {
 
         date:today,
@@ -2222,9 +2399,18 @@ async function loadPlayer(){
     }
 
 
-    if(!player.startDate){
+    /*
+       Если старому игроку ещё не задан
+       startDate, создаём его.
+    */
 
-      if(player.createdAt?.toDate){
+    if(
+      !player.startDate
+    ){
+
+      if(
+        player.createdAt?.toDate
+      ){
 
         player.startDate =
           dateKey(
@@ -2258,6 +2444,17 @@ async function loadPlayer(){
 
   }
 
+
+  /*
+     =====================================================
+     НЕДЕЛЬНЫЙ RESET
+     
+     Эта часть осталась такой же по смыслу.
+     Она зависит от личной недели игрока,
+     а не от того, выходил он из приложения или нет.
+     =====================================================
+  */
+
   const currentWeek =
     personalWeekKey();
 
@@ -2266,11 +2463,14 @@ async function loadPlayer(){
     player.selectedWeek !== currentWeek
   ){
 
-    player.selectedDirection = "";
+    player.selectedDirection =
+      "";
 
-    player.selectedTaskId = "";
+    player.selectedTaskId =
+      "";
 
-    player.selectedWeek = "";
+    player.selectedWeek =
+      "";
 
     await updateDoc(
 
@@ -2298,22 +2498,49 @@ async function loadPlayer(){
 
 /* =========================================================
    DAILY AUTO RESET
-   Проверка нового дня без перезагрузки страницы.
 ========================================================= */
 
 async function checkDailyReset(){
 
+  /*
+     Не запускаем проверку:
+     - пока нет пользователя;
+     - пока нет player;
+     - пока приложение ещё загружается.
+  */
+
   if(
     !currentUser ||
-    !player
+    !player ||
+    !appReady
   ){
 
     return;
 
   }
 
+
+  /*
+     Если другая проверка уже идёт,
+     не запускаем вторую.
+  */
+
+  if(
+    dailyResetRunning
+  ){
+
+    return;
+
+  }
+
+
   const today =
     dateKey();
+
+
+  /*
+     Сегодня уже всё правильно.
+  */
 
   if(
     player.daily?.date === today
@@ -2323,7 +2550,16 @@ async function checkDailyReset(){
 
   }
 
-  player.daily = {
+
+  /*
+     Ставим блокировку.
+  */
+
+  dailyResetRunning =
+    true;
+
+
+  const newDaily = {
 
     date:today,
 
@@ -2333,7 +2569,13 @@ async function checkDailyReset(){
 
   };
 
+
   try{
+
+    /*
+       Сначала сохраняем новый день
+       в Firebase.
+    */
 
     await updateDoc(
 
@@ -2346,7 +2588,7 @@ async function checkDailyReset(){
       {
 
         daily:
-          player.daily,
+          newDaily,
 
         updatedAt:
           serverTimestamp()
@@ -2354,6 +2596,21 @@ async function checkDailyReset(){
       }
 
     );
+
+
+    /*
+       Только после успешного Firebase
+       обновляем локального игрока.
+    */
+
+    player.daily =
+      newDaily;
+
+
+    /*
+       Перерисовываем только daily,
+       а не всё приложение.
+    */
 
     renderDaily();
 
@@ -2363,6 +2620,15 @@ async function checkDailyReset(){
       "Ошибка ежедневного сброса:",
       error
     );
+
+  }finally{
+
+    /*
+       В любом случае снимаем блокировку.
+    */
+
+    dailyResetRunning =
+      false;
 
   }
 
@@ -2375,7 +2641,8 @@ async function checkDailyReset(){
 
 async function checkAdmin(){
 
-  isAdmin = false;
+  isAdmin =
+    false;
 
   try{
 
@@ -2394,7 +2661,9 @@ async function checkAdmin(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
   }
 
@@ -2411,7 +2680,8 @@ async function checkAdmin(){
 $("adminBtn").onclick =
   async () => {
 
-    if(!isAdmin) return;
+    if(!isAdmin)
+      return;
 
     $("adminModal")
       .classList
@@ -2463,21 +2733,23 @@ async function renderAdminPlayers(){
     const players =
       snapshot.docs
 
-        .map(d => ({
-
-          id:d.id,
-
-          ...d.data()
-
-        }))
+        .map(
+          d => ({
+            id:d.id,
+            ...d.data()
+          })
+        )
 
         .sort(
           (a,b) =>
-            String(a.name || "")
-              .localeCompare(
-                String(b.name || ""),
-                "ru"
-              )
+            String(
+              a.name || ""
+            ).localeCompare(
+              String(
+                b.name || ""
+              ),
+              "ru"
+            )
         );
 
     select.innerHTML =
@@ -2485,7 +2757,9 @@ async function renderAdminPlayers(){
         Выбери игрока
       </option>`;
 
-    if(!players.length){
+    if(
+      !players.length
+    ){
 
       select.innerHTML =
         `<option value="">
@@ -2496,28 +2770,32 @@ async function renderAdminPlayers(){
 
     }
 
-    players.forEach(user => {
+    players.forEach(
+      user => {
 
-      const option =
-        document.createElement(
-          "option"
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          user.id;
+
+        option.textContent =
+          `${user.name || "Без имени"} · ${user.email || ""}`;
+
+        select.appendChild(
+          option
         );
 
-      option.value =
-        user.id;
-
-      option.textContent =
-        `${user.name || "Без имени"} · ${user.email || ""}`;
-
-      select.appendChild(
-        option
-      );
-
-    });
+      }
+    );
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     select.innerHTML =
       `<option value="">
@@ -2560,21 +2838,26 @@ async function renderAdminResults(){
     const players =
       snapshot.docs
 
-        .map(d => ({
-
-          id:d.id,
-
-          ...d.data()
-
-        }))
+        .map(
+          d => ({
+            id:d.id,
+            ...d.data()
+          })
+        )
 
         .sort(
           (a,b) =>
-            Number(b.totalXP || 0) -
-            Number(a.totalXP || 0)
+            Number(
+              b.totalXP || 0
+            ) -
+            Number(
+              a.totalXP || 0
+            )
         );
 
-    if(!players.length){
+    if(
+      !players.length
+    ){
 
       box.innerHTML =
         `<div class="empty">
@@ -2586,114 +2869,114 @@ async function renderAdminResults(){
     }
 
     const rows =
-      players.map(
-        (p,index) => {
+      players
+        .map(
+          (p,index) => {
 
-          const dirs = {
+            const dirs = {
 
-            spirit:
-              p.directions?.spirit ||
-              {xp:0,level:1},
+              spirit:
+                p.directions?.spirit ||
+                {
+                  xp:0,
+                  level:1
+                },
 
-            strength:
-              p.directions?.strength ||
-              {xp:0,level:1},
+              strength:
+                p.directions?.strength ||
+                {
+                  xp:0,
+                  level:1
+                },
 
-            mind:
-              p.directions?.mind ||
-              {xp:0,level:1},
+              mind:
+                p.directions?.mind ||
+                {
+                  xp:0,
+                  level:1
+                },
 
-            soul:
-              p.directions?.soul ||
-              {xp:0,level:1}
+              soul:
+                p.directions?.soul ||
+                {
+                  xp:0,
+                  level:1
+                }
 
-          };
+            };
 
-          return `
+            return `
 
-            <tr>
+              <tr>
 
-              <td>
+                <td>
 
-                <div class="results-player">
+                  <div class="results-player">
 
-                  <span class="results-rank">
-                    ${index + 1}.
-                  </span>
+                    <span class="results-rank">
+                      ${index + 1}.
+                    </span>
 
-                  ${escapeHtml(
-                    p.name ||
-                    "Без имени"
-                  )}
+                    ${escapeHtml(
+                      p.name ||
+                      "Без имени"
+                    )}
 
-                </div>
+                  </div>
 
-              </td>
+                </td>
 
-              <td class="results-xp">
-
-                ${Number(
-                  p.totalXP || 0
-                )}
-
-              </td>
-
-              <td class="results-level">
-
-                ${overallLevel(
-                  Number(
+                <td class="results-xp">
+                  ${Number(
                     p.totalXP || 0
-                  )
-                )}
+                  )}
+                </td>
 
-              </td>
+                <td class="results-level">
+                  ${overallLevel(
+                    Number(
+                      p.totalXP || 0
+                    )
+                  )}
+                </td>
 
-              <td class="results-direction">
+                <td class="results-direction">
+                  ${Number(
+                    dirs.spirit.xp || 0
+                  )}
+                </td>
 
-                ${Number(
-                  dirs.spirit.xp || 0
-                )}
+                <td class="results-direction">
+                  ${Number(
+                    dirs.strength.xp || 0
+                  )}
+                </td>
 
-              </td>
+                <td class="results-direction">
+                  ${Number(
+                    dirs.mind.xp || 0
+                  )}
+                </td>
 
-              <td class="results-direction">
+                <td class="results-direction">
+                  ${Number(
+                    dirs.soul.xp || 0
+                  )}
+                </td>
 
-                ${Number(
-                  dirs.strength.xp || 0
-                )}
+                <td class="results-fire">
+                  ${Number(
+                    p.streak || 0
+                  )} 🔥
+                </td>
 
-              </td>
+              </tr>
 
-              <td class="results-direction">
+            `;
 
-                ${Number(
-                  dirs.mind.xp || 0
-                )}
-
-              </td>
-
-              <td class="results-direction">
-
-                ${Number(
-                  dirs.soul.xp || 0
-                )}
-
-              </td>
-
-              <td class="results-fire">
-
-                ${Number(
-                  p.streak || 0
-                )} 🔥
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      ).join("");
+          }
+        )
+        .join("");
 
 
     box.innerHTML = `
@@ -2705,12 +2988,19 @@ async function renderAdminResults(){
           <tr>
 
             <th>Игрок</th>
+
             <th>XP</th>
+
             <th>Уровень</th>
+
             <th>✝️ Дух</th>
+
             <th>💪 Сила</th>
+
             <th>🧠 Ум</th>
+
             <th>❤️ Душа</th>
+
             <th>Серия</th>
 
           </tr>
@@ -2729,7 +3019,9 @@ async function renderAdminResults(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     box.innerHTML =
       `<div class="empty">
@@ -2752,7 +3044,8 @@ async function renderAdminResults(){
 $("addXPBtn").onclick =
   async () => {
 
-    if(!isAdmin) return;
+    if(!isAdmin)
+      return;
 
     const playerId =
       $("xpPlayer").value;
@@ -2778,7 +3071,9 @@ $("addXPBtn").onclick =
     }
 
     if(
-      !Number.isFinite(amount) ||
+      !Number.isFinite(
+        amount
+      ) ||
       amount < 10 ||
       amount % 10 !== 0
     ){
@@ -2815,7 +3110,9 @@ $("addXPBtn").onclick =
           playerRef
         );
 
-      if(!playerSnap.exists()){
+      if(
+        !playerSnap.exists()
+      ){
 
         showToast(
           "Игрок не найден."
@@ -2842,7 +3139,8 @@ $("addXPBtn").onclick =
 
         {
 
-          totalXP:newXP,
+          totalXP:
+            newXP,
 
           updatedAt:
             serverTimestamp()
@@ -2872,9 +3170,11 @@ $("addXPBtn").onclick =
           taskText:
             reason,
 
-          xp:amount,
+          xp:
+            amount,
 
-          type:"admin_xp",
+          type:
+            "admin_xp",
 
           adminId:
             currentUser.uid,
@@ -2886,11 +3186,9 @@ $("addXPBtn").onclick =
 
       );
 
-
       showToast(
         `⭐ ${amount} XP начислено игроку ${playerData.name || ""}!`
       );
-
 
       $("xpAmount").value =
         10;
@@ -2898,13 +3196,13 @@ $("addXPBtn").onclick =
       $("xpReason").value =
         "";
 
-
       await renderAdminResults();
-
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       showToast(
         "Не удалось начислить XP."
@@ -2947,7 +3245,9 @@ async function renderAdminTasks(){
   const box =
     $("adminTasks");
 
-  if(!allTasks.length){
+  if(
+    !allTasks.length
+  ){
 
     box.innerHTML =
       `<div class="empty">
@@ -2958,148 +3258,166 @@ async function renderAdminTasks(){
 
   }
 
-  box.innerHTML = "";
+  box.innerHTML =
+    "";
 
   allTasks
 
     .sort(
       (a,b) =>
 
-        String(a.direction)
-          .localeCompare(
-            String(b.direction)
+        String(
+          a.direction
+        ).localeCompare(
+          String(
+            b.direction
           )
+        )
 
         ||
 
-        Number(a.level) -
-        Number(b.level)
+        Number(
+          a.level
+        ) -
+        Number(
+          b.level
+        )
     )
 
-    .forEach(task => {
+    .forEach(
+      task => {
 
-      const div =
-        document.createElement(
-          "div"
-        );
+        const div =
+          document.createElement(
+            "div"
+          );
 
-      div.className =
-        "admin-task";
+        div.className =
+          "admin-task";
 
-      div.innerHTML = `
+        div.innerHTML = `
 
-        <div class="admin-task-top">
+          <div class="admin-task-top">
 
-          <b>
+            <b>
+
+              ${escapeHtml(
+                DIRECTION_NAMES[
+                  task.direction
+                ] ||
+                task.direction
+              )}
+
+              · уровень
+              ${Number(
+                task.level
+              )}
+
+            </b>
+
+            <span class="xp">
+              +${Number(
+                task.xp
+              )} XP
+            </span>
+
+          </div>
+
+          <div style="margin-top:7px">
 
             ${escapeHtml(
-              DIRECTION_NAMES[
-                task.direction
-              ] ||
-              task.direction
+              task.text
             )}
 
-            · уровень
-            ${Number(task.level)}
+          </div>
 
-          </b>
+          <small>
 
-          <span class="xp">
-            +${Number(task.xp)} XP
-          </span>
+            ${
+              task.active === false
+                ? "⛔ выключено"
+                : "✅ активно"
+            }
 
-        </div>
+          </small>
 
-        <div style="margin-top:7px">
+          <div style="margin-top:10px">
 
-          ${escapeHtml(
-            task.text
-          )}
+            <button
+              class="secondary delete-task"
+              data-id="${task.id}"
+            >
+              Удалить
+            </button>
 
-        </div>
+          </div>
 
-        <small>
+        `;
 
-          ${
-            task.active === false
-              ? "⛔ выключено"
-              : "✅ активно"
-          }
+        box.appendChild(
+          div
+        );
 
-        </small>
-
-        <div style="margin-top:10px">
-
-          <button
-            class="secondary delete-task"
-            data-id="${task.id}"
-          >
-            Удалить
-          </button>
-
-        </div>
-
-      `;
-
-      box.appendChild(
-        div
-      );
-
-    });
+      }
+    );
 
 
   document
     .querySelectorAll(
       ".delete-task"
     )
-    .forEach(btn => {
+    .forEach(
+      btn => {
 
-      btn.onclick =
-        async () => {
+        btn.onclick =
+          async () => {
 
-          if(
-            !confirm(
-              "Удалить это задание?"
-            )
-          ){
-
-            return;
-
-          }
-
-          try{
-
-            await deleteDoc(
-
-              doc(
-                db,
-                "tasks",
-                btn.dataset.id
+            if(
+              !confirm(
+                "Удалить это задание?"
               )
+            ){
 
-            );
+              return;
 
-            showToast(
-              "Задание удалено."
-            );
+            }
 
-            await renderAdminTasks();
+            try{
 
-            await loadTasks();
+              await deleteDoc(
 
-          }catch(error){
+                doc(
+                  db,
+                  "tasks",
+                  btn.dataset.id
+                )
 
-            console.error(error);
+              );
 
-            showToast(
-              "Не удалось удалить."
-            );
+              showToast(
+                "Задание удалено."
+              );
 
-          }
+              await renderAdminTasks();
 
-        };
+              await loadTasks();
 
-    });
+            }catch(error){
+
+              console.error(
+                error
+              );
+
+              showToast(
+                "Не удалось удалить."
+              );
+
+            }
+
+          };
+
+      }
+    );
 
 }
 
@@ -3107,7 +3425,8 @@ async function renderAdminTasks(){
 $("addTaskBtn").onclick =
   async () => {
 
-    if(!isAdmin) return;
+    if(!isAdmin)
+      return;
 
     const direction =
       $("taskDirection").value;
@@ -3141,7 +3460,10 @@ $("addTaskBtn").onclick =
 
     }
 
-    if(!xp || xp < 1){
+    if(
+      !xp ||
+      xp < 1
+    ){
 
       showToast(
         "Укажи XP."
@@ -3192,7 +3514,9 @@ $("addTaskBtn").onclick =
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       showToast(
         "Не удалось добавить задание."
@@ -3206,7 +3530,8 @@ $("addTaskBtn").onclick =
 $("seedTasksBtn").onclick =
   async () => {
 
-    if(!isAdmin) return;
+    if(!isAdmin)
+      return;
 
     if(
       !confirm(
@@ -3258,7 +3583,9 @@ $("seedTasksBtn").onclick =
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       showToast(
         "Ошибка загрузки заданий."
@@ -3273,9 +3600,13 @@ $("seedTasksBtn").onclick =
    CHOOSE WEEKLY DIRECTION
 ========================================================= */
 
-async function chooseDirection(direction){
+async function chooseDirection(
+  direction
+){
 
-  if(player.selectedDirection){
+  if(
+    player.selectedDirection
+  ){
 
     showToast(
       "На этой неделе направление уже выбрано."
@@ -3299,11 +3630,17 @@ async function chooseDirection(direction){
         task.direction ===
           direction &&
 
-        Number(task.level) ===
-          Number(level)
+        Number(
+          task.level
+        ) ===
+          Number(
+            level
+          )
     );
 
-  if(!available.length){
+  if(
+    !available.length
+  ){
 
     showToast(
       `Для «${DIRECTION_NAMES[direction]}» пока нет задания уровня ${level}.`
@@ -3322,7 +3659,9 @@ async function chooseDirection(direction){
         item =>
           item.taskId
       )
-      .filter(Boolean);
+      .filter(
+        Boolean
+      );
 
   const unused =
     available.filter(
@@ -3332,7 +3671,9 @@ async function chooseDirection(direction){
         )
     );
 
-  if(unused.length){
+  if(
+    unused.length
+  ){
 
     candidates =
       unused;
@@ -3434,7 +3775,9 @@ async function completeWeeklyTask(){
   let newStreak =
     1;
 
-  if(oldWeek){
+  if(
+    oldWeek
+  ){
 
     const previous =
       new Date(
@@ -3448,12 +3791,15 @@ async function completeWeeklyTask(){
     );
 
     if(
-      dateKey(previous) ===
+      dateKey(
+        previous
+      ) ===
       currentWeek
     ){
 
       newStreak =
-        (player.streak || 0) + 1;
+        (player.streak || 0) +
+        1;
 
     }
 
@@ -3471,12 +3817,17 @@ async function completeWeeklyTask(){
     };
 
   const newDirXP =
-    Number(oldDir.xp || 0) +
-    Number(currentTask.xp);
+    Number(
+      oldDir.xp || 0
+    ) +
+    Number(
+      currentTask.xp
+    );
 
   const newDir = {
 
-    xp:newDirXP,
+    xp:
+      newDirXP,
 
     level:
       directionLevel(
@@ -3495,13 +3846,18 @@ async function completeWeeklyTask(){
   };
 
   const newTotalXP =
-    Number(player.totalXP || 0) +
-    Number(currentTask.xp);
+    Number(
+      player.totalXP || 0
+    ) +
+    Number(
+      currentTask.xp
+    );
 
   const newCompletedCount =
     Number(
       player.completedCount || 0
-    ) + 1;
+    ) +
+    1;
 
   const historyData = {
 
@@ -3511,13 +3867,17 @@ async function completeWeeklyTask(){
     direction,
 
     directionName:
-      DIRECTION_NAMES[direction],
+      DIRECTION_NAMES[
+        direction
+      ],
 
     taskText:
       currentTask.text,
 
     xp:
-      Number(currentTask.xp),
+      Number(
+        currentTask.xp
+      ),
 
     week:
       currentWeek,
@@ -3528,7 +3888,9 @@ async function completeWeeklyTask(){
   };
 
   const earnedXP =
-    Number(currentTask.xp);
+    Number(
+      currentTask.xp
+    );
 
   try{
 
@@ -3620,7 +3982,9 @@ async function completeWeeklyTask(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     showToast(
       "Не удалось сохранить выполнение."
@@ -3635,7 +3999,9 @@ async function completeWeeklyTask(){
    DAILY XP
 ========================================================= */
 
-async function claimDaily(type){
+async function claimDaily(
+  type
+){
 
   if(
     type !== "prayer" &&
@@ -3647,11 +4013,10 @@ async function claimDaily(type){
   }
 
 
-  /* =====================================================
-     ВАЖНО:
-     Перед выдачей XP обязательно проверяем,
+  /*
+     Перед выдачей XP проверяем,
      не наступил ли новый день.
-  ====================================================== */
+  */
 
   await checkDailyReset();
 
@@ -3728,7 +4093,9 @@ async function claimDaily(type){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     showToast(
       "Не удалось получить XP."
@@ -3740,15 +4107,17 @@ async function claimDaily(type){
 
 
 $("prayerBtn").onclick =
-  () => claimDaily(
-    "prayer"
-  );
+  () =>
+    claimDaily(
+      "prayer"
+    );
 
 
 $("bibleBtn").onclick =
-  () => claimDaily(
-    "bible"
-  );
+  () =>
+    claimDaily(
+      "bible"
+    );
 
 
 /* =========================================================
@@ -3774,12 +4143,16 @@ async function loadHistory(){
           "desc"
         ),
 
-        limit(50)
+        limit(
+          50
+        )
 
       );
 
     const snapshot =
-      await getDocs(q);
+      await getDocs(
+        q
+      );
 
     currentHistory =
       snapshot.docs.map(
@@ -3794,7 +4167,9 @@ async function loadHistory(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     const snapshot =
       await getDocs(
@@ -3826,11 +4201,13 @@ async function loadHistory(){
 
             const ad =
               a.completedAt
-                ?.toMillis?.() || 0;
+                ?.toMillis?.() ||
+              0;
 
             const bd =
               b.completedAt
-                ?.toMillis?.() || 0;
+                ?.toMillis?.() ||
+              0;
 
             return bd - ad;
 
@@ -3853,7 +4230,8 @@ async function loadHistory(){
 
 function render(){
 
-  if(!player) return;
+  if(!player)
+    return;
 
   $("playerName").textContent =
     player.name ||
@@ -3880,8 +4258,10 @@ function render(){
   $("totalXP").textContent =
     `${totalXP} XP`;
 
-  $("overallProgress").style.width =
-    `${(progress / 500) * 100}%`;
+  $("overallProgress")
+    .style
+    .width =
+      `${(progress / 500) * 100}%`;
 
   $("streak").textContent =
     `${player.streak || 0} 🔥`;
@@ -3891,11 +4271,15 @@ function render(){
 
   const unlocked =
     ACHIEVEMENTS.filter(
-      a => a.check(player)
+      a =>
+        a.check(
+          player
+        )
     );
 
-  $("achievementCount").textContent =
-    unlocked.length;
+  $("achievementCount")
+    .textContent =
+      unlocked.length;
 
   renderDirections();
 
@@ -3919,13 +4303,16 @@ function renderDirections(){
   const box =
     $("directions");
 
-  box.innerHTML = "";
+  box.innerHTML =
+    "";
 
   const selected =
     player.selectedDirection;
 
   Object
-    .entries(DIRECTION_NAMES)
+    .entries(
+      DIRECTION_NAMES
+    )
     .forEach(
       ([key,name]) => {
 
@@ -3977,7 +4364,9 @@ function renderDirections(){
 
             <div
               style="width:${directionProgress(
-                Number(state.xp || 0)
+                Number(
+                  state.xp || 0
+                )
               )}%"
             ></div>
 
@@ -3990,12 +4379,16 @@ function renderDirections(){
               margin-top:8px
             "
           >
-            ${Number(state.xp || 0)} XP
+            ${Number(
+              state.xp || 0
+            )} XP
           </div>
 
         `;
 
-        if(!selected){
+        if(
+          !selected
+        ){
 
           div.style.cursor =
             "pointer";
@@ -4027,8 +4420,9 @@ function renderWeekly(){
   const box =
     $("weeklyCard");
 
-  $("weekLabel").textContent =
-    `неделя с ${formatWeekLabel()}`;
+  $("weekLabel")
+    .textContent =
+      `неделя с ${formatWeekLabel()}`;
 
   const currentWeek =
     personalWeekKey();
@@ -4076,7 +4470,10 @@ function renderWeekly(){
 
   }
 
-  if(!player.selectedDirection){
+
+  if(
+    !player.selectedDirection
+  ){
 
     box.innerHTML = `
 
@@ -4115,12 +4512,14 @@ function renderWeekly(){
 
   }
 
+
   const task =
     allTasks.find(
       t =>
         t.id ===
         player.selectedTaskId
     );
+
 
   if(!task){
 
@@ -4140,8 +4539,10 @@ function renderWeekly(){
 
   }
 
+
   currentTask =
     task;
+
 
   box.innerHTML = `
 
@@ -4159,11 +4560,14 @@ function renderWeekly(){
 
       <div class="xp">
 
-        +${Number(task.xp)} XP
+        +${Number(
+          task.xp
+        )} XP
 
       </div>
 
     </div>
+
 
     <div class="task-text">
 
@@ -4173,12 +4577,16 @@ function renderWeekly(){
 
     </div>
 
+
     <div class="task-meta">
 
       Уровень задания:
-      ${Number(task.level)}
+      ${Number(
+        task.level
+      )}
 
     </div>
+
 
     <button
       id="completeTaskBtn"
@@ -4189,8 +4597,10 @@ function renderWeekly(){
 
   `;
 
-  $("completeTaskBtn").onclick =
-    completeWeeklyTask;
+
+  $("completeTaskBtn")
+    .onclick =
+      completeWeeklyTask;
 
 }
 
@@ -4201,13 +4611,15 @@ function renderWeekly(){
 
 function renderDaily(){
 
-  if(!player) return;
+  if(!player)
+    return;
 
   const prayerDone =
     player.daily?.prayer === true;
 
   const bibleDone =
     player.daily?.bible === true;
+
 
   $("prayerCard")
     .classList
@@ -4216,6 +4628,7 @@ function renderDaily(){
       prayerDone
     );
 
+
   $("bibleCard")
     .classList
     .toggle(
@@ -4223,21 +4636,29 @@ function renderDaily(){
       bibleDone
     );
 
-  $("prayerBtn").disabled =
-    prayerDone;
 
-  $("bibleBtn").disabled =
-    bibleDone;
+  $("prayerBtn")
+    .disabled =
+      prayerDone;
 
-  $("prayerBtn").textContent =
-    prayerDone
-      ? "✓ Получено"
-      : "+10 XP";
 
-  $("bibleBtn").textContent =
-    bibleDone
-      ? "✓ Получено"
-      : "+10 XP";
+  $("bibleBtn")
+    .disabled =
+      bibleDone;
+
+
+  $("prayerBtn")
+    .textContent =
+      prayerDone
+        ? "✓ Получено"
+        : "+10 XP";
+
+
+  $("bibleBtn")
+    .textContent =
+      bibleDone
+        ? "✓ Получено"
+        : "+10 XP";
 
 }
 
@@ -4251,13 +4672,16 @@ function renderAchievements(){
   const box =
     $("achievements");
 
-  box.innerHTML = "";
+  box.innerHTML =
+    "";
 
   ACHIEVEMENTS.forEach(
     a => {
 
       const unlocked =
-        a.check(player);
+        a.check(
+          player
+        );
 
       const div =
         document.createElement(
@@ -4311,23 +4735,29 @@ function renderHistory(){
   const box =
     $("history");
 
-  if(!currentHistory.length){
+  if(
+    !currentHistory.length
+  ){
 
-    box.innerHTML =
-      `
+    box.innerHTML = `
+
       <div class="empty">
 
         Здесь появятся выполненные
         недельные задания.
 
       </div>
-      `;
+
+    `;
 
     return;
 
   }
 
-  box.innerHTML = "";
+
+  box.innerHTML =
+    "";
+
 
   currentHistory.forEach(
     item => {
@@ -4340,15 +4770,18 @@ function renderHistory(){
       div.className =
         "history-item";
 
+
       div.innerHTML = `
 
         <div>
 
           <b>
+
             ${escapeHtml(
               item.taskText ||
               "Задание"
             )}
+
           </b>
 
           <span>
@@ -4367,6 +4800,7 @@ function renderHistory(){
           </span>
 
         </div>
+
 
         <div class="xp">
 
@@ -4415,7 +4849,9 @@ function formatWeekLabel(){
    SECURITY
 ========================================================= */
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+){
 
   return String(
     value ?? ""
@@ -4465,11 +4901,17 @@ window.chooseDirection =
    Проверяем дату, когда пользователь
    возвращается в приложение.
 
+   Это особенно важно для версии,
+   добавленной на экран телефона.
+
    Например:
-   пользователь открыл игру вчера,
-   телефон заблокировал,
-   сегодня снова открыл —
-   бонусы автоматически сбросятся.
+
+   Вчера:
+   🙏 Получено
+   📖 Получено
+
+   Сегодня пользователь снова открывает
+   приложение — бонусы сбрасываются.
 */
 
 document.addEventListener(
@@ -4478,7 +4920,8 @@ document.addEventListener(
 
     if(
       document.visibilityState ===
-      "visible"
+      "visible" &&
+      appReady
     ){
 
       checkDailyReset();
@@ -4490,15 +4933,25 @@ document.addEventListener(
 
 
 /*
-   Дополнительная проверка раз в минуту.
+   Дополнительно проверяем каждую минуту.
 
-   Если страница остаётся открытой
+   Если приложение осталось открытым
    в момент наступления нового дня,
-   бонусы тоже автоматически сбросятся.
+   бонусы тоже сбросятся.
 */
 
 setInterval(
-  checkDailyReset,
+  () => {
+
+    if(
+      appReady
+    ){
+
+      checkDailyReset();
+
+    }
+
+  },
   60 * 1000
 );
 
