@@ -478,7 +478,7 @@ button{cursor:pointer}
 }
 
 .modal-card{
-  width:min(760px,100%);
+  width:min(900px,100%);
   max-height:90vh;
   overflow:auto;
   background:#0e1528;
@@ -540,6 +540,84 @@ button{cursor:pointer}
   font-size:17px;
   font-weight:800;
   margin-bottom:14px;
+}
+
+/* =========================================================
+   РЕЗУЛЬТАТЫ ИГРОКОВ
+========================================================= */
+
+.admin-results{
+  margin-top:18px;
+  overflow-x:auto;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+
+.results-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:760px;
+}
+
+.results-table th,
+.results-table td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+  white-space:nowrap;
+}
+
+.results-table tr:last-child td{
+  border-bottom:0;
+}
+
+.results-table th{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  background:rgba(255,255,255,.025);
+}
+
+.results-table td:first-child,
+.results-table th:first-child{
+  text-align:left;
+}
+
+.results-player{
+  font-weight:800;
+}
+
+.results-xp{
+  color:#bcaeff;
+  font-weight:900;
+}
+
+.results-level{
+  color:#cfc8ff;
+  font-weight:800;
+}
+
+.results-direction{
+  font-weight:700;
+}
+
+.results-fire{
+  color:var(--gold);
+  font-weight:800;
+}
+
+.results-rank{
+  color:var(--muted);
+  margin-right:5px;
+}
+
+@media(max-width:700px){
+
+  .results-table{
+    min-width:760px;
+  }
+
 }
 
 .toast{
@@ -665,7 +743,6 @@ button{cursor:pointer}
 
     <div id="authError" class="error hidden"></div>
 
-
     <div id="loginForm">
 
       <div class="field">
@@ -679,7 +756,6 @@ button{cursor:pointer}
         >
       </div>
 
-
       <div class="field">
         <label>Пароль</label>
 
@@ -691,14 +767,12 @@ button{cursor:pointer}
         >
       </div>
 
-
       <button
         class="primary"
         id="loginBtn"
       >
         Войти
       </button>
-
 
       <div class="auth-switch">
 
@@ -715,7 +789,6 @@ button{cursor:pointer}
 
     </div>
 
-
     <div id="registerForm" class="hidden">
 
       <div class="field">
@@ -728,7 +801,6 @@ button{cursor:pointer}
         >
       </div>
 
-
       <div class="field">
         <label>Email</label>
 
@@ -739,7 +811,6 @@ button{cursor:pointer}
           placeholder="you@example.com"
         >
       </div>
-
 
       <div class="field">
         <label>Пароль</label>
@@ -752,14 +823,12 @@ button{cursor:pointer}
         >
       </div>
 
-
       <button
         class="primary"
         id="registerBtn"
       >
         Создать аккаунт
       </button>
-
 
       <div class="auth-switch">
 
@@ -796,7 +865,6 @@ button{cursor:pointer}
       МОЛОДЁЖКА
     </div>
 
-
     <div class="top-actions">
 
       <button
@@ -805,7 +873,6 @@ button{cursor:pointer}
       >
         👑
       </button>
-
 
       <button
         id="logoutBtn"
@@ -842,7 +909,6 @@ button{cursor:pointer}
 
       </div>
 
-
       <div>
 
         <div
@@ -860,11 +926,9 @@ button{cursor:pointer}
 
     </div>
 
-
     <div class="progress">
       <div id="overallProgress"></div>
     </div>
-
 
     <div class="stats">
 
@@ -873,12 +937,10 @@ button{cursor:pointer}
         <span>недель подряд</span>
       </div>
 
-
       <div class="stat">
         <b id="completedCount">0</b>
         <span>заданий выполнено</span>
       </div>
-
 
       <div class="stat">
         <b id="achievementCount">0</b>
@@ -1124,6 +1186,35 @@ button{cursor:pointer}
       >
         ⭐ Начислить XP
       </button>
+
+    </div>
+
+
+    <!-- =================================================
+         RESULTS
+    ================================================== -->
+
+    <div class="section-title">
+
+      <h2>
+        🏆 Результаты игроков
+      </h2>
+
+      <span>
+        по общему XP
+      </span>
+
+    </div>
+
+
+    <div
+      id="adminResults"
+      class="admin-results"
+    >
+
+      <div class="empty">
+        Загрузка результатов...
+      </div>
 
     </div>
 
@@ -1410,7 +1501,6 @@ const BASE_TASKS = [
     text:"Рассказать Евангелие близкому человеку"
   },
 
-
   {
     direction:"soul",
     level:1,
@@ -1439,7 +1529,6 @@ const BASE_TASKS = [
     text:"Сделать 3 добрых поступка, о которых никто не просил и за которые ничего не ожидаешь получить"
   },
 
-
   {
     direction:"strength",
     level:1,
@@ -1467,7 +1556,6 @@ const BASE_TASKS = [
     xp:250,
     text:"Пробежать 3 км и сделать 2 тренировки в зале"
   },
-
 
   {
     direction:"mind",
@@ -1715,16 +1803,13 @@ function personalWeekKey(date = new Date()){
 
   }
 
-
   const start =
     new Date(
       player.startDate + "T00:00:00"
     );
 
-
   const current =
     new Date(date);
-
 
   start.setHours(
     0,0,0,0
@@ -1734,29 +1819,24 @@ function personalWeekKey(date = new Date()){
     0,0,0,0
   );
 
-
   const diffDays =
     Math.floor(
       (current - start) /
       (1000 * 60 * 60 * 24)
     );
 
-
   const weekNumber =
     Math.floor(
       diffDays / 7
     );
 
-
   const weekStart =
     new Date(start);
-
 
   weekStart.setDate(
     weekStart.getDate() +
     weekNumber * 7
   );
-
 
   return dateKey(
     weekStart
@@ -1768,7 +1848,6 @@ function personalWeekKey(date = new Date()){
 function formatDate(value){
 
   if(!value) return "";
-
 
   if(typeof value === "string"){
 
@@ -1785,7 +1864,6 @@ function formatDate(value){
 
   }
 
-
   if(value?.toDate){
 
     return value
@@ -1793,7 +1871,6 @@ function formatDate(value){
       .toLocaleDateString("ru-RU");
 
   }
-
 
   return "";
 
@@ -1855,7 +1932,6 @@ function defaultPlayer(name,email){
 
     startDate:dateKey(),
 
-
     daily:{
 
       date:dateKey(),
@@ -1866,10 +1942,8 @@ function defaultPlayer(name,email){
 
     },
 
-
     directions:
       emptyDirections(),
-
 
     createdAt:
       serverTimestamp(),
@@ -1932,7 +2006,6 @@ $("loginBtn").onclick =
       $("loginPassword")
         .value;
 
-
     if(!email || !password){
 
       showAuthError(
@@ -1942,7 +2015,6 @@ $("loginBtn").onclick =
       return;
 
     }
-
 
     try{
 
@@ -1956,7 +2028,6 @@ $("loginBtn").onclick =
 
       console.error(error);
 
-
       const messages = {
 
         "auth/invalid-credential":
@@ -1969,7 +2040,6 @@ $("loginBtn").onclick =
           "Слишком много попыток. Попробуй позже."
 
       };
-
 
       showAuthError(
         messages[error.code] ||
@@ -1986,23 +2056,19 @@ $("registerBtn").onclick =
 
     clearAuthError();
 
-
     const name =
       $("regName")
         .value
         .trim();
-
 
     const email =
       $("regEmail")
         .value
         .trim();
 
-
     const password =
       $("regPassword")
         .value;
-
 
     if(name.length < 2){
 
@@ -2014,7 +2080,6 @@ $("registerBtn").onclick =
 
     }
 
-
     if(password.length < 6){
 
       showAuthError(
@@ -2025,7 +2090,6 @@ $("registerBtn").onclick =
 
     }
 
-
     try{
 
       const credential =
@@ -2035,10 +2099,8 @@ $("registerBtn").onclick =
           password
         );
 
-
       const user =
         credential.user;
-
 
       await setDoc(
 
@@ -2055,16 +2117,13 @@ $("registerBtn").onclick =
 
       );
 
-
       showToast(
         "Аккаунт создан!"
       );
 
-
     }catch(error){
 
       console.error(error);
-
 
       const messages = {
 
@@ -2078,7 +2137,6 @@ $("registerBtn").onclick =
           "Пароль слишком слабый."
 
       };
-
 
       showAuthError(
         messages[error.code] ||
@@ -2124,9 +2182,7 @@ onAuthStateChanged(
 
     }
 
-
     currentUser = user;
-
 
     try{
 
@@ -2142,13 +2198,11 @@ onAuthStateChanged(
         .classList
         .remove("hidden");
 
-
       await loadTasks();
 
       await loadHistory();
 
       render();
-
 
     }catch(error){
 
@@ -2177,10 +2231,8 @@ async function loadPlayer(){
       currentUser.uid
     );
 
-
   const snap =
     await getDoc(ref);
-
 
   if(!snap.exists()){
 
@@ -2190,7 +2242,6 @@ async function loadPlayer(){
         "Игрок",
         currentUser.email || ""
       );
-
 
     await setDoc(
       ref,
@@ -2202,7 +2253,6 @@ async function loadPlayer(){
     player =
       snap.data();
 
-
     player.directions = {
 
       ...emptyDirections(),
@@ -2210,7 +2260,6 @@ async function loadPlayer(){
       ...(player.directions || {})
 
     };
-
 
     player.daily = {
 
@@ -2224,7 +2273,6 @@ async function loadPlayer(){
 
     };
 
-
     if(player.daily.date !== dateKey()){
 
       player.daily = {
@@ -2236,7 +2284,6 @@ async function loadPlayer(){
         bible:false
 
       };
-
 
       await updateDoc(
 
@@ -2255,11 +2302,6 @@ async function loadPlayer(){
 
     }
 
-
-    /* =====================================================
-       BACKFILL START DATE FOR OLD USERS
-    ===================================================== */
-
     if(!player.startDate){
 
       if(player.createdAt?.toDate){
@@ -2275,7 +2317,6 @@ async function loadPlayer(){
           dateKey();
 
       }
-
 
       await updateDoc(
 
@@ -2297,14 +2338,8 @@ async function loadPlayer(){
 
   }
 
-
-  /* =====================================================
-     PERSONAL 7-DAY CYCLE
-  ===================================================== */
-
   const currentWeek =
     personalWeekKey();
-
 
   if(
     player.selectedWeek &&
@@ -2316,7 +2351,6 @@ async function loadPlayer(){
     player.selectedTaskId = "";
 
     player.selectedWeek = "";
-
 
     await updateDoc(
 
@@ -2350,7 +2384,6 @@ async function checkAdmin(){
 
   isAdmin = false;
 
-
   try{
 
     const snap =
@@ -2362,18 +2395,15 @@ async function checkAdmin(){
         )
       );
 
-
     isAdmin =
       snap.exists() &&
       snap.data().active === true;
-
 
   }catch(error){
 
     console.error(error);
 
   }
-
 
   $("adminBtn")
     .classList
@@ -2390,13 +2420,13 @@ $("adminBtn").onclick =
 
     if(!isAdmin) return;
 
-
     $("adminModal")
       .classList
       .remove("hidden");
 
-
     await renderAdminPlayers();
+
+    await renderAdminResults();
 
     await renderAdminTasks();
 
@@ -2422,12 +2452,10 @@ async function renderAdminPlayers(){
   const select =
     $("xpPlayer");
 
-
   select.innerHTML =
     `<option value="">
       Загрузка игроков...
     </option>`;
-
 
   try{
 
@@ -2438,7 +2466,6 @@ async function renderAdminPlayers(){
           "users"
         )
       );
-
 
     const players =
       snapshot.docs
@@ -2460,12 +2487,10 @@ async function renderAdminPlayers(){
               )
         );
 
-
     select.innerHTML =
       `<option value="">
         Выбери игрока
       </option>`;
-
 
     if(!players.length){
 
@@ -2478,7 +2503,6 @@ async function renderAdminPlayers(){
 
     }
 
-
     players.forEach(user => {
 
       const option =
@@ -2486,14 +2510,11 @@ async function renderAdminPlayers(){
           "option"
         );
 
-
       option.value =
         user.id;
 
-
       option.textContent =
         `${user.name || "Без имени"} · ${user.email || ""}`;
-
 
       select.appendChild(
         option
@@ -2501,20 +2522,260 @@ async function renderAdminPlayers(){
 
     });
 
-
   }catch(error){
 
     console.error(error);
-
 
     select.innerHTML =
       `<option value="">
         Не удалось загрузить игроков
       </option>`;
 
-
     showToast(
       "Не удалось загрузить игроков."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ADMIN RESULTS
+========================================================= */
+
+async function renderAdminResults(){
+
+  const box =
+    $("adminResults");
+
+  box.innerHTML =
+    `<div class="empty">
+      Загрузка результатов...
+    </div>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "users"
+        )
+      );
+
+    const players =
+      snapshot.docs
+
+        .map(d => ({
+
+          id:d.id,
+
+          ...d.data()
+
+        }))
+
+        .sort(
+          (a,b) =>
+            Number(b.totalXP || 0) -
+            Number(a.totalXP || 0)
+        );
+
+    if(!players.length){
+
+      box.innerHTML =
+        `<div class="empty">
+          Игроков пока нет.
+        </div>`;
+
+      return;
+
+    }
+
+    const rows =
+      players.map(
+        (p,index) => {
+
+          const dirs = {
+
+            spirit:
+              p.directions?.spirit ||
+              {xp:0,level:1},
+
+            strength:
+              p.directions?.strength ||
+              {xp:0,level:1},
+
+            mind:
+              p.directions?.mind ||
+              {xp:0,level:1},
+
+            soul:
+              p.directions?.soul ||
+              {xp:0,level:1}
+
+          };
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <div class="results-player">
+
+                  <span class="results-rank">
+                    ${index + 1}.
+                  </span>
+
+                  ${escapeHtml(
+                    p.name ||
+                    "Без имени"
+                  )}
+
+                </div>
+
+              </td>
+
+
+              <td class="results-xp">
+
+                ${Number(
+                  p.totalXP || 0
+                )}
+
+              </td>
+
+
+              <td class="results-level">
+
+                ${overallLevel(
+                  Number(
+                    p.totalXP || 0
+                  )
+                )}
+
+              </td>
+
+
+              <td class="results-direction">
+
+                ${Number(
+                  dirs.spirit.xp || 0
+                )}
+
+              </td>
+
+
+              <td class="results-direction">
+
+                ${Number(
+                  dirs.strength.xp || 0
+                )}
+
+              </td>
+
+
+              <td class="results-direction">
+
+                ${Number(
+                  dirs.mind.xp || 0
+                )}
+
+              </td>
+
+
+              <td class="results-direction">
+
+                ${Number(
+                  dirs.soul.xp || 0
+                )}
+
+              </td>
+
+
+              <td class="results-fire">
+
+                ${Number(
+                  p.streak || 0
+                )} 🔥
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      ).join("");
+
+
+    box.innerHTML = `
+
+      <table class="results-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Игрок
+            </th>
+
+            <th>
+              XP
+            </th>
+
+            <th>
+              Уровень
+            </th>
+
+            <th>
+              ✝️ Дух
+            </th>
+
+            <th>
+              💪 Сила
+            </th>
+
+            <th>
+              🧠 Ум
+            </th>
+
+            <th>
+              ❤️ Душа
+            </th>
+
+            <th>
+              Серия
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          ${rows}
+
+        </tbody>
+
+      </table>
+
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      `<div class="empty">
+        Не удалось загрузить результаты.
+      </div>`;
+
+    showToast(
+      "Не удалось загрузить результаты."
     );
 
   }
@@ -2531,22 +2792,18 @@ $("addXPBtn").onclick =
 
     if(!isAdmin) return;
 
-
     const playerId =
       $("xpPlayer").value;
-
 
     const amount =
       Number(
         $("xpAmount").value
       );
 
-
     const reason =
       $("xpReason")
         .value
         .trim();
-
 
     if(!playerId){
 
@@ -2557,7 +2814,6 @@ $("addXPBtn").onclick =
       return;
 
     }
-
 
     if(
       !Number.isFinite(amount) ||
@@ -2573,7 +2829,6 @@ $("addXPBtn").onclick =
 
     }
 
-
     if(!reason){
 
       showToast(
@@ -2584,7 +2839,6 @@ $("addXPBtn").onclick =
 
     }
 
-
     try{
 
       const playerRef =
@@ -2594,12 +2848,10 @@ $("addXPBtn").onclick =
           playerId
         );
 
-
       const playerSnap =
         await getDoc(
           playerRef
         );
-
 
       if(!playerSnap.exists()){
 
@@ -2611,20 +2863,16 @@ $("addXPBtn").onclick =
 
       }
 
-
       const playerData =
         playerSnap.data();
-
 
       const oldXP =
         Number(
           playerData.totalXP || 0
         );
 
-
       const newXP =
         oldXP + amount;
-
 
       await updateDoc(
 
@@ -2640,7 +2888,6 @@ $("addXPBtn").onclick =
         }
 
       );
-
 
       await addDoc(
 
@@ -2688,15 +2935,17 @@ $("addXPBtn").onclick =
       $("xpAmount").value =
         10;
 
-
       $("xpReason").value =
         "";
+
+
+      /* Обновляем таблицу сразу */
+      await renderAdminResults();
 
 
     }catch(error){
 
       console.error(error);
-
 
       showToast(
         "Не удалось начислить XP."
@@ -2721,7 +2970,6 @@ async function loadTasks(){
       )
     );
 
-
   allTasks =
     snapshot.docs.map(
       d => ({
@@ -2737,10 +2985,8 @@ async function renderAdminTasks(){
 
   await loadTasks();
 
-
   const box =
     $("adminTasks");
-
 
   if(!allTasks.length){
 
@@ -2753,9 +2999,7 @@ async function renderAdminTasks(){
 
   }
 
-
   box.innerHTML = "";
-
 
   allTasks
 
@@ -2780,16 +3024,15 @@ async function renderAdminTasks(){
           "div"
         );
 
-
       div.className =
         "admin-task";
-
 
       div.innerHTML = `
 
         <div class="admin-task-top">
 
           <b>
+
             ${escapeHtml(
               DIRECTION_NAMES[
                 task.direction
@@ -2802,13 +3045,11 @@ async function renderAdminTasks(){
 
           </b>
 
-
           <span class="xp">
             +${Number(task.xp)} XP
           </span>
 
         </div>
-
 
         <div style="margin-top:7px">
 
@@ -2817,7 +3058,6 @@ async function renderAdminTasks(){
           )}
 
         </div>
-
 
         <small>
 
@@ -2828,7 +3068,6 @@ async function renderAdminTasks(){
           }
 
         </small>
-
 
         <div style="margin-top:10px">
 
@@ -2842,7 +3081,6 @@ async function renderAdminTasks(){
         </div>
 
       `;
-
 
       box.appendChild(
         div
@@ -2870,7 +3108,6 @@ async function renderAdminTasks(){
 
           }
 
-
           try{
 
             await deleteDoc(
@@ -2883,16 +3120,13 @@ async function renderAdminTasks(){
 
             );
 
-
             showToast(
               "Задание удалено."
             );
 
-
             await renderAdminTasks();
 
             await loadTasks();
-
 
           }catch(error){
 
@@ -2916,33 +3150,27 @@ $("addTaskBtn").onclick =
 
     if(!isAdmin) return;
 
-
     const direction =
       $("taskDirection").value;
-
 
     const level =
       Number(
         $("taskLevel").value
       );
 
-
     const xp =
       Number(
         $("taskXP").value
       );
-
 
     const text =
       $("taskText")
         .value
         .trim();
 
-
     const active =
       $("taskActive").value ===
       "true";
-
 
     if(!text){
 
@@ -2954,7 +3182,6 @@ $("addTaskBtn").onclick =
 
     }
 
-
     if(!xp || xp < 1){
 
       showToast(
@@ -2964,7 +3191,6 @@ $("addTaskBtn").onclick =
       return;
 
     }
-
 
     try{
 
@@ -2994,20 +3220,16 @@ $("addTaskBtn").onclick =
 
       );
 
-
       $("taskText").value =
         "";
-
 
       showToast(
         "Задание добавлено."
       );
 
-
       await renderAdminTasks();
 
       await loadTasks();
-
 
     }catch(error){
 
@@ -3027,7 +3249,6 @@ $("seedTasksBtn").onclick =
 
     if(!isAdmin) return;
 
-
     if(
       !confirm(
         "Загрузить базовые задания?"
@@ -3037,7 +3258,6 @@ $("seedTasksBtn").onclick =
       return;
 
     }
-
 
     try{
 
@@ -3067,18 +3287,15 @@ $("seedTasksBtn").onclick =
 
       }
 
-
       showToast(
         "Базовые задания загружены."
       );
-
 
       await renderAdminTasks();
 
       await loadTasks();
 
       render();
-
 
     }catch(error){
 
@@ -3109,12 +3326,10 @@ async function chooseDirection(direction){
 
   }
 
-
   const level =
     player
       .directions[direction]
       ?.level || 1;
-
 
   const available =
     allTasks.filter(
@@ -3129,7 +3344,6 @@ async function chooseDirection(direction){
           Number(level)
     );
 
-
   if(!available.length){
 
     showToast(
@@ -3142,10 +3356,8 @@ async function chooseDirection(direction){
 
   }
 
-
   let candidates =
     available;
-
 
   const previousTaskIds =
     currentHistory
@@ -3157,7 +3369,6 @@ async function chooseDirection(direction){
 
       .filter(Boolean);
 
-
   const unused =
     available.filter(
       task =>
@@ -3166,14 +3377,12 @@ async function chooseDirection(direction){
         )
     );
 
-
   if(unused.length){
 
     candidates =
       unused;
 
   }
-
 
   const selected =
     candidates[
@@ -3183,22 +3392,17 @@ async function chooseDirection(direction){
       )
     ];
 
-
   const currentWeek =
     personalWeekKey();
-
 
   player.selectedDirection =
     direction;
 
-
   player.selectedTaskId =
     selected.id;
 
-
   player.selectedWeek =
     currentWeek;
-
 
   await updateDoc(
 
@@ -3226,15 +3430,12 @@ async function chooseDirection(direction){
 
   );
 
-
   currentTask =
     selected;
-
 
   showToast(
     "Направление выбрано!"
   );
-
 
   render();
 
@@ -3256,10 +3457,8 @@ async function completeWeeklyTask(){
 
   }
 
-
   const currentWeek =
     personalWeekKey();
-
 
   if(
     player.lastCompletedWeek ===
@@ -3274,14 +3473,11 @@ async function completeWeeklyTask(){
 
   }
 
-
   const oldWeek =
     player.lastCompletedWeek;
 
-
   let newStreak =
     1;
-
 
   if(oldWeek){
 
@@ -3291,12 +3487,10 @@ async function completeWeeklyTask(){
         "T00:00:00"
       );
 
-
     previous.setDate(
       previous.getDate() +
       7
     );
-
 
     if(
       dateKey(previous) ===
@@ -3310,10 +3504,8 @@ async function completeWeeklyTask(){
 
   }
 
-
   const direction =
     player.selectedDirection;
-
 
   const oldDir =
     player
@@ -3323,11 +3515,9 @@ async function completeWeeklyTask(){
       level:1
     };
 
-
   const newDirXP =
     Number(oldDir.xp || 0) +
     Number(currentTask.xp);
-
 
   const newDir = {
 
@@ -3340,7 +3530,6 @@ async function completeWeeklyTask(){
 
   };
 
-
   const newDirections = {
 
     ...player.directions,
@@ -3350,17 +3539,14 @@ async function completeWeeklyTask(){
 
   };
 
-
   const newTotalXP =
     Number(player.totalXP || 0) +
     Number(currentTask.xp);
-
 
   const newCompletedCount =
     Number(
       player.completedCount || 0
     ) + 1;
-
 
   const historyData = {
 
@@ -3386,10 +3572,8 @@ async function completeWeeklyTask(){
 
   };
 
-
   const earnedXP =
     Number(currentTask.xp);
-
 
   try{
 
@@ -3431,7 +3615,6 @@ async function completeWeeklyTask(){
 
     );
 
-
     await addDoc(
 
       collection(
@@ -3445,53 +3628,40 @@ async function completeWeeklyTask(){
 
     );
 
-
     player.totalXP =
       newTotalXP;
-
 
     player.completedCount =
       newCompletedCount;
 
-
     player.streak =
       newStreak;
-
 
     player.lastCompletedWeek =
       currentWeek;
 
-
     player.directions =
       newDirections;
-
 
     player.selectedDirection =
       "";
 
-
     player.selectedTaskId =
       "";
-
 
     player.selectedWeek =
       "";
 
-
     currentTask =
       null;
 
-
     await loadHistory();
-
 
     showToast(
       `🔥 +${earnedXP} XP!`
     );
 
-
     render();
-
 
   }catch(error){
 
@@ -3521,7 +3691,6 @@ async function claimDaily(type){
 
   }
 
-
   if(
     player.daily?.[type]
   ){
@@ -3534,16 +3703,13 @@ async function claimDaily(type){
 
   }
 
-
   const oldTotal =
     Number(
       player.totalXP || 0
     );
 
-
   const newTotal =
     oldTotal + 10;
-
 
   const newDaily = {
 
@@ -3556,7 +3722,6 @@ async function claimDaily(type){
       true
 
   };
-
 
   await updateDoc(
 
@@ -3581,19 +3746,15 @@ async function claimDaily(type){
 
   );
 
-
   player.totalXP =
     newTotal;
-
 
   player.daily =
     newDaily;
 
-
   showToast(
     "+10 XP!"
   );
-
 
   render();
 
@@ -3639,10 +3800,8 @@ async function loadHistory(){
 
       );
 
-
     const snapshot =
       await getDocs(q);
-
 
     currentHistory =
       snapshot.docs.map(
@@ -3655,11 +3814,9 @@ async function loadHistory(){
         })
       );
 
-
   }catch(error){
 
     console.error(error);
-
 
     const snapshot =
       await getDocs(
@@ -3672,7 +3829,6 @@ async function loadHistory(){
         )
 
       );
-
 
     currentHistory =
       snapshot.docs
@@ -3694,11 +3850,9 @@ async function loadHistory(){
               a.completedAt
                 ?.toMillis?.() || 0;
 
-
             const bd =
               b.completedAt
                 ?.toMillis?.() || 0;
-
 
             return bd - ad;
 
@@ -3723,59 +3877,47 @@ function render(){
 
   if(!player) return;
 
-
   $("playerName").textContent =
     player.name ||
     "Игрок";
-
 
   const totalXP =
     Number(
       player.totalXP || 0
     );
 
-
   const level =
     overallLevel(
       totalXP
     );
-
 
   const progress =
     overallProgress(
       totalXP
     );
 
-
   $("overallLevel").textContent =
     `Уровень ${level}`;
-
 
   $("totalXP").textContent =
     `${totalXP} XP`;
 
-
   $("overallProgress").style.width =
     `${(progress / 500) * 100}%`;
-
 
   $("streak").textContent =
     `${player.streak || 0} 🔥`;
 
-
   $("completedCount").textContent =
     player.completedCount || 0;
-
 
   const unlocked =
     ACHIEVEMENTS.filter(
       a => a.check(player)
     );
 
-
   $("achievementCount").textContent =
     unlocked.length;
-
 
   renderDirections();
 
@@ -3799,19 +3941,15 @@ function renderDirections(){
   const box =
     $("directions");
 
-
   box.innerHTML = "";
-
 
   const selected =
     player.selectedDirection;
-
 
   Object
     .entries(DIRECTION_NAMES)
     .forEach(
       ([key,name]) => {
-
 
         const state =
           player
@@ -3821,17 +3959,14 @@ function renderDirections(){
             level:1
           };
 
-
         const locked =
           selected &&
           selected !== key;
-
 
         const div =
           document.createElement(
             "div"
           );
-
 
         div.className =
           "direction" +
@@ -3841,13 +3976,11 @@ function renderDirections(){
               : ""
           );
 
-
         div.innerHTML = `
 
           <div class="dir-icon">
             ${DIRECTION_ICONS[key]}
           </div>
-
 
           <div class="dir-name">
             ${escapeHtml(
@@ -3858,11 +3991,9 @@ function renderDirections(){
             )}
           </div>
 
-
           <div class="dir-level">
             Уровень ${state.level}
           </div>
-
 
           <div class="dir-bar">
 
@@ -3873,7 +4004,6 @@ function renderDirections(){
             ></div>
 
           </div>
-
 
           <div
             style="
@@ -3887,12 +4017,10 @@ function renderDirections(){
 
         `;
 
-
         if(!selected){
 
           div.style.cursor =
             "pointer";
-
 
           div.onclick =
             () =>
@@ -3901,7 +4029,6 @@ function renderDirections(){
               );
 
         }
-
 
         box.appendChild(
           div
@@ -3922,14 +4049,11 @@ function renderWeekly(){
   const box =
     $("weeklyCard");
 
-
   $("weekLabel").textContent =
     `неделя с ${formatWeekLabel()}`;
 
-
   const currentWeek =
     personalWeekKey();
-
 
   if(
     player.lastCompletedWeek ===
@@ -3953,11 +4077,9 @@ function renderWeekly(){
           🎉
         </div>
 
-
         <h3>
           Задание недели выполнено!
         </h3>
-
 
         <p
           style="
@@ -3972,11 +4094,9 @@ function renderWeekly(){
 
     `;
 
-
     return;
 
   }
-
 
   if(!player.selectedDirection){
 
@@ -3986,11 +4106,9 @@ function renderWeekly(){
         1 задание · 1 направление
       </div>
 
-
       <div class="task-text">
         Выбери направление развития
       </div>
-
 
       <div class="task-meta">
 
@@ -3999,7 +4117,6 @@ function renderWeekly(){
         личной недели.
 
       </div>
-
 
       <button
         class="primary"
@@ -4016,11 +4133,9 @@ function renderWeekly(){
 
     `;
 
-
     return;
 
   }
-
 
   const task =
     allTasks.find(
@@ -4028,7 +4143,6 @@ function renderWeekly(){
         t.id ===
         player.selectedTaskId
     );
-
 
   if(!task){
 
@@ -4044,15 +4158,12 @@ function renderWeekly(){
 
     `;
 
-
     return;
 
   }
 
-
   currentTask =
     task;
-
 
   box.innerHTML = `
 
@@ -4068,7 +4179,6 @@ function renderWeekly(){
 
       </div>
 
-
       <div class="xp">
 
         +${Number(task.xp)} XP
@@ -4076,7 +4186,6 @@ function renderWeekly(){
       </div>
 
     </div>
-
 
     <div class="task-text">
 
@@ -4086,14 +4195,12 @@ function renderWeekly(){
 
     </div>
 
-
     <div class="task-meta">
 
       Уровень задания:
       ${Number(task.level)}
 
     </div>
-
 
     <button
       id="completeTaskBtn"
@@ -4103,7 +4210,6 @@ function renderWeekly(){
     </button>
 
   `;
-
 
   $("completeTaskBtn").onclick =
     completeWeeklyTask;
@@ -4120,10 +4226,8 @@ function renderDaily(){
   const prayerDone =
     player.daily?.prayer === true;
 
-
   const bibleDone =
     player.daily?.bible === true;
-
 
   $("prayerCard")
     .classList
@@ -4132,7 +4236,6 @@ function renderDaily(){
       prayerDone
     );
 
-
   $("bibleCard")
     .classList
     .toggle(
@@ -4140,20 +4243,16 @@ function renderDaily(){
       bibleDone
     );
 
-
   $("prayerBtn").disabled =
     prayerDone;
 
-
   $("bibleBtn").disabled =
     bibleDone;
-
 
   $("prayerBtn").textContent =
     prayerDone
       ? "✓ Получено"
       : "+10 XP";
-
 
   $("bibleBtn").textContent =
     bibleDone
@@ -4172,9 +4271,7 @@ function renderAchievements(){
   const box =
     $("achievements");
 
-
   box.innerHTML = "";
-
 
   ACHIEVEMENTS.forEach(
     a => {
@@ -4182,12 +4279,10 @@ function renderAchievements(){
       const unlocked =
         a.check(player);
 
-
       const div =
         document.createElement(
           "div"
         );
-
 
       div.className =
         "achievement" +
@@ -4197,20 +4292,17 @@ function renderAchievements(){
             : ""
         );
 
-
       div.innerHTML = `
 
         <div class="a-icon">
           ${a.icon}
         </div>
 
-
         <b>
           ${escapeHtml(
             a.title
           )}
         </b>
-
 
         <small>
           ${escapeHtml(
@@ -4219,7 +4311,6 @@ function renderAchievements(){
         </small>
 
       `;
-
 
       box.appendChild(
         div
@@ -4240,7 +4331,6 @@ function renderHistory(){
   const box =
     $("history");
 
-
   if(!currentHistory.length){
 
     box.innerHTML =
@@ -4257,9 +4347,7 @@ function renderHistory(){
 
   }
 
-
   box.innerHTML = "";
-
 
   currentHistory.forEach(
     item => {
@@ -4269,10 +4357,8 @@ function renderHistory(){
           "div"
         );
 
-
       div.className =
         "history-item";
-
 
       div.innerHTML = `
 
@@ -4284,7 +4370,6 @@ function renderHistory(){
               "Задание"
             )}
           </b>
-
 
           <span>
 
@@ -4303,7 +4388,6 @@ function renderHistory(){
 
         </div>
 
-
         <div class="xp">
 
           +${Number(
@@ -4313,7 +4397,6 @@ function renderHistory(){
         </div>
 
       `;
-
 
       box.appendChild(
         div
@@ -4336,7 +4419,6 @@ function formatWeekLabel(){
       personalWeekKey() +
       "T00:00:00"
     );
-
 
   return d.toLocaleDateString(
     "ru-RU",
