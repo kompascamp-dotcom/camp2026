@@ -9,345 +9,162 @@
 <style>
 :root{
   --bg:#070b16;
-  --card:#10172a;
-  --card2:#151e35;
-  --border:#25304a;
-  --text:#f4f7ff;
-  --muted:#9ca9c5;
-  --purple:#7c5cff;
-  --purple2:#c084fc;
-  --green:#25d6a2;
+  --panel:#10172a;
+  --panel2:#151e35;
+  --text:#f5f7ff;
+  --muted:#8f9ab4;
+  --line:rgba(255,255,255,.08);
+  --accent:#7c5cff;
+  --accent2:#25d6a2;
+  --danger:#ff5d73;
   --gold:#ffc857;
-  --red:#ff5d73;
-  --blue:#56a8ff;
+  --shadow:0 18px 50px rgba(0,0,0,.28);
 }
 
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
-  background:
-    radial-gradient(circle at 15% 10%,rgba(124,92,255,.18),transparent 30%),
-    radial-gradient(circle at 85% 20%,rgba(192,132,252,.10),transparent 28%),
-    radial-gradient(circle at 50% 100%,rgba(37,214,162,.07),transparent 30%),
-    var(--bg);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(124,92,255,.20),transparent 35%),
+    radial-gradient(circle at 100% 20%,rgba(37,214,162,.10),transparent 30%),
+    var(--bg);
   min-height:100vh;
 }
 
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
-button{
-  cursor:pointer;
+.app{
+  width:min(1100px,100%);
+  margin:auto;
+  padding:18px 16px 100px;
 }
-
-.hidden{
-  display:none!important;
-}
-
-.container{
-  width:min(1100px,calc(100% - 28px));
-  margin:0 auto;
-}
-
-/* HEADER */
 
 .topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  backdrop-filter:blur(18px);
-  background:rgba(7,11,22,.82);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-
-.topbar-inner{
-  min-height:72px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:14px;
-}
-
-.brand{
-  display:flex;
   align-items:center;
   gap:12px;
-}
-
-.logo{
-  width:44px;
-  height:44px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:14px;
-  color:white;
-  background:linear-gradient(135deg,var(--purple),var(--purple2));
-  box-shadow:0 10px 35px rgba(124,92,255,.28);
-}
-
-.brand-title{
-  font-weight:900;
-  letter-spacing:.5px;
-}
-
-.brand-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:2px;
+  margin-bottom:22px;
 }
 
 .top-actions{
   display:flex;
-  align-items:center;
   gap:8px;
 }
 
-/* BUTTONS */
-
-.btn{
-  border:0;
+.icon-btn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:white;
   border-radius:13px;
-  padding:11px 15px;
-  color:white;
-  background:var(--card2);
-  border:1px solid var(--border);
-  transition:.18s ease;
+  padding:10px 13px;
 }
 
-.btn:hover{
-  transform:translateY(-1px);
-  border-color:#3a496d;
+.hero{
+  background:linear-gradient(145deg,rgba(124,92,255,.22),rgba(255,255,255,.035));
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
 }
 
-.btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.btn-primary{
-  background:linear-gradient(135deg,var(--purple),#9b73ff);
-  border-color:transparent;
-}
-
-.btn-green{
-  background:linear-gradient(135deg,#16b88b,var(--green));
-  color:#06130f;
-  border-color:transparent;
-  font-weight:800;
-}
-
-.btn-danger{
-  background:rgba(255,93,115,.12);
-  color:#ff8b9a;
-  border-color:rgba(255,93,115,.3);
-}
-
-.btn-gold{
-  background:rgba(255,200,87,.12);
-  color:var(--gold);
-  border-color:rgba(255,200,87,.28);
-}
-
-/* AUTH */
-
-.auth-wrap{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:30px 0;
-}
-
-.auth-card{
-  width:min(460px,100%);
-  background:rgba(16,23,42,.88);
-  border:1px solid var(--border);
-  border-radius:28px;
-  padding:30px;
-  box-shadow:0 30px 100px rgba(0,0,0,.4);
-}
-
-.auth-logo{
-  width:76px;
-  height:76px;
-  border-radius:24px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 18px;
-  font-weight:900;
-  font-size:20px;
-  background:linear-gradient(135deg,var(--purple),var(--purple2));
-}
-
-.auth-title{
-  text-align:center;
-  font-size:30px;
-  font-weight:950;
-}
-
-.auth-subtitle{
-  text-align:center;
-  color:var(--muted);
-  margin:7px 0 25px;
-}
-
-.tabs{
-  display:flex;
-  gap:7px;
-  background:#0b1120;
-  padding:5px;
-  border-radius:13px;
-  margin-bottom:20px;
-}
-
-.tab{
-  flex:1;
-  border:0;
-  padding:10px;
-  border-radius:10px;
-  color:var(--muted);
-  background:transparent;
-}
-
-.tab.active{
-  color:white;
-  background:var(--card2);
-}
-
-.field{
-  margin-bottom:14px;
-}
-
-.field label{
-  display:block;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:7px;
-}
-
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  border:1px solid var(--border);
-  background:#0b1120;
-  color:white;
-  border-radius:12px;
-  padding:12px 13px;
-  outline:none;
-}
-
-.field textarea{
-  min-height:90px;
-  resize:vertical;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  border-color:var(--purple);
-}
-
-.full{
-  width:100%;
-}
-
-/* APP */
-
-main{
-  padding:25px 0 60px;
-}
-
-.welcome{
+.hero-top{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
   gap:20px;
-  margin-bottom:20px;
 }
 
-.welcome h1{
-  margin:0;
-  font-size:30px;
-}
-
-.welcome p{
-  margin:6px 0 0;
+.hello{
   color:var(--muted);
+  font-size:14px;
+}
+
+.hero h1{
+  margin:4px 0 5px;
+  font-size:34px;
+}
+
+.level{
+  color:#cfc8ff;
+  font-weight:700;
+}
+
+.xp-number{
+  font-size:34px;
+  font-weight:900;
+  text-align:right;
+}
+
+.xp-label{
+  color:var(--muted);
+  font-size:12px;
+  text-align:right;
+}
+
+.progress{
+  height:9px;
+  background:rgba(255,255,255,.07);
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:20px;
+}
+
+.progress>div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--accent),#a98fff);
+  border-radius:99px;
+  transition:.4s;
 }
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:18px;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px;
 }
 
 .stat{
-  background:rgba(16,23,42,.82);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:13px;
 }
 
-.stat-label{
+.stat b{
+  display:block;
+  font-size:20px;
+}
+
+.stat span{
   color:var(--muted);
   font-size:12px;
-  margin-bottom:6px;
 }
 
-.stat-value{
-  font-size:25px;
-  font-weight:900;
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:28px 2px 12px;
 }
 
-.stat-value small{
+.section-title h2{
+  font-size:19px;
+  margin:0;
+}
+
+.section-title span{
+  color:var(--muted);
   font-size:12px;
-  color:var(--muted);
-  font-weight:500;
 }
-
-/* CARDS */
-
-.card{
-  background:rgba(16,23,42,.86);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-}
-
-.card-title{
-  font-size:18px;
-  font-weight:850;
-  margin-bottom:4px;
-}
-
-.card-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:16px;
-}
-
-/* DIRECTIONS */
 
 .directions{
   display:grid;
@@ -357,469 +174,476 @@ main{
 
 .direction{
   position:relative;
-  border:1px solid var(--border);
-  background:linear-gradient(145deg,rgba(21,30,53,.95),rgba(12,18,33,.95));
-  border-radius:18px;
+  border:1px solid var(--line);
+  border-radius:21px;
   padding:18px;
-  overflow:hidden;
+  min-height:160px;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+  transition:.2s;
 }
 
-.direction::after{
-  content:"";
-  position:absolute;
-  width:90px;
-  height:90px;
-  right:-35px;
-  top:-35px;
-  border-radius:50%;
-  background:rgba(124,92,255,.08);
+.direction:hover{
+  transform:translateY(-2px);
+  border-color:rgba(124,92,255,.45);
 }
 
-.direction-icon{
-  font-size:28px;
-  margin-bottom:9px;
+.direction.locked{
+  opacity:.5;
 }
 
-.direction-name{
-  font-weight:850;
+.dir-icon{
+  font-size:30px;
 }
 
-.direction-level{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.progress{
-  height:7px;
-  background:#080e1b;
-  border-radius:99px;
-  overflow:hidden;
-  margin:13px 0 7px;
-}
-
-.progress-bar{
-  height:100%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--purple),var(--purple2));
-}
-
-.direction button{
-  width:100%;
+.dir-name{
+  font-weight:800;
   margin-top:9px;
 }
 
-/* WEEK */
+.dir-level{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
 
-.week-card{
-  position:relative;
+.dir-bar{
+  margin-top:15px;
+  height:6px;
+  background:rgba(255,255,255,.08);
+  border-radius:99px;
   overflow:hidden;
 }
 
-.week-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 90% 10%,rgba(124,92,255,.13),transparent 28%);
-  pointer-events:none;
+.dir-bar div{
+  height:100%;
+  background:var(--accent);
 }
 
-.week-content{
-  position:relative;
-  z-index:1;
+.week-card{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+  background:linear-gradient(145deg,rgba(37,214,162,.10),rgba(255,255,255,.035));
+  box-shadow:var(--shadow);
 }
 
-.selected-task{
-  border:1px solid rgba(124,92,255,.38);
-  background:rgba(124,92,255,.08);
-  border-radius:16px;
-  padding:18px;
-}
-
-.task-meta{
+.week-head{
   display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:10px;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
 }
 
 .badge{
   display:inline-flex;
   align-items:center;
-  border-radius:999px;
-  padding:5px 9px;
-  font-size:11px;
-  font-weight:800;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:99px;
   background:rgba(255,255,255,.07);
   color:#d8def0;
-}
-
-.badge-purple{
-  color:#d8caff;
-  background:rgba(124,92,255,.15);
-}
-
-.badge-green{
-  color:#9ef2da;
-  background:rgba(37,214,162,.12);
-}
-
-.badge-gold{
-  color:#ffe2a0;
-  background:rgba(255,200,87,.12);
+  font-size:12px;
 }
 
 .task-text{
-  font-size:18px;
-  line-height:1.45;
-  font-weight:750;
-  margin-bottom:16px;
-}
-
-/* URGENT */
-
-.urgent{
-  border-color:rgba(255,93,115,.35);
-  background:
-    radial-gradient(circle at 100% 0,rgba(255,93,115,.13),transparent 30%),
-    rgba(16,23,42,.88);
-}
-
-.urgent-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.urgent-countdown{
-  font-size:12px;
-  color:#ff9baa;
+  font-size:22px;
+  line-height:1.35;
   font-weight:800;
+  margin:18px 0;
 }
 
-.urgent-task{
-  margin-top:14px;
-  border:1px solid rgba(255,93,115,.25);
-  background:rgba(255,93,115,.07);
-  padding:17px;
+.task-meta{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.primary{
+  width:100%;
+  border:0;
   border-radius:15px;
+  padding:14px 18px;
+  background:linear-gradient(135deg,var(--accent),#9a82ff);
+  color:white;
+  font-weight:800;
+  margin-top:20px;
+  box-shadow:0 8px 25px rgba(124,92,255,.25);
 }
 
-/* DAILY */
+.primary:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
 
-.daily-grid{
+.secondary{
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:11px 14px;
+  background:rgba(255,255,255,.05);
+  color:white;
+}
+
+.daily{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
 }
 
-.daily-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-  border:1px solid var(--border);
-  background:#0c1323;
-  border-radius:16px;
+.daily-card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+  background:var(--panel);
 }
 
-.daily-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.daily-card .emoji{
+  font-size:28px;
 }
 
-.daily-icon{
-  font-size:25px;
+.daily-card h3{
+  margin:8px 0 4px;
 }
 
-.daily-name{
-  font-weight:800;
+.daily-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
 }
 
-.daily-xp{
-  color:var(--green);
-  font-size:12px;
-  margin-top:3px;
+.daily-card button{
+  margin-top:15px;
+  width:100%;
 }
 
-/* ACHIEVEMENTS */
+.done{
+  background:rgba(37,214,162,.12)!important;
+  border-color:rgba(37,214,162,.35)!important;
+}
 
 .achievements{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
 }
 
 .achievement{
-  padding:14px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:#0c1323;
-  opacity:.42;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  background:var(--panel);
+  opacity:.38;
 }
 
 .achievement.unlocked{
   opacity:1;
   border-color:rgba(255,200,87,.3);
-  background:rgba(255,200,87,.06);
 }
 
-.achievement-icon{
-  font-size:24px;
+.achievement .a-icon{
+  font-size:27px;
 }
 
-.achievement-name{
-  margin-top:7px;
-  font-size:12px;
-  font-weight:800;
+.achievement b{
+  display:block;
+  margin-top:8px;
 }
 
-/* HISTORY */
+.achievement small{
+  color:var(--muted);
+}
+
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 
 .history-item{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  background:var(--panel);
   display:flex;
   justify-content:space-between;
-  align-items:center;
   gap:15px;
-  padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-.history-item:last-child{
-  border-bottom:0;
+.history-item b{
+  display:block;
 }
 
-.history-name{
-  font-weight:700;
-  font-size:14px;
-}
-
-.history-date{
+.history-item span{
   color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
+  font-size:12px;
 }
 
-.history-xp{
-  color:var(--green);
+.xp{
+  color:#bcaeff;
   font-weight:900;
   white-space:nowrap;
 }
 
-/* MODAL */
+.auth-screen{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.auth-card{
+  width:min(430px,100%);
+  background:rgba(16,23,42,.88);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+}
+
+.auth-logo{
+  text-align:center;
+  font-weight:1000;
+  font-size:27px;
+  letter-spacing:3px;
+  margin-bottom:6px;
+}
+
+.auth-logo span{
+  color:var(--accent);
+}
+
+.auth-sub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:25px;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+.field label{
+  display:block;
+  color:#b9c1d6;
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.field input,
+.field select{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px 14px;
+  color:white;
+  background:#0b1121;
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:var(--accent);
+}
+
+.auth-switch{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:15px;
+}
+
+.link{
+  color:#bcaeff;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.error{
+  background:rgba(255,93,115,.10);
+  border:1px solid rgba(255,93,115,.25);
+  color:#ff9aaa;
+  border-radius:13px;
+  padding:10px;
+  font-size:13px;
+  margin-bottom:12px;
+}
 
 .modal{
   position:fixed;
   inset:0;
-  z-index:100;
   background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:18px;
 }
 
-.modal-box{
+.modal-card{
   width:min(900px,100%);
   max-height:90vh;
   overflow:auto;
-  background:#0d1425;
-  border:1px solid var(--border);
-  border-radius:22px;
+  background:#0e1528;
+  border:1px solid var(--line);
+  border-radius:24px;
   padding:22px;
-  box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
 
-.modal-header{
+.modal-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:15px;
+  align-items:center;
   margin-bottom:18px;
 }
 
-.modal-title{
-  font-size:21px;
-  font-weight:900;
+.modal-head h2{
+  margin:0;
 }
-
-.close{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  border:1px solid var(--border);
-  background:#111a2d;
-  color:white;
-}
-
-.admin-tabs{
-  display:flex;
-  gap:7px;
-  overflow:auto;
-  margin-bottom:17px;
-}
-
-.admin-tab{
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:#0b1120;
-  color:var(--muted);
-  border-radius:11px;
-  padding:9px 12px;
-}
-
-.admin-tab.active{
-  color:white;
-  border-color:var(--purple);
-  background:rgba(124,92,255,.12);
-}
-
-.admin-section{
-  display:none;
-}
-
-.admin-section.active{
-  display:block;
-}
-
-/* TABLE */
-
-.table-wrap{
-  overflow:auto;
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:650px;
-}
-
-th,
-td{
-  padding:11px;
-  text-align:left;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  font-size:13px;
-}
-
-th{
-  color:var(--muted);
-  font-weight:700;
-  background:#0b1120;
-}
-
-td{
-  color:#e8edfa;
-}
-
-tr:last-child td{
-  border-bottom:0;
-}
-
-/* ADMIN GRID */
 
 .admin-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:14px;
+  gap:12px;
 }
 
-.form-card{
-  border:1px solid var(--border);
-  background:#0b1120;
-  border-radius:16px;
-  padding:16px;
-}
-
-.form-card h3{
-  margin:0 0 14px;
-  font-size:15px;
-}
-
-.check-row{
+.admin-list{
+  margin-top:18px;
   display:flex;
-  align-items:center;
+  flex-direction:column;
   gap:8px;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:14px;
 }
 
-.task-admin-item{
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:9px;
-  background:#0b1120;
+.admin-task{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:13px;
+  background:rgba(255,255,255,.035);
 }
 
-.task-admin-top{
+.admin-task-top{
   display:flex;
   justify-content:space-between;
   gap:10px;
 }
 
-.task-admin-text{
-  font-weight:700;
-  line-height:1.4;
-}
-
-.task-admin-actions{
-  margin-top:10px;
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-}
-
-/* TOAST */
-
-#toast{
-  position:fixed;
-  left:50%;
-  bottom:22px;
-  transform:translate(-50%,20px);
-  opacity:0;
-  pointer-events:none;
-  z-index:200;
-  background:#151e35;
-  border:1px solid #34415f;
-  border-radius:14px;
-  padding:12px 17px;
-  box-shadow:0 15px 50px rgba(0,0,0,.35);
-  transition:.2s ease;
-  max-width:calc(100% - 30px);
-  text-align:center;
-}
-
-#toast.show{
-  transform:translate(-50%,0);
-  opacity:1;
-}
-
-/* LOADING */
-
-.loading{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.admin-task small{
   color:var(--muted);
 }
 
-/* MOBILE */
+.admin-xp-card{
+  border:1px solid rgba(255,200,87,.18);
+  background:rgba(255,200,87,.04);
+  border-radius:20px;
+  padding:17px;
+  margin-top:18px;
+}
 
-@media(max-width:850px){
-  .stats{
-    grid-template-columns:repeat(2,1fr);
+.admin-xp-title{
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.admin-results{
+  margin-top:18px;
+  overflow-x:auto;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+
+.results-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:760px;
+}
+
+.results-table th,
+.results-table td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+  white-space:nowrap;
+}
+
+.results-table tr:last-child td{
+  border-bottom:0;
+}
+
+.results-table th{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  background:rgba(255,255,255,.025);
+}
+
+.results-table td:first-child,
+.results-table th:first-child{
+  text-align:left;
+}
+
+.results-player{
+  font-weight:800;
+}
+
+.results-xp{
+  color:#bcaeff;
+  font-weight:900;
+}
+
+.results-level{
+  color:#cfc8ff;
+  font-weight:800;
+}
+
+.results-direction{
+  font-weight:700;
+}
+
+.results-fire{
+  color:var(--gold);
+  font-weight:800;
+}
+
+.results-rank{
+  color:var(--muted);
+  margin-right:5px;
+}
+
+@media(max-width:700px){
+  .results-table{
+    min-width:760px;
   }
+}
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#161f36;
+  border:1px solid var(--line);
+  padding:12px 17px;
+  border-radius:14px;
+  z-index:200;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  box-shadow:var(--shadow);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:25px;
+  border:1px dashed var(--line);
+  border-radius:17px;
+}
+
+@media(max-width:800px){
 
   .directions{
     grid-template-columns:repeat(2,1fr);
@@ -829,475 +653,599 @@ tr:last-child td{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .admin-grid{
-    grid-template-columns:1fr;
-  }
 }
 
-@media(max-width:600px){
-  .container{
-    width:min(100% - 18px,1100px);
+@media(max-width:550px){
+
+  .app{
+    padding:13px 12px 90px;
   }
 
-  .topbar-inner{
-    min-height:64px;
+  .hero{
+    padding:19px;
   }
 
-  .brand-subtitle{
-    display:none;
+  .hero h1{
+    font-size:28px;
   }
 
-  .welcome{
-    flex-direction:column;
-  }
-
-  .welcome h1{
-    font-size:25px;
+  .xp-number{
+    font-size:27px;
   }
 
   .stats{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
+    grid-template-columns:1fr 1fr 1fr;
   }
 
   .stat{
-    padding:13px;
+    padding:10px;
   }
 
-  .stat-value{
-    font-size:21px;
+  .stat b{
+    font-size:17px;
   }
 
   .directions{
     grid-template-columns:1fr 1fr;
-    gap:8px;
   }
 
   .direction{
-    padding:14px;
+    min-height:145px;
+    padding:15px;
   }
 
-  .daily-grid{
+  .daily{
+    grid-template-columns:1fr;
+  }
+
+  .achievements{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .admin-grid{
     grid-template-columns:1fr;
   }
 
   .task-text{
-    font-size:16px;
+    font-size:19px;
   }
 
-  .auth-card{
-    padding:22px;
-  }
-
-  .modal-box{
-    padding:16px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="loadingScreen" class="loading">
-  Загрузка…
-</div>
+<div id="authScreen" class="auth-screen">
 
-<!-- AUTH -->
-<div id="authScreen" class="auth-wrap hidden">
   <div class="auth-card">
 
-    <div class="auth-logo">М</div>
+    <div
+      class="auth-logo"
+      style="background:linear-gradient(90deg,#7C3AED,#C084FC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"
+    >
+      МОЛОДЁЖКА
+    </div>
 
-    <div class="auth-title">МОЛОДЁЖКА</div>
-    <div class="auth-subtitle">Становись сильнее каждую неделю</div>
+    <div class="auth-sub">
+      Становись сильнее каждую неделю
+    </div>
 
-    <div class="tabs">
-      <button id="loginTab" class="tab active" onclick="switchAuth('login')">
+    <div id="authError" class="error hidden"></div>
+
+    <div id="loginForm">
+
+      <div class="field">
+        <label>Email</label>
+        <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+
+      <button class="primary" id="loginBtn">
         Войти
       </button>
-      <button id="registerTab" class="tab" onclick="switchAuth('register')">
-        Регистрация
+
+      <div class="auth-switch">
+        Нет аккаунта?
+        <span class="link" id="showRegister">Создать</span>
+      </div>
+
+    </div>
+
+    <div id="registerForm" class="hidden">
+
+      <div class="field">
+        <label>Имя / ник</label>
+        <input id="regName" maxlength="30" placeholder="Например, Юра">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="regEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input id="regPassword" type="password" autocomplete="new-password" placeholder="Минимум 6 символов">
+      </div>
+
+      <button class="primary" id="registerBtn">
+        Создать аккаунт
       </button>
+
+      <div class="auth-switch">
+        Уже есть аккаунт?
+        <span class="link" id="showLogin">Войти</span>
+      </div>
+
     </div>
-
-    <div id="registerNameField" class="field hidden">
-      <label>Имя</label>
-      <input id="authName" type="text" placeholder="Как тебя зовут?">
-    </div>
-
-    <div class="field">
-      <label>Email</label>
-      <input id="authEmail" type="email" placeholder="example@mail.com">
-    </div>
-
-    <div class="field">
-      <label>Пароль</label>
-      <input id="authPassword" type="password" placeholder="Минимум 6 символов">
-    </div>
-
-    <button id="authButton" class="btn btn-primary full" onclick="submitAuth()">
-      Войти
-    </button>
-
-    <div id="authError" style="margin-top:12px;color:#ff8b9a;font-size:13px;text-align:center;"></div>
 
   </div>
+
 </div>
 
-<!-- APP -->
-<div id="appScreen" class="hidden">
 
-  <header class="topbar">
-    <div class="container topbar-inner">
+<div id="app" class="app hidden">
 
-      <div class="brand">
-        <div class="logo">М</div>
-        <div>
-          <div class="brand-title">МОЛОДЁЖКА</div>
-          <div class="brand-subtitle">Становись сильнее каждую неделю</div>
+  <div class="topbar">
+
+    <div
+      class="auth-logo"
+      style="background:linear-gradient(90deg,#7C3AED,#C084FC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"
+    >
+      МОЛОДЁЖКА
+    </div>
+
+    <div class="top-actions">
+
+      <button id="adminBtn" class="icon-btn hidden">
+        👑
+      </button>
+
+      <button id="logoutBtn" class="icon-btn">
+        Выйти
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <section class="hero">
+
+    <div class="hero-top">
+
+      <div>
+
+        <div class="hello">
+          Добро пожаловать
         </div>
+
+        <h1 id="playerName">
+          Игрок
+        </h1>
+
+        <div class="level" id="overallLevel">
+          Уровень 1
+        </div>
+
       </div>
 
-      <div class="top-actions">
-        <button id="adminButton" class="btn btn-gold hidden" onclick="openAdmin()">
-          👑
-        </button>
-        <button class="btn" onclick="logout()">
-          Выйти
-        </button>
+      <div>
+
+        <div class="xp-number" id="totalXP">
+          0 XP
+        </div>
+
+        <div class="xp-label">
+          общий опыт
+        </div>
+
       </div>
 
     </div>
-  </header>
 
-  <main>
-    <div class="container">
+    <div class="progress">
+      <div id="overallProgress"></div>
+    </div>
 
-      <section class="welcome">
-        <div>
-          <h1 id="welcomeTitle">Привет!</h1>
-          <p id="weekInfo"></p>
-        </div>
-      </section>
+    <div class="stats">
 
-      <section class="stats">
+      <div class="stat">
+        <b id="streak">0 🔥</b>
+        <span>недель подряд</span>
+      </div>
 
-        <div class="stat">
-          <div class="stat-label">Общий XP</div>
-          <div id="totalXP" class="stat-value">0</div>
-        </div>
+      <div class="stat">
+        <b id="completedCount">0</b>
+        <span>заданий выполнено</span>
+      </div>
 
-        <div class="stat">
-          <div class="stat-label">Общий уровень</div>
-          <div id="overallLevel" class="stat-value">1</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-label">Недели подряд</div>
-          <div id="streak" class="stat-value">0</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-label">Выполнено</div>
-          <div id="completedCount" class="stat-value">0</div>
-        </div>
-
-      </section>
-
-      <!-- WEEKLY -->
-      <section class="card week-card">
-        <div class="week-content">
-
-          <div class="card-title">🎯 Задание на эту неделю</div>
-          <div id="weekSubtitle" class="card-subtitle"></div>
-
-          <div id="weeklyContent"></div>
-
-        </div>
-      </section>
-
-      <!-- URGENT -->
-      <section id="urgentCard" class="card urgent hidden">
-
-        <div class="urgent-title">
-          <div>
-            <div class="card-title">🔥 Срочное задание</div>
-            <div class="card-subtitle" style="margin-bottom:0;">
-              Доступно всем участникам
-            </div>
-          </div>
-
-          <div id="urgentCountdown" class="urgent-countdown"></div>
-        </div>
-
-        <div id="urgentContent"></div>
-
-      </section>
-
-      <!-- DIRECTIONS -->
-      <section class="card">
-
-        <div class="card-title">Твои направления</div>
-        <div class="card-subtitle">
-          Выбери направление для следующего уровня
-        </div>
-
-        <div id="directions" class="directions"></div>
-
-      </section>
-
-      <!-- DAILY -->
-      <section class="card">
-
-        <div class="card-title">☀️ Каждый день +20 XP</div>
-        <div class="card-subtitle">
-          Молитва и чтение Библии доступны один раз в день
-        </div>
-
-        <div class="daily-grid">
-
-          <div class="daily-item">
-            <div class="daily-left">
-              <div class="daily-icon">🙏</div>
-              <div>
-                <div class="daily-name">Молитва</div>
-                <div class="daily-xp">+10 XP</div>
-              </div>
-            </div>
-
-            <button id="prayerButton" class="btn btn-green" onclick="claimDaily('prayer')">
-              Получить
-            </button>
-          </div>
-
-          <div class="daily-item">
-            <div class="daily-left">
-              <div class="daily-icon">📖</div>
-              <div>
-                <div class="daily-name">Чтение Библии</div>
-                <div class="daily-xp">+10 XP</div>
-              </div>
-            </div>
-
-            <button id="bibleButton" class="btn btn-green" onclick="claimDaily('bible')">
-              Получить
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ACHIEVEMENTS -->
-      <section class="card">
-
-        <div class="card-title">🏆 Достижения</div>
-        <div class="card-subtitle">Собирай их по пути</div>
-
-        <div id="achievements" class="achievements"></div>
-
-      </section>
-
-      <!-- HISTORY -->
-      <section class="card">
-
-        <div class="card-title">📜 История</div>
-        <div class="card-subtitle">Твои последние действия</div>
-
-        <div id="history"></div>
-
-      </section>
+      <div class="stat">
+        <b id="achievementCount">0</b>
+        <span>достижений</span>
+      </div>
 
     </div>
-  </main>
+
+  </section>
+
+
+  <div class="section-title">
+
+    <h2>
+      Твои направления
+    </h2>
+
+    <span>
+      4 сферы развития
+    </span>
+
+  </div>
+
+  <section id="directions" class="directions"></section>
+
+
+  <div class="section-title">
+
+    <h2>
+      🔥 Задание недели
+    </h2>
+
+    <span id="weekLabel"></span>
+
+  </div>
+
+  <section id="weeklyCard" class="week-card"></section>
+
+
+  <div class="section-title">
+
+    <h2>
+      ☀️ Каждый день
+    </h2>
+
+    <span>
+      +20 XP в день
+    </span>
+
+  </div>
+
+  <section class="daily">
+
+    <div id="prayerCard" class="daily-card">
+
+      <div class="emoji">
+        🙏
+      </div>
+
+      <h3>
+        Молитва
+      </h3>
+
+      <p>
+        Проведи время в личной молитве.
+      </p>
+
+      <button id="prayerBtn" class="secondary">
+        +10 XP
+      </button>
+
+    </div>
+
+    <div id="bibleCard" class="daily-card">
+
+      <div class="emoji">
+        📖
+      </div>
+
+      <h3>
+        Библия
+      </h3>
+
+      <p>
+        Прочитай хотя бы одну главу.
+      </p>
+
+      <button id="bibleBtn" class="secondary">
+        +10 XP
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <div class="section-title">
+    <h2>🏆 Достижения</h2>
+  </div>
+
+  <section id="achievements" class="achievements"></section>
+
+
+  <div class="section-title">
+    <h2>📜 История</h2>
+  </div>
+
+  <section id="history" class="history"></section>
+
 </div>
 
-<!-- ADMIN MODAL -->
+
 <div id="adminModal" class="modal hidden">
 
-  <div class="modal-box">
+  <div class="modal-card">
 
-    <div class="modal-header">
-      <div class="modal-title">👑 Админ-панель</div>
-      <button class="close" onclick="closeAdmin()">×</button>
-    </div>
+    <div class="modal-head">
 
-    <div class="admin-tabs">
+      <h2>
+        👑 Админка
+      </h2>
 
-      <button class="admin-tab active" onclick="switchAdminTab('results',this)">
-        Результаты
-      </button>
-
-      <button class="admin-tab" onclick="switchAdminTab('tasks',this)">
-        Задания
-      </button>
-
-      <button class="admin-tab" onclick="switchAdminTab('urgent',this)">
-        Срочное
-      </button>
-
-      <button class="admin-tab" onclick="switchAdminTab('xp',this)">
-        XP
+      <button id="closeAdmin" class="icon-btn">
+        ✕
       </button>
 
     </div>
 
-    <!-- RESULTS -->
-    <div id="adminResults" class="admin-section active">
+    <div class="badge">
+      Управление МОЛОДЁЖКОЙ
+    </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Имя</th>
-              <th>XP</th>
-              <th>Уровень</th>
-              <th>Стрик</th>
-              <th>Выполнено</th>
-            </tr>
-          </thead>
-          <tbody id="resultsTable"></tbody>
-        </table>
+
+    <div class="admin-xp-card">
+
+      <div class="admin-xp-title">
+        ⭐ Начислить XP игроку
       </div>
-
-    </div>
-
-    <!-- TASKS -->
-    <div id="adminTasks" class="admin-section">
 
       <div class="admin-grid">
 
-        <div class="form-card">
+        <div class="field">
 
-          <h3>➕ Добавить задание</h3>
-
-          <div class="field">
-            <label>Направление</label>
-            <select id="taskDirection">
-              <option value="spirit">Дух</option>
-              <option value="strength">Сила</option>
-              <option value="mind">Ум</option>
-              <option value="soul">Душа</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Уровень</label>
-            <select id="taskLevel">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>XP</label>
-            <input id="taskXP" type="number" min="10" step="10" value="100">
-          </div>
-
-          <div class="field">
-            <label>Текст задания</label>
-            <textarea id="taskText" placeholder="Например: Прочитать..."></textarea>
-          </div>
-
-          <label class="check-row">
-            <input id="taskActive" type="checkbox" checked>
-            Активное
+          <label>
+            Игрок
           </label>
 
-          <button class="btn btn-primary full" onclick="adminAddTask()">
-            Добавить
-          </button>
-
-          <button class="btn btn-gold full" style="margin-top:8px;" onclick="seedBaseTasks()">
-            Загрузить базовые задания
-          </button>
+          <select id="xpPlayer">
+            <option value="">
+              Загрузка игроков...
+            </option>
+          </select>
 
         </div>
 
-        <div class="form-card">
-          <h3>📋 Список заданий</h3>
-          <div id="adminTaskList"></div>
+        <div class="field">
+
+          <label>
+            Количество XP
+          </label>
+
+          <input
+            id="xpAmount"
+            type="number"
+            min="10"
+            step="10"
+            value="10"
+            placeholder="Например: 50"
+          >
+
         </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          Причина
+        </label>
+
+        <input
+          id="xpReason"
+          maxlength="150"
+          placeholder="Например: Помощь на молодежке"
+        >
+
+      </div>
+
+      <button id="addXPBtn" class="primary">
+        ⭐ Начислить XP
+      </button>
+
+    </div>
+
+
+    <div class="section-title">
+
+      <h2>
+        🏆 Результаты игроков
+      </h2>
+
+      <span>
+        по общему XP
+      </span>
+
+    </div>
+
+    <div id="adminResults" class="admin-results">
+
+      <div class="empty">
+        Загрузка результатов...
+      </div>
+
+    </div>
+
+
+    <div class="section-title">
+
+      <h2>
+        Добавить задание
+      </h2>
+
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="field">
+
+        <label>
+          Направление
+        </label>
+
+        <select id="taskDirection">
+
+          <option value="spirit">
+            ✝️ Дух
+          </option>
+
+          <option value="strength">
+            💪 Сила
+          </option>
+
+          <option value="mind">
+            🧠 Ум
+          </option>
+
+          <option value="soul">
+            ❤️ Душа
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          Уровень
+        </label>
+
+        <select id="taskLevel">
+
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+
+        </select>
 
       </div>
 
     </div>
 
-    <!-- URGENT -->
-    <div id="adminUrgent" class="admin-section">
 
-      <div class="form-card">
+    <div class="admin-grid">
 
-        <h3>🔥 Создать срочное задание</h3>
+      <div class="field">
 
-        <div class="field">
-          <label>XP</label>
-          <input id="urgentXP" type="number" min="10" step="10" value="50">
-        </div>
+        <label>
+          XP
+        </label>
 
-        <div class="field">
-          <label>Задание</label>
-          <textarea id="urgentText" placeholder="Например: Сегодня сделай..."></textarea>
-        </div>
-
-        <button class="btn btn-primary" onclick="adminCreateUrgent()">
-          Создать на 24 часа
-        </button>
+        <input
+          id="taskXP"
+          type="number"
+          min="1"
+          max="1000"
+          value="100"
+        >
 
       </div>
 
-      <div style="height:14px;"></div>
+      <div class="field">
 
-      <div class="form-card">
-        <h3>📋 Срочные задания</h3>
-        <div id="adminUrgentList"></div>
-      </div>
+        <label>
+          Статус
+        </label>
 
-    </div>
+        <select id="taskActive">
 
-    <!-- XP -->
-    <div id="adminXP" class="admin-section">
+          <option value="true">
+            Активно
+          </option>
 
-      <div class="form-card">
+          <option value="false">
+            Выключено
+          </option>
 
-        <h3>⭐ Добавить XP игроку</h3>
-
-        <div class="field">
-          <label>Игрок</label>
-          <select id="xpUser"></select>
-        </div>
-
-        <div class="field">
-          <label>Количество XP</label>
-          <input id="xpAmount" type="number" min="10" step="10" value="10">
-        </div>
-
-        <button class="btn btn-green" onclick="adminAddXP()">
-          Начислить XP
-        </button>
+        </select>
 
       </div>
 
     </div>
+
+
+    <div class="field">
+
+      <label>
+        Текст задания
+      </label>
+
+      <input
+        id="taskText"
+        maxlength="250"
+        placeholder="Например: Прочитать Евангелие от Иоанна, 1 главу"
+      >
+
+    </div>
+
+    <button id="addTaskBtn" class="primary">
+      Добавить задание
+    </button>
+
+
+    <div style="margin-top:12px">
+
+      <button
+        id="seedTasksBtn"
+        class="secondary"
+        style="width:100%"
+      >
+        ⚡ Загрузить базовые задания
+      </button>
+
+    </div>
+
+
+    <div class="section-title">
+
+      <h2>
+        Все задания
+      </h2>
+
+    </div>
+
+    <div id="adminTasks" class="admin-list"></div>
 
   </div>
+
 </div>
 
-<div id="toast"></div>
+
+<div id="toast" class="toast"></div>
+
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 import {
   getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
-  updateProfile
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 import {
   getFirestore,
@@ -1305,24 +1253,21 @@ import {
   getDoc,
   setDoc,
   updateDoc,
-  addDoc,
   collection,
   getDocs,
+  addDoc,
   deleteDoc,
   query,
   orderBy,
   limit,
   serverTimestamp,
   runTransaction
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-
-/* =========================================================
-   FIREBASE
-========================================================= */
 
 const firebaseConfig = {
-  apiKey:"AIzaSyAgB8y0sKVQ7D7aCPLSzSndPAvXzHJqOI0",
+  apiKey:"AIzaSyAgb8y0sKVQ7D7aCPLSzSndPAvXzHJqOI0",
   authDomain:"level-up-d19f9.firebaseapp.com",
   projectId:"level-up-d19f9",
   storageBucket:"level-up-d19f9.firebasestorage.app",
@@ -1330,13 +1275,37 @@ const firebaseConfig = {
   appId:"1:365165896928:web:c1c52d6d9475a5ac331c85"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const appFirebase =
+  initializeApp(firebaseConfig);
+
+const auth =
+  getAuth(appFirebase);
+
+const db =
+  getFirestore(appFirebase);
 
 
 /* =========================================================
-   CONSTANTS
+   CONFIG
+========================================================= */
+
+const DIRECTION_NAMES = {
+  spirit:"✝️ Дух",
+  strength:"💪 Сила",
+  mind:"🧠 Ум",
+  soul:"❤️ Душа"
+};
+
+const DIRECTION_ICONS = {
+  spirit:"✝️",
+  strength:"💪",
+  mind:"🧠",
+  soul:"❤️"
+};
+
+
+/* =========================================================
+   BASE TASKS
 ========================================================= */
 
 const BASE_TASKS = [
@@ -1347,18 +1316,21 @@ const BASE_TASKS = [
     xp:100,
     text:"Прочитать Евангелие от Иоанна, 1 главу"
   },
+
   {
     direction:"spirit",
     level:2,
     xp:150,
     text:"Запомнить Псалом 1"
   },
+
   {
     direction:"spirit",
     level:3,
     xp:200,
     text:"Сходить на собрание"
   },
+
   {
     direction:"spirit",
     level:4,
@@ -1372,18 +1344,21 @@ const BASE_TASKS = [
     xp:100,
     text:"Погулять 30 минут одному без телефона"
   },
+
   {
     direction:"soul",
     level:2,
     xp:150,
     text:"Помочь родителям по дому 3 раза"
   },
+
   {
     direction:"soul",
     level:3,
     xp:200,
     text:"Сделать сюрприз маме или папе"
   },
+
   {
     direction:"soul",
     level:4,
@@ -1397,18 +1372,21 @@ const BASE_TASKS = [
     xp:100,
     text:"Пробежать 1 км или присесть 100 раз"
   },
+
   {
     direction:"strength",
     level:2,
     xp:150,
     text:"Пробежать 3 км или присесть 500 раз"
   },
+
   {
     direction:"strength",
     level:3,
     xp:200,
     text:"Пробежать 5 км или сделать 2 тренировки в зале"
   },
+
   {
     direction:"strength",
     level:4,
@@ -1422,18 +1400,21 @@ const BASE_TASKS = [
     xp:100,
     text:"Выучить 10 слов на одном иностранном языке (не эстонском и не английском)"
   },
+
   {
     direction:"mind",
     level:2,
     xp:150,
     text:"Запомнить столицы 20 стран"
   },
+
   {
     direction:"mind",
     level:3,
     xp:200,
     text:"Выучить наизусть любой стихотворный текст не из Библии"
   },
+
   {
     direction:"mind",
     level:4,
@@ -1444,24 +1425,77 @@ const BASE_TASKS = [
 ];
 
 
-const DIRECTIONS = {
-  spirit:{
-    name:"Дух",
-    icon:"✝️"
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+const ACHIEVEMENTS = [
+
+  {
+    id:"first",
+    icon:"🌱",
+    title:"Первый шаг",
+    text:"Выполнить первое недельное задание",
+    check:p => p.completedCount >= 1
   },
-  strength:{
-    name:"Сила",
-    icon:"💪"
+
+  {
+    id:"streak3",
+    icon:"🔥",
+    title:"В ритме",
+    text:"3 недели подряд",
+    check:p => p.streak >= 3
   },
-  mind:{
-    name:"Ум",
-    icon:"🧠"
+
+  {
+    id:"streak10",
+    icon:"🏆",
+    title:"Постоянство",
+    text:"10 недель подряд",
+    check:p => p.streak >= 10
   },
-  soul:{
-    name:"Душа",
-    icon:"❤️"
+
+  {
+    id:"spirit4",
+    icon:"✝️",
+    title:"Сильный дух",
+    text:"Дух — уровень 4",
+    check:p => p.directions.spirit.level >= 4
+  },
+
+  {
+    id:"strength4",
+    icon:"💪",
+    title:"Сильное тело",
+    text:"Сила — уровень 4",
+    check:p => p.directions.strength.level >= 4
+  },
+
+  {
+    id:"mind4",
+    icon:"🧠",
+    title:"Острый ум",
+    text:"Ум — уровень 4",
+    check:p => p.directions.mind.level >= 4
+  },
+
+  {
+    id:"soul4",
+    icon:"❤️",
+    title:"Большое сердце",
+    text:"Душа — уровень 4",
+    check:p => p.directions.soul.level >= 4
+  },
+
+  {
+    id:"level10",
+    icon:"🌟",
+    title:"LEVEL UP",
+    text:"Общий уровень 10",
+    check:p => overallLevel(p.totalXP) >= 10
   }
-};
+
+];
 
 
 /* =========================================================
@@ -1470,196 +1504,128 @@ const DIRECTIONS = {
 
 let currentUser = null;
 let player = null;
+let currentTask = null;
+let currentHistory = [];
 let allTasks = [];
-let allUsers = [];
-let urgentTasks = [];
-
-let authMode = "login";
-
-let weeklyCompletionRunning = false;
-let dailyCompletionRunning = false;
-let urgentCompletionRunning = false;
-let urgentCreateRunning = false;
-
-let urgentTimer = null;
+let isAdmin = false;
+let appReady = false;
+let dailyResetRunning = false;
+let weeklyCompleting = false;
+let dailyClaimRunning = false;
 
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function dateKey(date=new Date()){
-
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,"0");
-  const d = String(date.getDate()).padStart(2,"0");
-
-  return `${y}-${m}-${d}`;
-}
+const $ =
+  id => document.getElementById(id);
 
 
-function escapeHtml(value){
+function showToast(text){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
+  const el = $("toast");
 
+  el.textContent = text;
 
-function showToast(message){
-
-  const el = document.getElementById("toast");
-
-  el.textContent = message;
   el.classList.add("show");
 
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(()=>{
+  setTimeout(() => {
     el.classList.remove("show");
-  },3000);
+  },2600);
+
 }
 
 
-function formatDate(value){
+function showAuthError(text){
 
-  if(!value) return "";
+  $("authError").textContent = text;
 
-  let date;
+  $("authError")
+    .classList
+    .remove("hidden");
 
-  if(typeof value.toDate === "function"){
-    date = value.toDate();
-  }else{
-    date = new Date(value);
-  }
-
-  if(Number.isNaN(date.getTime())) return "";
-
-  return date.toLocaleDateString("ru-RU",{
-    day:"2-digit",
-    month:"2-digit",
-    year:"numeric"
-  });
 }
 
 
-function formatDateTime(value){
+function clearAuthError(){
 
-  if(!value) return "";
+  $("authError")
+    .classList
+    .add("hidden");
 
-  let date;
-
-  if(typeof value.toDate === "function"){
-    date = value.toDate();
-  }else{
-    date = new Date(value);
-  }
-
-  if(Number.isNaN(date.getTime())) return "";
-
-  return date.toLocaleString("ru-RU",{
-    day:"2-digit",
-    month:"2-digit",
-    hour:"2-digit",
-    minute:"2-digit"
-  });
 }
 
 
-/* =========================================================
-   DIRECTIONS
-========================================================= */
+function overallLevel(xp){
 
-function emptyDirections(){
+  return Math.floor(
+    Number(xp || 0) / 500
+  ) + 1;
 
-  return {
-    spirit:{xp:0,level:1},
-    strength:{xp:0,level:1},
-    mind:{xp:0,level:1},
-    soul:{xp:0,level:1}
-  };
 }
 
 
-function normalizeDirections(directions){
+function overallProgress(xp){
 
-  const base = emptyDirections();
+  return Number(xp || 0) % 500;
 
-  for(const key of Object.keys(base)){
-
-    const source = directions?.[key] || {};
-
-    base[key] = {
-      xp:Number(source.xp || 0),
-      level:Math.min(
-        4,
-        Math.max(
-          1,
-          Number(source.level || 1)
-        )
-      )
-    };
-  }
-
-  return base;
 }
 
 
 /*
-  ВАЖНО:
+   ВАЖНО:
 
-  Уровень НЕ вычисляется из XP.
+   Уровень направления теперь НЕ зависит от XP.
 
-  Уровень — это отдельный прогресс:
-  1 → после выполнения → 2
-  2 → после выполнения → 3
-  3 → после выполнения → 4
-  4 → остаётся 4
+   XP и уровень — две отдельные характеристики.
 
-  Это позволяет человеку выбирать:
-  например, Дух 1, потом Сила 1,
-  потом Дух 2 и т.д.
+   Например:
+   уровень 1 + 100 XP
+   после задания:
+   уровень 2 + 200 XP
+
+   даже если XP не совпадает с каким-то порогом.
 */
-
-function directionLevel(direction){
-
-  return Math.min(
-    4,
-    Math.max(
-      1,
-      Number(player?.directions?.[direction]?.level || 1)
-    )
-  );
-}
-
 
 function directionProgress(level){
 
-  /*
-    Показываем прогресс прохождения четырёх уровней:
-    1 = 0%
-    2 = 33%
-    3 = 67%
-    4 = 100%
-  */
+  const current =
+    Number(level || 1);
 
-  return Math.min(
-    100,
-    Math.round(((level-1)/3)*100)
-  );
+  if(current >= 4)
+    return 100;
+
+  if(current === 3)
+    return 67;
+
+  if(current === 2)
+    return 33;
+
+  return 0;
+
 }
 
 
-/* =========================================================
-   OVERALL LEVEL
-========================================================= */
+function dateKey(
+  date = new Date()
+){
 
-function overallLevel(xp){
+  const y =
+    date.getFullYear();
 
-  return Math.floor((Number(xp)||0)/500)+1;
+  const m =
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0");
+
+  const d =
+    String(
+      date.getDate()
+    ).padStart(2,"0");
+
+  return `${y}-${m}-${d}`;
+
 }
 
 
@@ -1667,79 +1633,135 @@ function overallLevel(xp){
    PERSONAL WEEK
 ========================================================= */
 
-function personalWeekKey(date=new Date()){
+function personalWeekKey(
+  date = new Date()
+){
 
   if(!player?.startDate){
 
     return dateKey(date);
+
   }
 
-  const start = new Date(
-    player.startDate+"T00:00:00"
-  );
+  const start =
+    new Date(
+      player.startDate +
+      "T00:00:00"
+    );
 
-  const current = new Date(date);
+  const current =
+    new Date(date);
 
   start.setHours(0,0,0,0);
   current.setHours(0,0,0,0);
 
-  const diffDays = Math.floor(
-    (current-start)/(1000*60*60*24)
-  );
+  const diffDays =
+    Math.floor(
+      (current - start) /
+      (1000 * 60 * 60 * 24)
+    );
 
-  const weekNumber = Math.floor(
-    Math.max(0,diffDays)/7
-  );
+  const weekNumber =
+    Math.floor(
+      diffDays / 7
+    );
 
-  const weekStart = new Date(start);
+  const weekStart =
+    new Date(start);
 
   weekStart.setDate(
-    weekStart.getDate()+weekNumber*7
+    weekStart.getDate() +
+    weekNumber * 7
   );
 
   return dateKey(weekStart);
+
 }
 
 
-function weekNumber(){
+function formatDate(value){
 
-  if(!player?.startDate) return 1;
+  if(!value)
+    return "";
 
-  const start = new Date(
-    player.startDate+"T00:00:00"
-  );
+  if(typeof value === "string"){
 
-  const now = new Date();
+    const d =
+      new Date(value);
 
-  start.setHours(0,0,0,0);
-  now.setHours(0,0,0,0);
+    if(!Number.isNaN(d.getTime())){
 
-  const diff = Math.floor(
-    (now-start)/(1000*60*60*24)
-  );
+      return d.toLocaleDateString(
+        "ru-RU"
+      );
 
-  return Math.floor(Math.max(0,diff)/7)+1;
+    }
+
+  }
+
+  if(value?.toDate){
+
+    return value
+      .toDate()
+      .toLocaleDateString("ru-RU");
+
+  }
+
+  return "";
+
 }
 
 
-/* =========================================================
-   DEFAULT PLAYER
-========================================================= */
-
-function defaultPlayer(){
+function emptyDirections(){
 
   return {
-    name:"",
-    email:"",
+
+    spirit:{
+      xp:0,
+      level:1
+    },
+
+    strength:{
+      xp:0,
+      level:1
+    },
+
+    mind:{
+      xp:0,
+      level:1
+    },
+
+    soul:{
+      xp:0,
+      level:1
+    }
+
+  };
+
+}
+
+
+function defaultPlayer(
+  name,
+  email
+){
+
+  return {
+
+    name,
+    email,
     role:"user",
 
     totalXP:0,
+
     streak:0,
 
     lastCompletedWeek:"",
 
     selectedDirection:"",
+
     selectedTaskId:"",
+
     selectedWeek:"",
 
     completedCount:0,
@@ -1752,13 +1774,17 @@ function defaultPlayer(){
       bible:false
     },
 
-    urgentCompleted:{},
+    directions:
+      emptyDirections(),
 
-    directions:emptyDirections(),
+    createdAt:
+      serverTimestamp(),
 
-    createdAt:serverTimestamp(),
-    updatedAt:serverTimestamp()
+    updatedAt:
+      serverTimestamp()
+
   };
+
 }
 
 
@@ -1766,65 +1792,65 @@ function defaultPlayer(){
    AUTH UI
 ========================================================= */
 
-window.switchAuth = function(mode){
+$("showRegister").onclick = () => {
 
-  authMode = mode;
+  clearAuthError();
 
-  const loginTab = document.getElementById("loginTab");
-  const registerTab = document.getElementById("registerTab");
-  const nameField = document.getElementById("registerNameField");
-  const button = document.getElementById("authButton");
+  $("loginForm")
+    .classList
+    .add("hidden");
 
-  loginTab.classList.toggle("active",mode==="login");
-  registerTab.classList.toggle("active",mode==="register");
+  $("registerForm")
+    .classList
+    .remove("hidden");
 
-  nameField.classList.toggle("hidden",mode!=="register");
-
-  button.textContent =
-    mode==="login"
-      ? "Войти"
-      : "Создать аккаунт";
-
-  document.getElementById("authError").textContent="";
 };
 
 
-window.submitAuth = async function(){
+$("showLogin").onclick = () => {
 
-  const email =
-    document.getElementById("authEmail").value.trim();
+  clearAuthError();
 
-  const password =
-    document.getElementById("authPassword").value;
+  $("registerForm")
+    .classList
+    .add("hidden");
 
-  const name =
-    document.getElementById("authName").value.trim();
+  $("loginForm")
+    .classList
+    .remove("hidden");
 
-  const error =
-    document.getElementById("authError");
+};
 
-  error.textContent="";
 
-  if(!email || !password){
+/* =========================================================
+   LOGIN
+========================================================= */
 
-    error.textContent="Введите email и пароль.";
-    return;
-  }
+$("loginBtn").onclick =
+  async () => {
 
-  if(authMode==="register" && !name){
+    clearAuthError();
 
-    error.textContent="Введите имя.";
-    return;
-  }
+    const email =
+      $("loginEmail")
+        .value
+        .trim();
 
-  const button =
-    document.getElementById("authButton");
+    const password =
+      $("loginPassword")
+        .value;
 
-  button.disabled=true;
+    if(!email || !password){
 
-  try{
+      showAuthError(
+        "Заполни email и пароль."
+      );
 
-    if(authMode==="login"){
+      return;
+
+    }
+
+    try{
 
       await signInWithEmailAndPassword(
         auth,
@@ -1832,7 +1858,89 @@ window.submitAuth = async function(){
         password
       );
 
-    }else{
+    }catch(error){
+
+      console.error(
+        "Ошибка входа:",
+        error
+      );
+
+      const messages = {
+
+        "auth/invalid-credential":
+          "Неверный email или пароль.",
+
+        "auth/user-not-found":
+          "Пользователь с таким email не найден.",
+
+        "auth/wrong-password":
+          "Неверный пароль.",
+
+        "auth/invalid-email":
+          "Некорректный email.",
+
+        "auth/too-many-requests":
+          "Слишком много попыток. Попробуй позже.",
+
+        "auth/network-request-failed":
+          "Проблема с интернетом. Проверь соединение."
+
+      };
+
+      showAuthError(
+        messages[error.code] ||
+        `Не удалось войти. Код: ${error.code || "unknown"}`
+      );
+
+    }
+
+  };
+
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+$("registerBtn").onclick =
+  async () => {
+
+    clearAuthError();
+
+    const name =
+      $("regName")
+        .value
+        .trim();
+
+    const email =
+      $("regEmail")
+        .value
+        .trim();
+
+    const password =
+      $("regPassword")
+        .value;
+
+    if(name.length < 2){
+
+      showAuthError(
+        "Напиши имя или ник."
+      );
+
+      return;
+
+    }
+
+    if(password.length < 6){
+
+      showAuthError(
+        "Пароль должен быть минимум 6 символов."
+      );
+
+      return;
+
+    }
+
+    try{
 
       const credential =
         await createUserWithEmailAndPassword(
@@ -1841,181 +1949,354 @@ window.submitAuth = async function(){
           password
         );
 
-      await updateProfile(
-        credential.user,
-        {displayName:name}
+      const user =
+        credential.user;
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        defaultPlayer(
+          name,
+          email
+        )
       );
 
-      const ref =
-        doc(db,"users",credential.user.uid);
+      showToast(
+        "Аккаунт создан!"
+      );
 
-      const data =
-        defaultPlayer();
+    }catch(error){
 
-      data.name=name;
-      data.email=email;
+      console.error(
+        "Ошибка регистрации:",
+        error
+      );
 
-      await setDoc(ref,data);
+      const messages = {
 
-      showToast("Аккаунт создан!");
+        "auth/email-already-in-use":
+          "Этот email уже зарегистрирован.",
+
+        "auth/invalid-email":
+          "Некорректный email.",
+
+        "auth/weak-password":
+          "Пароль слишком слабый."
+
+      };
+
+      showAuthError(
+        messages[error.code] ||
+        `Не удалось создать аккаунт. Код: ${error.code || "unknown"}`
+      );
 
     }
 
-  }catch(err){
-
-    console.error(err);
-
-    error.textContent =
-      friendlyAuthError(err);
-
-  }finally{
-
-    button.disabled=false;
-  }
-};
-
-
-function friendlyAuthError(error){
-
-  const code = error?.code || "";
-
-  if(code.includes("invalid-credential"))
-    return "Неверный email или пароль.";
-
-  if(code.includes("wrong-password"))
-    return "Неверный пароль.";
-
-  if(code.includes("user-not-found"))
-    return "Пользователь не найден.";
-
-  if(code.includes("email-already-in-use"))
-    return "Этот email уже зарегистрирован.";
-
-  if(code.includes("weak-password"))
-    return "Пароль должен содержать минимум 6 символов.";
-
-  if(code.includes("invalid-email"))
-    return "Некорректный email.";
-
-  return "Произошла ошибка. Попробуйте ещё раз.";
-}
-
-
-window.logout = async function(){
-
-  await signOut(auth);
-};
+  };
 
 
 /* =========================================================
-   LOAD PLAYER
+   LOGOUT
+========================================================= */
+
+$("logoutBtn").onclick =
+  async () => {
+
+    appReady = false;
+    dailyResetRunning = false;
+
+    await signOut(auth);
+
+  };
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if(!user){
+
+      currentUser = null;
+      player = null;
+      appReady = false;
+      dailyResetRunning = false;
+
+      $("authScreen")
+        .classList
+        .remove("hidden");
+
+      $("app")
+        .classList
+        .add("hidden");
+
+      return;
+
+    }
+
+    appReady = false;
+
+    currentUser = user;
+
+    try{
+
+      await loadPlayer();
+
+      await checkAdmin();
+
+      $("authScreen")
+        .classList
+        .add("hidden");
+
+      $("app")
+        .classList
+        .remove("hidden");
+
+      await loadTasks();
+
+      await loadHistory();
+
+      appReady = true;
+
+      render();
+
+    }catch(error){
+
+      console.error(
+        "Ошибка загрузки приложения:",
+        error
+      );
+
+      /*
+         ВАЖНО:
+
+         Мы НЕ делаем signOut().
+
+         Firebase Auth мог успешно авторизовать
+         пользователя, а ошибка могла возникнуть
+         только при чтении Firestore.
+
+         Поэтому показываем приложение,
+         если данные игрока уже удалось получить,
+         и сообщаем реальную проблему.
+      */
+
+      if(player){
+
+        $("authScreen")
+          .classList
+          .add("hidden");
+
+        $("app")
+          .classList
+          .remove("hidden");
+
+        appReady = true;
+
+        render();
+
+        showToast(
+          "Часть данных не загрузилась. Попробуй обновить страницу."
+        );
+
+      }else{
+
+        showAuthError(
+          "Не удалось загрузить данные игрока. Проверь подключение к Firebase."
+        );
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PLAYER
 ========================================================= */
 
 async function loadPlayer(){
 
   const ref =
-    doc(db,"users",currentUser.uid);
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
 
   const snap =
     await getDoc(ref);
 
   if(!snap.exists()){
 
-    const data =
-      defaultPlayer();
+    player =
+      defaultPlayer(
+        currentUser.email?.split("@")[0] ||
+        "Игрок",
+        currentUser.email || ""
+      );
 
-    data.name =
-      currentUser.displayName || "";
-
-    data.email =
-      currentUser.email || "";
-
-    await setDoc(ref,data);
-
-    player = {
-      ...data,
-      createdAt:null,
-      updatedAt:null
-    };
+    await setDoc(
+      ref,
+      player
+    );
 
   }else{
 
-    player = {
-      ...snap.data()
+    player =
+      snap.data();
+
+    /*
+       Сохраняем существующие уровни.
+
+       Никакого пересчёта уровня из XP.
+    */
+
+    const oldDirections =
+      player.directions || {};
+
+    player.directions = {
+
+      spirit:{
+        xp:Number(
+          oldDirections.spirit?.xp || 0
+        ),
+        level:Number(
+          oldDirections.spirit?.level || 1
+        )
+      },
+
+      strength:{
+        xp:Number(
+          oldDirections.strength?.xp || 0
+        ),
+        level:Number(
+          oldDirections.strength?.level || 1
+        )
+      },
+
+      mind:{
+        xp:Number(
+          oldDirections.mind?.xp || 0
+        ),
+        level:Number(
+          oldDirections.mind?.level || 1
+        )
+      },
+
+      soul:{
+        xp:Number(
+          oldDirections.soul?.xp || 0
+        ),
+        level:Number(
+          oldDirections.soul?.level || 1
+        )
+      }
+
     };
 
-  }
+    const today =
+      dateKey();
 
-  /*
-    Не ломаем старых пользователей.
-    Если каких-то новых полей нет — добавляем
-    только отсутствующие значения.
-  */
+    if(
+      !player.daily ||
+      player.daily.date !== today
+    ){
 
-  player.directions =
-    normalizeDirections(player.directions);
+      player.daily = {
 
-  if(!player.urgentCompleted){
+        date:today,
 
-    player.urgentCompleted = {};
-  }
+        prayer:false,
 
-  if(!player.daily){
+        bible:false
 
-    player.daily = {
-      date:dateKey(),
-      prayer:false,
-      bible:false
-    };
-  }
+      };
 
-  if(!player.startDate){
-
-    if(player.createdAt?.toDate){
-
-      player.startDate =
-        dateKey(player.createdAt.toDate());
+      await updateDoc(
+        ref,
+        {
+          daily:player.daily,
+          updatedAt:serverTimestamp()
+        }
+      );
 
     }else{
 
-      player.startDate =
-        dateKey();
+      player.daily = {
+
+        date:today,
+
+        prayer:
+          player.daily.prayer === true,
+
+        bible:
+          player.daily.bible === true
+
+      };
+
     }
 
-    await updateDoc(ref,{
-      startDate:player.startDate
-    });
+    if(!player.startDate){
+
+      if(player.createdAt?.toDate){
+
+        player.startDate =
+          dateKey(
+            player.createdAt.toDate()
+          );
+
+      }else{
+
+        player.startDate =
+          dateKey();
+
+      }
+
+      await updateDoc(
+        ref,
+        {
+          startDate:player.startDate,
+          updatedAt:serverTimestamp()
+        }
+      );
+
+    }
+
   }
-
-  await checkDailyReset();
-
-  /*
-    Если началась новая персональная неделя,
-    выбранное старое задание больше не действует.
-  */
 
   const currentWeek =
     personalWeekKey();
 
-  if(player.selectedWeek &&
-     player.selectedWeek!==currentWeek){
+  if(
+    player.selectedWeek &&
+    player.selectedWeek !== currentWeek
+  ){
 
-    player.selectedDirection="";
-    player.selectedTaskId="";
-    player.selectedWeek="";
+    player.selectedDirection = "";
+    player.selectedTaskId = "";
+    player.selectedWeek = "";
 
-    await updateDoc(ref,{
-      selectedDirection:"",
-      selectedTaskId:"",
-      selectedWeek:"",
-      updatedAt:serverTimestamp()
-    });
+    await updateDoc(
+      ref,
+      {
+        selectedDirection:"",
+        selectedTaskId:"",
+        selectedWeek:"",
+        updatedAt:serverTimestamp()
+      }
+    );
+
   }
 
-  /*
-    Для старых пользователей, у которых нет
-    selectedWeek, ничего не меняем.
-  */
 }
 
 
@@ -2025,135 +2306,1702 @@ async function loadPlayer(){
 
 async function checkDailyReset(){
 
-  if(!player) return;
+  if(
+    !currentUser ||
+    !player ||
+    !appReady
+  ){
+
+    return;
+
+  }
+
+  if(dailyResetRunning)
+    return;
 
   const today =
     dateKey();
 
-  if(player.daily?.date===today){
-
-    updateDailyButtons();
-
+  if(player.daily?.date === today)
     return;
-  }
 
-  player.daily={
+  dailyResetRunning = true;
+
+  const newDaily = {
+
     date:today,
+
     prayer:false,
+
     bible:false
+
   };
 
-  await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {
-      daily:player.daily,
-      updatedAt:serverTimestamp()
-    }
-  );
+  try{
 
-  updateDailyButtons();
-}
+    await updateDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+      {
+        daily:newDaily,
+        updatedAt:serverTimestamp()
+      }
+    );
 
+    player.daily =
+      newDaily;
 
-function updateDailyButtons(){
+    renderDaily();
 
-  const prayer =
-    document.getElementById("prayerButton");
+  }catch(error){
 
-  const bible =
-    document.getElementById("bibleButton");
+    console.error(
+      "Ошибка ежедневного сброса:",
+      error
+    );
 
-  if(!player?.daily) return;
+  }finally{
 
-  const prayerDone =
-    player.daily.prayer===true;
+    dailyResetRunning = false;
 
-  const bibleDone =
-    player.daily.bible===true;
+  }
 
-  prayer.disabled=prayerDone;
-  prayer.textContent=
-    prayerDone ? "Получено ✓" : "Получить";
-
-  bible.disabled=bibleDone;
-  bible.textContent=
-    bibleDone ? "Получено ✓" : "Получить";
 }
 
 
 /* =========================================================
-   LOAD TASKS
+   ADMIN
+========================================================= */
+
+async function checkAdmin(){
+
+  isAdmin = false;
+
+  try{
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "admins",
+          currentUser.uid
+        )
+      );
+
+    isAdmin =
+      snap.exists() &&
+      snap.data().active === true;
+
+  }catch(error){
+
+    console.error(
+      "Ошибка проверки админа:",
+      error
+    );
+
+  }
+
+  $("adminBtn")
+    .classList
+    .toggle(
+      "hidden",
+      !isAdmin
+    );
+
+}
+
+
+$("adminBtn").onclick =
+  async () => {
+
+    if(!isAdmin)
+      return;
+
+    $("adminModal")
+      .classList
+      .remove("hidden");
+
+    await renderAdminPlayers();
+    await renderAdminResults();
+    await renderAdminTasks();
+
+  };
+
+
+$("closeAdmin").onclick =
+  () => {
+
+    $("adminModal")
+      .classList
+      .add("hidden");
+
+  };
+
+
+/* =========================================================
+   ADMIN PLAYERS
+========================================================= */
+
+async function renderAdminPlayers(){
+
+  const select =
+    $("xpPlayer");
+
+  select.innerHTML =
+    `<option value="">
+      Загрузка игроков...
+    </option>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "users"
+        )
+      );
+
+    const players =
+      snapshot.docs
+        .map(
+          d => ({
+            id:d.id,
+            ...d.data()
+          })
+        )
+        .sort(
+          (a,b) =>
+            String(a.name || "")
+              .localeCompare(
+                String(b.name || ""),
+                "ru"
+              )
+        );
+
+    select.innerHTML =
+      `<option value="">
+        Выбери игрока
+      </option>`;
+
+    if(!players.length){
+
+      select.innerHTML =
+        `<option value="">
+          Игроков пока нет
+        </option>`;
+
+      return;
+
+    }
+
+    players.forEach(user => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        user.id;
+
+      option.textContent =
+        `${user.name || "Без имени"} · ${user.email || ""}`;
+
+      select.appendChild(option);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+    select.innerHTML =
+      `<option value="">
+        Не удалось загрузить игроков
+      </option>`;
+
+    showToast(
+      "Не удалось загрузить игроков."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ADMIN RESULTS
+========================================================= */
+
+async function renderAdminResults(){
+
+  const box =
+    $("adminResults");
+
+  box.innerHTML =
+    `<div class="empty">
+      Загрузка результатов...
+    </div>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "users"
+        )
+      );
+
+    const players =
+      snapshot.docs
+        .map(
+          d => ({
+            id:d.id,
+            ...d.data()
+          })
+        )
+        .sort(
+          (a,b) =>
+            Number(b.totalXP || 0) -
+            Number(a.totalXP || 0)
+        );
+
+    if(!players.length){
+
+      box.innerHTML =
+        `<div class="empty">
+          Игроков пока нет.
+        </div>`;
+
+      return;
+
+    }
+
+    const rows =
+      players
+        .map(
+          (p,index) => {
+
+            const dirs = {
+
+              spirit:
+                p.directions?.spirit ||
+                {xp:0,level:1},
+
+              strength:
+                p.directions?.strength ||
+                {xp:0,level:1},
+
+              mind:
+                p.directions?.mind ||
+                {xp:0,level:1},
+
+              soul:
+                p.directions?.soul ||
+                {xp:0,level:1}
+
+            };
+
+            return `
+
+              <tr>
+
+                <td>
+
+                  <div class="results-player">
+
+                    <span class="results-rank">
+                      ${index + 1}.
+                    </span>
+
+                    ${escapeHtml(
+                      p.name || "Без имени"
+                    )}
+
+                  </div>
+
+                </td>
+
+                <td class="results-xp">
+                  ${Number(p.totalXP || 0)}
+                </td>
+
+                <td class="results-level">
+                  ${overallLevel(
+                    Number(p.totalXP || 0)
+                  )}
+                </td>
+
+                <td class="results-direction">
+                  ${Number(dirs.spirit.xp || 0)}
+                  · ур.${Number(dirs.spirit.level || 1)}
+                </td>
+
+                <td class="results-direction">
+                  ${Number(dirs.strength.xp || 0)}
+                  · ур.${Number(dirs.strength.level || 1)}
+                </td>
+
+                <td class="results-direction">
+                  ${Number(dirs.mind.xp || 0)}
+                  · ур.${Number(dirs.mind.level || 1)}
+                </td>
+
+                <td class="results-direction">
+                  ${Number(dirs.soul.xp || 0)}
+                  · ур.${Number(dirs.soul.level || 1)}
+                </td>
+
+                <td class="results-fire">
+                  ${Number(p.streak || 0)} 🔥
+                </td>
+
+              </tr>
+
+            `;
+
+          }
+        )
+        .join("");
+
+    box.innerHTML = `
+
+      <table class="results-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Игрок</th>
+            <th>XP</th>
+            <th>Уровень</th>
+            <th>✝️ Дух</th>
+            <th>💪 Сила</th>
+            <th>🧠 Ум</th>
+            <th>❤️ Душа</th>
+            <th>Серия</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+          ${rows}
+        </tbody>
+
+      </table>
+
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      `<div class="empty">
+        Не удалось загрузить результаты.
+      </div>`;
+
+    showToast(
+      "Не удалось загрузить результаты."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ADMIN GIVE XP
+========================================================= */
+
+$("addXPBtn").onclick =
+  async () => {
+
+    if(!isAdmin)
+      return;
+
+    const playerId =
+      $("xpPlayer").value;
+
+    const amount =
+      Number(
+        $("xpAmount").value
+      );
+
+    const reason =
+      $("xpReason")
+        .value
+        .trim();
+
+    if(!playerId){
+
+      showToast(
+        "Выбери игрока."
+      );
+
+      return;
+
+    }
+
+    if(
+      !Number.isFinite(amount) ||
+      amount < 10 ||
+      amount % 10 !== 0
+    ){
+
+      showToast(
+        "XP можно начислять только по 10."
+      );
+
+      return;
+
+    }
+
+    if(!reason){
+
+      showToast(
+        "Напиши причину начисления."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const playerRef =
+        doc(
+          db,
+          "users",
+          playerId
+        );
+
+      const result =
+        await runTransaction(
+          db,
+          async transaction => {
+
+            const snap =
+              await transaction.get(
+                playerRef
+              );
+
+            if(!snap.exists()){
+
+              throw new Error(
+                "PLAYER_NOT_FOUND"
+              );
+
+            }
+
+            const data =
+              snap.data();
+
+            const oldXP =
+              Number(data.totalXP || 0);
+
+            const newXP =
+              oldXP + amount;
+
+            transaction.update(
+              playerRef,
+              {
+                totalXP:newXP,
+                updatedAt:serverTimestamp()
+              }
+            );
+
+            return data;
+
+          }
+        );
+
+      await addDoc(
+        collection(
+          db,
+          "users",
+          playerId,
+          "history"
+        ),
+        {
+
+          taskId:"",
+
+          direction:"",
+
+          directionName:
+            "👑 Администратор",
+
+          taskText:
+            reason,
+
+          xp:amount,
+
+          type:"admin_xp",
+
+          adminId:
+            currentUser.uid,
+
+          completedAt:
+            serverTimestamp()
+
+        }
+      );
+
+      showToast(
+        `⭐ ${amount} XP начислено игроку ${result.name || ""}!`
+      );
+
+      $("xpAmount").value = 10;
+      $("xpReason").value = "";
+
+      await renderAdminResults();
+
+    }catch(error){
+
+      console.error(error);
+
+      if(error.message === "PLAYER_NOT_FOUND"){
+
+        showToast(
+          "Игрок не найден."
+        );
+
+      }else{
+
+        showToast(
+          "Не удалось начислить XP."
+        );
+
+      }
+
+    }
+
+  };
+
+
+/* =========================================================
+   TASKS
 ========================================================= */
 
 async function loadTasks(){
 
-  const snap =
+  const snapshot =
     await getDocs(
-      collection(db,"tasks")
+      collection(
+        db,
+        "tasks"
+      )
     );
 
   allTasks =
-    snap.docs.map(d=>({
-      id:d.id,
-      ...d.data()
-    }));
+    snapshot.docs.map(
+      d => ({
+        id:d.id,
+        ...d.data()
+      })
+    );
+
+}
+
+
+async function renderAdminTasks(){
+
+  await loadTasks();
+
+  const box =
+    $("adminTasks");
+
+  if(!allTasks.length){
+
+    box.innerHTML =
+      `<div class="empty">
+        Заданий пока нет.
+      </div>`;
+
+    return;
+
+  }
+
+  box.innerHTML = "";
+
+  allTasks
+    .sort(
+      (a,b) =>
+        String(a.direction)
+          .localeCompare(
+            String(b.direction)
+          ) ||
+        Number(a.level) -
+        Number(b.level)
+    )
+    .forEach(task => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "admin-task";
+
+      div.innerHTML = `
+
+        <div class="admin-task-top">
+
+          <b>
+
+            ${escapeHtml(
+              DIRECTION_NAMES[
+                task.direction
+              ] ||
+              task.direction
+            )}
+
+            · уровень
+            ${Number(task.level)}
+
+          </b>
+
+          <span class="xp">
+            +${Number(task.xp)} XP
+          </span>
+
+        </div>
+
+        <div style="margin-top:7px">
+
+          ${escapeHtml(
+            task.text
+          )}
+
+        </div>
+
+        <small>
+
+          ${
+            task.active === false
+              ? "⛔ выключено"
+              : "✅ активно"
+          }
+
+        </small>
+
+        <div style="margin-top:10px">
+
+          <button
+            class="secondary delete-task"
+            data-id="${task.id}"
+          >
+            Удалить
+          </button>
+
+        </div>
+
+      `;
+
+      box.appendChild(div);
+
+    });
+
+
+  document
+    .querySelectorAll(".delete-task")
+    .forEach(btn => {
+
+      btn.onclick =
+        async () => {
+
+          if(
+            !confirm(
+              "Удалить это задание?"
+            )
+          ){
+
+            return;
+
+          }
+
+          try{
+
+            await deleteDoc(
+              doc(
+                db,
+                "tasks",
+                btn.dataset.id
+              )
+            );
+
+            showToast(
+              "Задание удалено."
+            );
+
+            await renderAdminTasks();
+            await loadTasks();
+
+          }catch(error){
+
+            console.error(error);
+
+            showToast(
+              "Не удалось удалить."
+            );
+
+          }
+
+        };
+
+    });
+
 }
 
 
 /* =========================================================
-   WEEKLY TASK SELECTION
+   ADD TASK
 ========================================================= */
 
-async function chooseDirection(direction){
+$("addTaskBtn").onclick =
+  async () => {
 
-  if(!player) return;
+    if(!isAdmin)
+      return;
+
+    const direction =
+      $("taskDirection").value;
+
+    const level =
+      Number(
+        $("taskLevel").value
+      );
+
+    const xp =
+      Number(
+        $("taskXP").value
+      );
+
+    const text =
+      $("taskText")
+        .value
+        .trim();
+
+    const active =
+      $("taskActive").value ===
+      "true";
+
+    if(!text){
+
+      showToast(
+        "Напиши текст задания."
+      );
+
+      return;
+
+    }
+
+    if(!xp || xp < 1){
+
+      showToast(
+        "Укажи XP."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      await addDoc(
+        collection(
+          db,
+          "tasks"
+        ),
+        {
+
+          direction,
+          level,
+          xp,
+          text,
+          active,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+      $("taskText").value = "";
+
+      showToast(
+        "Задание добавлено."
+      );
+
+      await renderAdminTasks();
+      await loadTasks();
+
+    }catch(error){
+
+      console.error(error);
+
+      showToast(
+        "Не удалось добавить задание."
+      );
+
+    }
+
+  };
+
+
+/* =========================================================
+   SEED TASKS — БЕЗ ДУБЛИКАТОВ
+========================================================= */
+
+$("seedTasksBtn").onclick =
+  async () => {
+
+    if(!isAdmin)
+      return;
+
+    if(
+      !confirm(
+        "Загрузить базовые задания? Уже существующие одинаковые задания повторно добавлены не будут."
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await loadTasks();
+
+      let added = 0;
+
+      for(
+        const task of BASE_TASKS
+      ){
+
+        const exists =
+          allTasks.some(
+            existing =>
+
+              existing.direction ===
+                task.direction &&
+
+              Number(
+                existing.level
+              ) ===
+                Number(
+                  task.level
+                ) &&
+
+              Number(
+                existing.xp
+              ) ===
+                Number(
+                  task.xp
+                ) &&
+
+              String(
+                existing.text
+              ).trim() ===
+                String(
+                  task.text
+                ).trim()
+
+          );
+
+        if(exists)
+          continue;
+
+        await addDoc(
+          collection(
+            db,
+            "tasks"
+          ),
+          {
+
+            ...task,
+
+            active:true,
+
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+        added++;
+
+      }
+
+      showToast(
+        added
+          ? `Добавлено новых заданий: ${added}`
+          : "Все базовые задания уже есть."
+      );
+
+      await renderAdminTasks();
+      await loadTasks();
+
+      render();
+
+    }catch(error){
+
+      console.error(error);
+
+      showToast(
+        "Ошибка загрузки заданий."
+      );
+
+    }
+
+  };
+
+
+/* =========================================================
+   CHOOSE DIRECTION
+========================================================= */
+
+async function chooseDirection(
+  direction
+){
+
+  if(player.selectedDirection){
+
+    showToast(
+      "На этой неделе направление уже выбрано."
+    );
+
+    return;
+
+  }
+
+  const level =
+    Number(
+      player
+        .directions[direction]
+        ?.level || 1
+    );
+
+  const available =
+    allTasks.filter(
+      task =>
+
+        task.active !== false &&
+
+        task.direction ===
+          direction &&
+
+        Number(task.level) ===
+          level
+    );
+
+  if(!available.length){
+
+    showToast(
+      `Для «${DIRECTION_NAMES[direction]}» пока нет задания уровня ${level}.`
+    );
+
+    return;
+
+  }
+
+  let candidates =
+    available;
+
+  const previousTaskIds =
+    currentHistory
+      .map(
+        item => item.taskId
+      )
+      .filter(Boolean);
+
+  const unused =
+    available.filter(
+      task =>
+        !previousTaskIds.includes(
+          task.id
+        )
+    );
+
+  if(unused.length){
+
+    candidates =
+      unused;
+
+  }
+
+  const selected =
+    candidates[
+      Math.floor(
+        Math.random() *
+        candidates.length
+      )
+    ];
 
   const currentWeek =
     personalWeekKey();
 
-  if(player.lastCompletedWeek===currentWeek){
+  try{
 
-    showToast("Ты уже выполнил задание этой недели.");
+    await updateDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+      {
 
-    return;
-  }
+        selectedDirection:
+          direction,
 
-  if(player.selectedWeek===currentWeek){
+        selectedTaskId:
+          selected.id,
 
-    showToast("Сначала выполни выбранное задание.");
+        selectedWeek:
+          currentWeek,
 
-    return;
-  }
+        updatedAt:
+          serverTimestamp()
 
-  const level =
-    directionLevel(direction);
-
-  const candidates =
-    allTasks.filter(task=>
-      task.active!==false &&
-      task.direction===direction &&
-      Number(task.level)===level
+      }
     );
 
-  if(!candidates.length){
+    player.selectedDirection =
+      direction;
+
+    player.selectedTaskId =
+      selected.id;
+
+    player.selectedWeek =
+      currentWeek;
+
+    currentTask =
+      selected;
 
     showToast(
-      `Для направления «${DIRECTIONS[direction].name}» пока нет заданий уровня ${level}.`
+      "Направление выбрано!"
+    );
+
+    render();
+
+  }catch(error){
+
+    console.error(
+      "Ошибка выбора направления:",
+      error
+    );
+
+    showToast(
+      "Не удалось сохранить выбор."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   COMPLETE WEEKLY TASK
+========================================================= */
+
+async function completeWeeklyTask(){
+
+  if(
+    weeklyCompleting
+  ){
+
+    return;
+
+  }
+
+  if(
+    !player.selectedDirection ||
+    !currentTask
+  ){
+
+    return;
+
+  }
+
+  const currentWeek =
+    personalWeekKey();
+
+  if(
+    player.lastCompletedWeek ===
+    currentWeek
+  ){
+
+    showToast(
+      "Задание этой недели уже выполнено."
     );
 
     return;
+
   }
 
-  /*
-    История используется только для предпочтения
-    ещё не выполнявшихся заданий.
-  */
+  weeklyCompleting = true;
 
-  let historyIds = new Set();
+  const direction =
+    player.selectedDirection;
+
+  const taskId =
+    currentTask.id;
+
+  const taskXP =
+    Number(
+      currentTask.xp || 0
+    );
 
   try{
 
-    const historySnap =
+    const playerRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+    const result =
+      await runTransaction(
+        db,
+        async transaction => {
+
+          const snap =
+            await transaction.get(
+              playerRef
+            );
+
+          if(!snap.exists()){
+
+            throw new Error(
+              "PLAYER_NOT_FOUND"
+            );
+
+          }
+
+          const data =
+            snap.data();
+
+          /*
+             Защита от повторного выполнения.
+
+             Даже если человек быстро нажмёт
+             кнопку несколько раз, Firebase
+             увидит уже изменённый lastCompletedWeek.
+          */
+
+          if(
+            data.lastCompletedWeek ===
+            currentWeek
+          ){
+
+            throw new Error(
+              "ALREADY_COMPLETED"
+            );
+
+          }
+
+          const oldWeek =
+            data.lastCompletedWeek || "";
+
+          let newStreak = 1;
+
+          if(oldWeek){
+
+            const previous =
+              new Date(
+                oldWeek +
+                "T00:00:00"
+              );
+
+            previous.setDate(
+              previous.getDate() + 7
+            );
+
+            if(
+              dateKey(previous) ===
+              currentWeek
+            ){
+
+              newStreak =
+                Number(
+                  data.streak || 0
+                ) + 1;
+
+            }
+
+          }
+
+          const directions =
+            {
+              ...(data.directions || {})
+            };
+
+          const oldDir =
+            directions[direction] ||
+            {
+              xp:0,
+              level:1
+            };
+
+          const oldLevel =
+            Math.max(
+              1,
+              Math.min(
+                4,
+                Number(
+                  oldDir.level || 1
+                )
+              )
+            );
+
+          const oldXP =
+            Number(
+              oldDir.xp || 0
+            );
+
+          /*
+             ГЛАВНОЕ ИЗМЕНЕНИЕ:
+
+             XP просто прибавляется.
+
+             Уровень повышается ровно
+             на один после выполненного
+             недельного задания.
+
+             1 → 2
+             2 → 3
+             3 → 4
+             4 → 4
+          */
+
+          const newDir = {
+
+            xp:
+              oldXP + taskXP,
+
+            level:
+              Math.min(
+                4,
+                oldLevel + 1
+              )
+
+          };
+
+          directions[direction] =
+            newDir;
+
+          const newTotalXP =
+            Number(
+              data.totalXP || 0
+            ) +
+            taskXP;
+
+          const newCompletedCount =
+            Number(
+              data.completedCount || 0
+            ) +
+            1;
+
+          transaction.update(
+            playerRef,
+            {
+
+              totalXP:
+                newTotalXP,
+
+              completedCount:
+                newCompletedCount,
+
+              streak:
+                newStreak,
+
+              lastCompletedWeek:
+                currentWeek,
+
+              directions,
+
+              selectedDirection:"",
+
+              selectedTaskId:"",
+
+              selectedWeek:"",
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+          return {
+
+            newTotalXP,
+            newCompletedCount,
+            newStreak,
+            directions,
+            oldLevel,
+            newLevel:newDir.level
+
+          };
+
+        }
+      );
+
+
+    /*
+       Пользовательский документ уже атомарно
+       обновлён.
+
+       Теперь записываем историю.
+    */
+
+    await addDoc(
+      collection(
+        db,
+        "users",
+        currentUser.uid,
+        "history"
+      ),
+      {
+
+        taskId,
+
+        direction,
+
+        directionName:
+          DIRECTION_NAMES[
+            direction
+          ],
+
+        taskText:
+          currentTask.text,
+
+        xp:taskXP,
+
+        week:
+          currentWeek,
+
+        completedAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    /*
+       Обновляем локальное состояние.
+    */
+
+    player.totalXP =
+      result.newTotalXP;
+
+    player.completedCount =
+      result.newCompletedCount;
+
+    player.streak =
+      result.newStreak;
+
+    player.lastCompletedWeek =
+      currentWeek;
+
+    player.directions =
+      result.directions;
+
+    player.selectedDirection = "";
+    player.selectedTaskId = "";
+    player.selectedWeek = "";
+
+    currentTask = null;
+
+    await loadHistory();
+
+    showToast(
+      `🔥 +${taskXP} XP! Уровень направления: ${result.newLevel}`
+    );
+
+    render();
+
+  }catch(error){
+
+    console.error(
+      "Ошибка выполнения задания:",
+      error
+    );
+
+    if(
+      error.message ===
+      "ALREADY_COMPLETED"
+    ){
+
+      showToast(
+        "Задание этой недели уже выполнено."
+      );
+
+    }else{
+
+      showToast(
+        "Не удалось сохранить выполнение."
+      );
+
+    }
+
+  }finally{
+
+    weeklyCompleting = false;
+
+  }
+
+}
+
+
+/* =========================================================
+   DAILY XP
+========================================================= */
+
+async function claimDaily(
+  type
+){
+
+  if(
+    type !== "prayer" &&
+    type !== "bible"
+  ){
+
+    return;
+
+  }
+
+  if(dailyClaimRunning)
+    return;
+
+  await checkDailyReset();
+
+  if(
+    player.daily?.[type]
+  ){
+
+    showToast(
+      "Сегодня этот бонус уже получен."
+    );
+
+    return;
+
+  }
+
+  dailyClaimRunning = true;
+
+  try{
+
+    const playerRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+    const result =
+      await runTransaction(
+        db,
+        async transaction => {
+
+          const snap =
+            await transaction.get(
+              playerRef
+            );
+
+          if(!snap.exists()){
+
+            throw new Error(
+              "PLAYER_NOT_FOUND"
+            );
+
+          }
+
+          const data =
+            snap.data();
+
+          const today =
+            dateKey();
+
+          const currentDaily =
+            data.daily || {};
+
+          /*
+             Если дата старая,
+             создаём новый день.
+          */
+
+          const daily =
+            currentDaily.date === today
+
+              ? {
+                  date:today,
+                  prayer:
+                    currentDaily.prayer === true,
+                  bible:
+                    currentDaily.bible === true
+                }
+
+              : {
+                  date:today,
+                  prayer:false,
+                  bible:false
+                };
+
+          /*
+             Защита от двойного клика.
+          */
+
+          if(daily[type] === true){
+
+            throw new Error(
+              "ALREADY_CLAIMED"
+            );
+
+          }
+
+          daily[type] = true;
+
+          const newTotal =
+            Number(
+              data.totalXP || 0
+            ) + 10;
+
+          transaction.update(
+            playerRef,
+            {
+
+              totalXP:
+                newTotal,
+
+              daily,
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+          return {
+
+            newTotal,
+            daily
+
+          };
+
+        }
+      );
+
+
+    player.totalXP =
+      result.newTotal;
+
+    player.daily =
+      result.daily;
+
+    showToast(
+      "+10 XP!"
+    );
+
+    render();
+
+  }catch(error){
+
+    console.error(
+      "Ошибка daily XP:",
+      error
+    );
+
+    if(
+      error.message ===
+      "ALREADY_CLAIMED"
+    ){
+
+      showToast(
+        "Сегодня этот бонус уже получен."
+      );
+
+    }else{
+
+      showToast(
+        "Не удалось получить XP."
+      );
+
+    }
+
+  }finally{
+
+    dailyClaimRunning = false;
+
+  }
+
+}
+
+
+$("prayerBtn").onclick =
+  () =>
+    claimDaily("prayer");
+
+
+$("bibleBtn").onclick =
+  () =>
+    claimDaily("bible");
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+async function loadHistory(){
+
+  try{
+
+    const q =
+      query(
+
+        collection(
+          db,
+          "users",
+          currentUser.uid,
+          "history"
+        ),
+
+        orderBy(
+          "completedAt",
+          "desc"
+        ),
+
+        limit(50)
+
+      );
+
+    const snapshot =
+      await getDocs(q);
+
+    currentHistory =
+      snapshot.docs.map(
+        d => ({
+          id:d.id,
+          ...d.data()
+        })
+      );
+
+  }catch(error){
+
+    console.error(
+      "Ошибка сортированной истории:",
+      error
+    );
+
+    const snapshot =
       await getDocs(
         collection(
           db,
@@ -2163,1841 +4011,418 @@ async function chooseDirection(direction){
         )
       );
 
-    historySnap.forEach(d=>{
+    currentHistory =
+      snapshot.docs
+        .map(
+          d => ({
+            id:d.id,
+            ...d.data()
+          })
+        )
+        .sort(
+          (a,b) => {
 
-      const data=d.data();
+            const ad =
+              a.completedAt
+                ?.toMillis?.() || 0;
 
-      if(data.taskId){
+            const bd =
+              b.completedAt
+                ?.toMillis?.() || 0;
 
-        historyIds.add(data.taskId);
-      }
+            return bd - ad;
 
-    });
-
-  }catch(err){
-
-    console.warn(
-      "Не удалось загрузить историю заданий",
-      err
-    );
-  }
-
-  let fresh =
-    candidates.filter(
-      task=>!historyIds.has(task.id)
-    );
-
-  if(!fresh.length){
-
-    fresh=candidates;
-  }
-
-  const task =
-    fresh[
-      Math.floor(
-        Math.random()*fresh.length
-      )
-    ];
-
-  await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {
-      selectedDirection:direction,
-      selectedTaskId:task.id,
-      selectedWeek:currentWeek,
-      updatedAt:serverTimestamp()
-    }
-  );
-
-  player.selectedDirection=direction;
-  player.selectedTaskId=task.id;
-  player.selectedWeek=currentWeek;
-
-  render();
-
-  showToast(
-    `Выбрано направление «${DIRECTIONS[direction].name}»`
-  );
-}
-
-
-window.chooseDirection=chooseDirection;
-
-
-/* =========================================================
-   WEEKLY COMPLETION
-========================================================= */
-
-async function completeWeeklyTask(){
-
-  if(weeklyCompletionRunning) return;
-
-  if(!player) return;
-
-  weeklyCompletionRunning=true;
-
-  try{
-
-    const userRef =
-      doc(db,"users",currentUser.uid);
-
-    const currentWeek =
-      personalWeekKey();
-
-    let result = null;
-
-    await runTransaction(
-      db,
-      async(transaction)=>{
-
-        const snap =
-          await transaction.get(userRef);
-
-        if(!snap.exists()){
-
-          throw new Error("USER_NOT_FOUND");
-        }
-
-        const data =
-          snap.data();
-
-        if(data.lastCompletedWeek===currentWeek){
-
-          throw new Error("WEEK_ALREADY_COMPLETED");
-        }
-
-        if(data.selectedWeek!==currentWeek ||
-           !data.selectedTaskId ||
-           !data.selectedDirection){
-
-          throw new Error("NO_SELECTED_TASK");
-        }
-
-        const task =
-          allTasks.find(
-            t=>t.id===data.selectedTaskId
-          );
-
-        if(!task){
-
-          throw new Error("TASK_NOT_FOUND");
-        }
-
-        const directions =
-          normalizeDirections(data.directions);
-
-        const direction =
-          data.selectedDirection;
-
-        const oldDirection =
-          directions[direction];
-
-        const taskXP =
-          Number(task.xp || 0);
-
-        const newDirectionXP =
-          Number(oldDirection.xp || 0)+taskXP;
-
-        /*
-          ВАЖНО:
-          уровень повышается после выполнения задания,
-          а не от XP.
-        */
-
-        const newLevel =
-          Math.min(
-            4,
-            Number(oldDirection.level || 1)+1
-          );
-
-        directions[direction]={
-          xp:newDirectionXP,
-          level:newLevel
-        };
-
-        const oldStreak =
-          Number(data.streak || 0);
-
-        let newStreak=1;
-
-        if(data.lastCompletedWeek){
-
-          const previous =
-            new Date(
-              data.lastCompletedWeek+"T00:00:00"
-            );
-
-          const current =
-            new Date(
-              currentWeek+"T00:00:00"
-            );
-
-          const diff =
-            Math.round(
-              (current-previous)/
-              (1000*60*60*24)
-            );
-
-          if(diff===7){
-
-            newStreak =
-              oldStreak+1;
           }
-        }
+        )
+        .slice(0,50);
 
-        const newTotalXP =
-          Number(data.totalXP || 0)+taskXP;
-
-        const newCompletedCount =
-          Number(data.completedCount || 0)+1;
-
-        transaction.update(
-          userRef,
-          {
-            directions,
-            totalXP:newTotalXP,
-            streak:newStreak,
-            lastCompletedWeek:currentWeek,
-            completedCount:newCompletedCount,
-
-            selectedDirection:"",
-            selectedTaskId:"",
-            selectedWeek:"",
-
-            updatedAt:serverTimestamp()
-          }
-        );
-
-        result={
-          task,
-          direction,
-          taskXP,
-          newDirectionXP,
-          newLevel,
-          newTotalXP,
-          newStreak,
-          newCompletedCount
-        };
-
-      }
-    );
-
-    /*
-      История после успешной транзакции.
-    */
-
-    await addDoc(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "history"
-      ),
-      {
-        type:"weekly",
-        taskId:result.task.id,
-        direction:result.direction,
-        level:Number(result.task.level || 1),
-        text:result.task.text || "",
-        xp:result.taskXP,
-        completedAt:serverTimestamp()
-      }
-    );
-
-    /*
-      Обновляем локального игрока.
-    */
-
-    player.directions =
-      normalizeDirections(player.directions);
-
-    player.directions[result.direction]={
-      xp:result.newDirectionXP,
-      level:result.newLevel
-    };
-
-    player.totalXP=result.newTotalXP;
-    player.streak=result.newStreak;
-    player.lastCompletedWeek=
-      currentWeek;
-    player.completedCount=
-      result.newCompletedCount;
-
-    player.selectedDirection="";
-    player.selectedTaskId="";
-    player.selectedWeek="";
-
-    render();
-
-    showToast(
-      `Задание выполнено! +${result.taskXP} XP 🎉`
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    if(err.message==="WEEK_ALREADY_COMPLETED"){
-
-      showToast(
-        "Это задание этой недели уже выполнено."
-      );
-
-    }else if(err.message==="NO_SELECTED_TASK"){
-
-      showToast(
-        "Сначала выбери направление."
-      );
-
-    }else if(err.message==="TASK_NOT_FOUND"){
-
-      showToast(
-        "Задание больше не найдено."
-      );
-
-    }else{
-
-      showToast(
-        "Не удалось выполнить задание. Попробуй ещё раз."
-      );
-    }
-
-  }finally{
-
-    weeklyCompletionRunning=false;
   }
+
 }
 
 
 /* =========================================================
-   DAILY CLAIM
-========================================================= */
-
-async function claimDaily(type){
-
-  if(dailyCompletionRunning) return;
-
-  if(type!=="prayer" && type!=="bible") return;
-
-  dailyCompletionRunning=true;
-
-  try{
-
-    const userRef =
-      doc(db,"users",currentUser.uid);
-
-    const today =
-      dateKey();
-
-    let result=null;
-
-    await runTransaction(
-      db,
-      async(transaction)=>{
-
-        const snap =
-          await transaction.get(userRef);
-
-        if(!snap.exists()){
-
-          throw new Error("USER_NOT_FOUND");
-        }
-
-        const data =
-          snap.data();
-
-        let daily =
-          data.daily || {};
-
-        if(daily.date!==today){
-
-          daily={
-            date:today,
-            prayer:false,
-            bible:false
-          };
-        }
-
-        if(daily[type]===true){
-
-          throw new Error("ALREADY_CLAIMED");
-        }
-
-        daily[type]=true;
-
-        const oldXP =
-          Number(data.totalXP || 0);
-
-        const newXP =
-          oldXP+10;
-
-        transaction.update(
-          userRef,
-          {
-            daily,
-            totalXP:newXP,
-            updatedAt:serverTimestamp()
-          }
-        );
-
-        result={
-          daily,
-          newXP
-        };
-
-      }
-    );
-
-    await addDoc(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "history"
-      ),
-      {
-        type:"daily",
-        dailyType:type,
-        text:
-          type==="prayer"
-            ? "Молитва"
-            : "Чтение Библии",
-        xp:10,
-        completedAt:serverTimestamp()
-      }
-    );
-
-    player.daily=result.daily;
-    player.totalXP=result.newXP;
-
-    render();
-
-    showToast(
-      `+10 XP за ${
-        type==="prayer"
-          ? "молитву"
-          : "чтение Библии"
-      } 🙏`
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    if(err.message==="ALREADY_CLAIMED"){
-
-      showToast("Сегодня это уже получено.");
-
-    }else{
-
-      showToast("Не удалось получить XP.");
-    }
-
-  }finally{
-
-    dailyCompletionRunning=false;
-  }
-}
-
-
-window.claimDaily=claimDaily;
-
-
-/* =========================================================
-   URGENT TASKS
-========================================================= */
-
-async function loadUrgentTasks(){
-
-  try{
-
-    const snap =
-      await getDocs(
-        collection(db,"urgentTasks")
-      );
-
-    urgentTasks =
-      snap.docs.map(d=>({
-        id:d.id,
-        ...d.data()
-      }))
-      .filter(task=>
-        task.createdAt?.toMillis &&
-        task.expiresAt?.toMillis
-      )
-      .sort(
-        (a,b)=>
-          b.createdAt.toMillis()-
-          a.createdAt.toMillis()
-      );
-
-  }catch(err){
-
-    console.error(
-      "Ошибка загрузки срочных заданий",
-      err
-    );
-
-    urgentTasks=[];
-  }
-}
-
-
-function getActiveUrgent(){
-
-  const now=Date.now();
-
-  return urgentTasks.find(task=>
-    task.expiresAt?.toMillis &&
-    task.expiresAt.toMillis()>now
-  ) || null;
-}
-
-
-async function renderUrgent(){
-
-  const card =
-    document.getElementById("urgentCard");
-
-  const content =
-    document.getElementById("urgentContent");
-
-  const countdown =
-    document.getElementById("urgentCountdown");
-
-  const active =
-    getActiveUrgent();
-
-  if(!active){
-
-    card.classList.add("hidden");
-    content.innerHTML="";
-    countdown.textContent="";
-
-    stopUrgentTimer();
-
-    return;
-  }
-
-  card.classList.remove("hidden");
-
-  const completed =
-    player?.urgentCompleted?.[active.id]===true;
-
-  content.innerHTML=`
-
-    <div class="urgent-task">
-
-      <div class="task-meta">
-
-        <span class="badge badge-gold">
-          +${Number(active.xp || 0)} XP
-        </span>
-
-        <span class="badge">
-          До ${formatDateTime(active.expiresAt)}
-        </span>
-
-      </div>
-
-      <div class="task-text">
-        ${escapeHtml(active.text)}
-      </div>
-
-      <button
-        id="urgentCompleteButton"
-        class="btn ${completed ? "" : "btn-green"}"
-        ${completed ? "disabled" : ""}
-        onclick="completeUrgent('${active.id}')"
-      >
-        ${completed ? "Выполнено ✓" : "Выполнить"}
-      </button>
-
-    </div>
-
-  `;
-
-  startUrgentTimer();
-}
-
-
-function startUrgentTimer(){
-
-  stopUrgentTimer();
-
-  updateUrgentCountdown();
-
-  urgentTimer =
-    setInterval(
-      updateUrgentCountdown,
-      1000
-    );
-}
-
-
-function stopUrgentTimer(){
-
-  if(urgentTimer){
-
-    clearInterval(urgentTimer);
-    urgentTimer=null;
-  }
-}
-
-
-function updateUrgentCountdown(){
-
-  const active =
-    getActiveUrgent();
-
-  const el =
-    document.getElementById("urgentCountdown");
-
-  if(!el){
-
-    stopUrgentTimer();
-    return;
-  }
-
-  if(!active){
-
-    el.textContent="";
-    stopUrgentTimer();
-
-    loadUrgentTasks()
-      .then(renderUrgent);
-
-    return;
-  }
-
-  const diff =
-    active.expiresAt.toMillis()-
-    Date.now();
-
-  const totalSeconds =
-    Math.max(
-      0,
-      Math.floor(diff/1000)
-    );
-
-  const hours =
-    Math.floor(totalSeconds/3600);
-
-  const minutes =
-    Math.floor(
-      (totalSeconds%3600)/60
-    );
-
-  const seconds =
-    totalSeconds%60;
-
-  el.textContent =
-    `Осталось ${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
-}
-
-
-async function completeUrgent(taskId){
-
-  if(urgentCompletionRunning) return;
-
-  urgentCompletionRunning=true;
-
-  try{
-
-    const task =
-      urgentTasks.find(
-        t=>t.id===taskId
-      );
-
-    if(!task){
-
-      showToast("Срочное задание не найдено.");
-      return;
-    }
-
-    if(
-      !task.expiresAt?.toMillis ||
-      task.expiresAt.toMillis()<=Date.now()
-    ){
-
-      showToast("Время этого задания уже закончилось.");
-
-      await loadUrgentTasks();
-      await renderUrgent();
-
-      return;
-    }
-
-    const userRef =
-      doc(db,"users",currentUser.uid);
-
-    let result=null;
-
-    await runTransaction(
-      db,
-      async(transaction)=>{
-
-        const snap =
-          await transaction.get(userRef);
-
-        if(!snap.exists()){
-
-          throw new Error("USER_NOT_FOUND");
-        }
-
-        const data =
-          snap.data();
-
-        const completed =
-          data.urgentCompleted || {};
-
-        if(completed[taskId]===true){
-
-          throw new Error("ALREADY_COMPLETED");
-        }
-
-        completed[taskId]=true;
-
-        const newXP =
-          Number(data.totalXP || 0)+
-          Number(task.xp || 0);
-
-        transaction.update(
-          userRef,
-          {
-            totalXP:newXP,
-            urgentCompleted:completed,
-            updatedAt:serverTimestamp()
-          }
-        );
-
-        result={
-          newXP,
-          completed
-        };
-
-      }
-    );
-
-    await addDoc(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "history"
-      ),
-      {
-        type:"urgent",
-        taskId,
-        text:task.text || "",
-        xp:Number(task.xp || 0),
-        completedAt:serverTimestamp()
-      }
-    );
-
-    player.totalXP=result.newXP;
-    player.urgentCompleted=
-      result.completed;
-
-    render();
-
-    showToast(
-      `Срочное задание выполнено! +${Number(task.xp || 0)} XP 🔥`
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    if(err.message==="ALREADY_COMPLETED"){
-
-      showToast(
-        "Ты уже выполнял это срочное задание."
-      );
-
-    }else{
-
-      showToast(
-        "Не удалось выполнить срочное задание."
-      );
-    }
-
-  }finally{
-
-    urgentCompletionRunning=false;
-  }
-}
-
-
-window.completeUrgent=completeUrgent;
-
-
-/* =========================================================
-   ADMIN CHECK
-========================================================= */
-
-async function checkAdmin(){
-
-  try{
-
-    const ref =
-      doc(db,"admins",currentUser.uid);
-
-    const snap =
-      await getDoc(ref);
-
-    return (
-      snap.exists() &&
-      snap.data().active===true
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    return false;
-  }
-}
-
-
-/* =========================================================
-   ADMIN OPEN/CLOSE
-========================================================= */
-
-window.openAdmin = async function(){
-
-  const allowed =
-    await checkAdmin();
-
-  if(!allowed){
-
-    showToast("Нет доступа.");
-    return;
-  }
-
-  document
-    .getElementById("adminModal")
-    .classList.remove("hidden");
-
-  await loadAdminData();
-};
-
-
-window.closeAdmin=function(){
-
-  document
-    .getElementById("adminModal")
-    .classList.add("hidden");
-};
-
-
-window.switchAdminTab=function(tab,button){
-
-  document
-    .querySelectorAll(".admin-tab")
-    .forEach(el=>el.classList.remove("active"));
-
-  document
-    .querySelectorAll(".admin-section")
-    .forEach(el=>el.classList.remove("active"));
-
-  if(button){
-
-    button.classList.add("active");
-  }
-
-  const sectionMap={
-    results:"adminResults",
-    tasks:"adminTasks",
-    urgent:"adminUrgent",
-    xp:"adminXP"
-  };
-
-  document
-    .getElementById(sectionMap[tab])
-    .classList.add("active");
-};
-
-
-/* =========================================================
-   ADMIN DATA
-========================================================= */
-
-async function loadAdminData(){
-
-  await Promise.all([
-    loadAllUsers(),
-    loadTasks(),
-    loadUrgentTasks()
-  ]);
-
-  renderAdminResults();
-  renderAdminTasks();
-  renderAdminUrgent();
-  renderXPUsers();
-}
-
-
-async function loadAllUsers(){
-
-  const snap =
-    await getDocs(
-      collection(db,"users")
-    );
-
-  allUsers =
-    snap.docs.map(d=>({
-      id:d.id,
-      ...d.data()
-    }));
-}
-
-
-/* =========================================================
-   ADMIN RESULTS
-========================================================= */
-
-function renderAdminResults(){
-
-  const tbody =
-    document.getElementById("resultsTable");
-
-  const sorted =
-    [...allUsers].sort(
-      (a,b)=>
-        Number(b.totalXP||0)-
-        Number(a.totalXP||0)
-    );
-
-  tbody.innerHTML =
-    sorted.map(user=>{
-
-      const directions =
-        normalizeDirections(user.directions);
-
-      const highestLevel =
-        Math.max(
-          directions.spirit.level,
-          directions.strength.level,
-          directions.mind.level,
-          directions.soul.level
-        );
-
-      return `
-        <tr>
-
-          <td>
-            ${escapeHtml(
-              user.name ||
-              user.email ||
-              "Без имени"
-            )}
-          </td>
-
-          <td>
-            ${Number(user.totalXP||0)}
-          </td>
-
-          <td>
-            ${overallLevel(user.totalXP||0)}
-          </td>
-
-          <td>
-            ${Number(user.streak||0)}
-          </td>
-
-          <td>
-            ${Number(user.completedCount||0)}
-          </td>
-
-        </tr>
-      `;
-
-    }).join("");
-}
-
-
-/* =========================================================
-   ADMIN TASKS
-========================================================= */
-
-async function adminAddTask(){
-
-  const direction =
-    document.getElementById("taskDirection").value;
-
-  const level =
-    Number(
-      document.getElementById("taskLevel").value
-    );
-
-  const xp =
-    Number(
-      document.getElementById("taskXP").value
-    );
-
-  const text =
-    document.getElementById("taskText").value.trim();
-
-  const active =
-    document.getElementById("taskActive").checked;
-
-  if(!text){
-
-    showToast("Введите текст задания.");
-    return;
-  }
-
-  if(!xp || xp<10){
-
-    showToast("Укажите XP.");
-    return;
-  }
-
-  try{
-
-    await addDoc(
-      collection(db,"tasks"),
-      {
-        direction,
-        level,
-        xp,
-        text,
-        active,
-        createdAt:serverTimestamp(),
-        createdBy:currentUser.uid
-      }
-    );
-
-    document.getElementById("taskText").value="";
-
-    await loadTasks();
-    renderAdminTasks();
-
-    showToast("Задание добавлено.");
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast("Не удалось добавить задание.");
-  }
-}
-
-
-window.adminAddTask=adminAddTask;
-
-
-/*
-  Идемпотентный seed.
-
-  Повторное нажатие НЕ создаёт одинаковые
-  задания снова.
-*/
-
-async function seedBaseTasks(){
-
-  try{
-
-    await loadTasks();
-
-    let added=0;
-
-    for(const base of BASE_TASKS){
-
-      const exists =
-        allTasks.some(task=>
-          task.direction===base.direction &&
-          Number(task.level)===Number(base.level) &&
-          Number(task.xp)===Number(base.xp) &&
-          String(task.text||"").trim()===
-          String(base.text||"").trim()
-        );
-
-      if(exists){
-
-        continue;
-      }
-
-      await addDoc(
-        collection(db,"tasks"),
-        {
-          ...base,
-          active:true,
-          createdAt:serverTimestamp(),
-          createdBy:currentUser.uid,
-          baseTask:true
-        }
-      );
-
-      added++;
-    }
-
-    await loadTasks();
-    renderAdminTasks();
-
-    if(added===0){
-
-      showToast(
-        "Все базовые задания уже загружены."
-      );
-
-    }else{
-
-      showToast(
-        `Добавлено базовых заданий: ${added}`
-      );
-    }
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast(
-      "Не удалось загрузить базовые задания."
-    );
-  }
-}
-
-
-window.seedBaseTasks=seedBaseTasks;
-
-
-/* =========================================================
-   ADMIN TASK LIST
-========================================================= */
-
-function renderAdminTasks(){
-
-  const el =
-    document.getElementById("adminTaskList");
-
-  const sorted =
-    [...allTasks].sort(
-      (a,b)=>
-        String(a.direction).localeCompare(
-          String(b.direction)
-        ) ||
-        Number(a.level||0)-
-        Number(b.level||0)
-    );
-
-  if(!sorted.length){
-
-    el.innerHTML=
-      `<div style="color:var(--muted);">Заданий пока нет.</div>`;
-
-    return;
-  }
-
-  el.innerHTML =
-    sorted.map(task=>{
-
-      const direction =
-        DIRECTIONS[task.direction];
-
-      return `
-
-        <div class="task-admin-item">
-
-          <div class="task-admin-top">
-
-            <div>
-
-              <div class="task-admin-text">
-                ${escapeHtml(task.text)}
-              </div>
-
-              <div class="task-meta" style="margin-top:8px;">
-
-                <span class="badge badge-purple">
-                  ${direction?.icon || ""} ${direction?.name || task.direction}
-                </span>
-
-                <span class="badge">
-                  Уровень ${Number(task.level||1)}
-                </span>
-
-                <span class="badge badge-green">
-                  +${Number(task.xp||0)} XP
-                </span>
-
-                ${
-                  task.active===false
-                    ? `<span class="badge">Выключено</span>`
-                    : ""
-                }
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="task-admin-actions">
-
-            <button
-              class="btn btn-danger"
-              onclick="adminDeleteTask('${task.id}')"
-            >
-              Удалить
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
-}
-
-
-window.adminDeleteTask=async function(taskId){
-
-  if(!confirm("Удалить это задание?")) return;
-
-  try{
-
-    await deleteDoc(
-      doc(db,"tasks",taskId)
-    );
-
-    await loadTasks();
-
-    renderAdminTasks();
-
-    showToast("Задание удалено.");
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast("Не удалось удалить задание.");
-  }
-};
-
-
-/* =========================================================
-   ADMIN URGENT
-========================================================= */
-
-async function adminCreateUrgent(){
-
-  if(urgentCreateRunning) return;
-
-  urgentCreateRunning=true;
-
-  try{
-
-    await loadUrgentTasks();
-
-    const active =
-      getActiveUrgent();
-
-    if(active){
-
-      showToast(
-        "Сейчас уже есть активное срочное задание."
-      );
-
-      return;
-    }
-
-    const text =
-      document
-        .getElementById("urgentText")
-        .value
-        .trim();
-
-    const xp =
-      Number(
-        document
-          .getElementById("urgentXP")
-          .value
-      );
-
-    if(!text){
-
-      showToast("Введите задание.");
-      return;
-    }
-
-    if(!xp || xp<10){
-
-      showToast("Укажите XP.");
-      return;
-    }
-
-    /*
-      Сначала создаём документ с serverTimestamp.
-    */
-
-    const ref =
-      await addDoc(
-        collection(db,"urgentTasks"),
-        {
-          text,
-          xp,
-          createdAt:serverTimestamp(),
-          expiresAt:null,
-          createdBy:currentUser.uid
-        }
-      );
-
-    /*
-      Получаем server timestamp,
-      чтобы 24 часа считались от времени создания.
-    */
-
-    const createdSnap =
-      await getDoc(ref);
-
-    const createdData =
-      createdSnap.data();
-
-    let createdAtMillis =
-      Date.now();
-
-    if(createdData?.createdAt?.toMillis){
-
-      createdAtMillis =
-        createdData.createdAt.toMillis();
-    }
-
-    const expiresAt =
-      new Date(
-        createdAtMillis+
-        24*60*60*1000
-      );
-
-    await updateDoc(
-      ref,
-      {
-        expiresAt
-      }
-    );
-
-    document.getElementById("urgentText").value="";
-
-    await loadUrgentTasks();
-
-    await renderUrgent();
-
-    renderAdminUrgent();
-
-    showToast(
-      "Срочное задание создано на 24 часа."
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast(
-      "Не удалось создать срочное задание."
-    );
-
-  }finally{
-
-    urgentCreateRunning=false;
-  }
-}
-
-
-window.adminCreateUrgent=adminCreateUrgent;
-
-
-/* =========================================================
-   ADMIN URGENT LIST
-========================================================= */
-
-function renderAdminUrgent(){
-
-  const el =
-    document.getElementById("adminUrgentList");
-
-  const sorted =
-    [...urgentTasks].sort(
-      (a,b)=>
-        (b.createdAt?.toMillis?.()||0)-
-        (a.createdAt?.toMillis?.()||0)
-    );
-
-  if(!sorted.length){
-
-    el.innerHTML=
-      `<div style="color:var(--muted);">Срочных заданий пока нет.</div>`;
-
-    return;
-  }
-
-  el.innerHTML =
-    sorted.map(task=>{
-
-      const active =
-        task.expiresAt?.toMillis &&
-        task.expiresAt.toMillis()>Date.now();
-
-      return `
-
-        <div class="task-admin-item">
-
-          <div class="task-admin-text">
-            ${escapeHtml(task.text)}
-          </div>
-
-          <div class="task-meta" style="margin-top:8px;">
-
-            <span class="badge badge-gold">
-              +${Number(task.xp||0)} XP
-            </span>
-
-            <span class="badge">
-              Создано ${formatDateTime(task.createdAt)}
-            </span>
-
-            <span class="badge">
-              ${active ? "Активно" : "Истекло"}
-            </span>
-
-          </div>
-
-          <div class="task-admin-actions">
-
-            <button
-              class="btn btn-danger"
-              onclick="adminDeleteUrgent('${task.id}')"
-            >
-              Удалить
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
-}
-
-
-window.adminDeleteUrgent=async function(taskId){
-
-  if(!confirm("Удалить срочное задание?")) return;
-
-  try{
-
-    await deleteDoc(
-      doc(db,"urgentTasks",taskId)
-    );
-
-    await loadUrgentTasks();
-
-    await renderUrgent();
-
-    renderAdminUrgent();
-
-    showToast("Срочное задание удалено.");
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast(
-      "Не удалось удалить срочное задание."
-    );
-  }
-};
-
-
-/* =========================================================
-   ADMIN XP
-========================================================= */
-
-function renderXPUsers(){
-
-  const select =
-    document.getElementById("xpUser");
-
-  const sorted =
-    [...allUsers].sort(
-      (a,b)=>
-        String(a.name||a.email||"")
-          .localeCompare(
-            String(b.name||b.email||""),
-            "ru"
-          )
-    );
-
-  select.innerHTML =
-    sorted.map(user=>`
-
-      <option value="${user.id}">
-        ${escapeHtml(
-          user.name ||
-          user.email ||
-          user.id
-        )}
-      </option>
-
-    `).join("");
-}
-
-
-async function adminAddXP(){
-
-  const uid =
-    document.getElementById("xpUser").value;
-
-  const amount =
-    Number(
-      document.getElementById("xpAmount").value
-    );
-
-  if(!uid){
-
-    showToast("Выберите игрока.");
-    return;
-  }
-
-  if(!amount || amount<10 || amount%10!==0){
-
-    showToast(
-      "XP должно быть положительным числом, кратным 10."
-    );
-
-    return;
-  }
-
-  try{
-
-    const userRef =
-      doc(db,"users",uid);
-
-    let newXP=0;
-
-    await runTransaction(
-      db,
-      async(transaction)=>{
-
-        const snap =
-          await transaction.get(userRef);
-
-        if(!snap.exists()){
-
-          throw new Error("USER_NOT_FOUND");
-        }
-
-        const data =
-          snap.data();
-
-        newXP =
-          Number(data.totalXP||0)+amount;
-
-        transaction.update(
-          userRef,
-          {
-            totalXP:newXP,
-            updatedAt:serverTimestamp()
-          }
-        );
-      }
-    );
-
-    await addDoc(
-      collection(
-        db,
-        "users",
-        uid,
-        "history"
-      ),
-      {
-        type:"admin_xp",
-        xp:amount,
-        text:"Начисление XP администратором",
-        addedBy:currentUser.uid,
-        completedAt:serverTimestamp()
-      }
-    );
-
-    await loadAllUsers();
-
-    renderAdminResults();
-
-    showToast(
-      `Игроку добавлено +${amount} XP.`
-    );
-
-  }catch(err){
-
-    console.error(err);
-
-    showToast(
-      "Не удалось начислить XP."
-    );
-  }
-}
-
-
-window.adminAddXP=adminAddXP;
-
-
-/* =========================================================
-   RENDER APP
+   RENDER
 ========================================================= */
 
 function render(){
 
-  if(!player) return;
+  if(!player)
+    return;
 
-  document.getElementById("welcomeTitle").textContent =
-    `Привет, ${player.name || "друг"}!`;
+  $("playerName").textContent =
+    player.name ||
+    "Игрок";
 
-  document.getElementById("weekInfo").textContent =
-    `Твоя ${weekNumber()}-я неделя`;
+  const totalXP =
+    Number(
+      player.totalXP || 0
+    );
 
-  document.getElementById("totalXP").textContent =
-    Number(player.totalXP||0);
+  const level =
+    overallLevel(totalXP);
 
-  document.getElementById("overallLevel").textContent =
-    overallLevel(player.totalXP||0);
+  const progress =
+    overallProgress(totalXP);
 
-  document.getElementById("streak").textContent =
-    Number(player.streak||0);
+  $("overallLevel").textContent =
+    `Уровень ${level}`;
 
-  document.getElementById("completedCount").textContent =
-    Number(player.completedCount||0);
+  $("totalXP").textContent =
+    `${totalXP} XP`;
+
+  $("overallProgress")
+    .style
+    .width =
+      `${(progress / 500) * 100}%`;
+
+  $("streak").textContent =
+    `${player.streak || 0} 🔥`;
+
+  $("completedCount").textContent =
+    player.completedCount || 0;
+
+  const unlocked =
+    ACHIEVEMENTS.filter(
+      a =>
+        a.check(player)
+    );
+
+  $("achievementCount")
+    .textContent =
+    unlocked.length;
 
   renderDirections();
   renderWeekly();
+  renderDaily();
   renderAchievements();
-  updateDailyButtons();
+  renderHistory();
 
-  loadHistoryAndRender();
 }
 
 
 /* =========================================================
-   RENDER DIRECTIONS
+   DIRECTIONS
 ========================================================= */
 
 function renderDirections(){
 
-  const el =
-    document.getElementById("directions");
+  const box =
+    $("directions");
 
-  el.innerHTML =
-    Object.entries(DIRECTIONS)
-      .map(([key,direction])=>{
+  box.innerHTML = "";
+
+  const selected =
+    player.selectedDirection;
+
+  Object
+    .entries(DIRECTION_NAMES)
+    .forEach(
+      ([key,name]) => {
+
+        const state =
+          player.directions[key] ||
+          {
+            xp:0,
+            level:1
+          };
 
         const level =
-          directionLevel(key);
-
-        const xp =
-          Number(
-            player.directions?.[key]?.xp || 0
+          Math.max(
+            1,
+            Math.min(
+              4,
+              Number(
+                state.level || 1
+              )
+            )
           );
 
-        const progress =
-          directionProgress(level);
+        const locked =
+          selected &&
+          selected !== key;
 
-        const selected =
-          player.selectedDirection===key &&
-          player.selectedWeek===personalWeekKey();
+        const div =
+          document.createElement(
+            "div"
+          );
 
-        const completedThisWeek =
-          player.lastCompletedWeek===
-          personalWeekKey();
+        div.className =
+          "direction" +
+          (
+            locked
+              ? " locked"
+              : ""
+          );
 
-        let buttonText =
-          "Выбрать";
+        div.innerHTML = `
 
-        let disabled=false;
+          <div class="dir-icon">
+            ${DIRECTION_ICONS[key]}
+          </div>
 
-        if(selected){
+          <div class="dir-name">
+            ${escapeHtml(
+              name.replace(
+                /^.+? /,
+                ""
+              )
+            )}
+          </div>
 
-          buttonText="Выбрано ✓";
-          disabled=true;
+          <div class="dir-level">
+            Уровень ${level}
+          </div>
 
-        }else if(completedThisWeek){
+          <div class="dir-bar">
 
-          buttonText="Неделя выполнена";
-          disabled=true;
+            <div
+              style="
+                width:${directionProgress(level)}%
+              "
+            ></div>
 
-        }
+          </div>
 
-        return `
-
-          <div class="direction">
-
-            <div class="direction-icon">
-              ${direction.icon}
-            </div>
-
-            <div class="direction-name">
-              ${direction.name}
-            </div>
-
-            <div class="direction-level">
-              Уровень ${level}/4 · ${xp} XP
-            </div>
-
-            <div class="progress">
-              <div
-                class="progress-bar"
-                style="width:${progress}%"
-              ></div>
-            </div>
-
-            <div style="font-size:11px;color:var(--muted);">
-              ${progress}% пути
-            </div>
-
-            <button
-              class="btn ${
-                selected
-                  ? "btn-green"
-                  : "btn-primary"
-              }"
-              ${disabled ? "disabled" : ""}
-              onclick="chooseDirection('${key}')"
-            >
-              ${buttonText}
-            </button>
-
+          <div
+            style="
+              color:var(--muted);
+              font-size:11px;
+              margin-top:8px
+            "
+          >
+            ${Number(state.xp || 0)} XP
           </div>
 
         `;
 
-      }).join("");
+        if(!selected){
+
+          div.style.cursor =
+            "pointer";
+
+          div.onclick =
+            () =>
+              chooseDirection(key);
+
+        }
+
+        box.appendChild(div);
+
+      }
+    );
+
 }
 
 
 /* =========================================================
-   RENDER WEEKLY
+   WEEKLY
 ========================================================= */
 
 function renderWeekly(){
 
-  const content =
-    document.getElementById("weeklyContent");
+  const box =
+    $("weeklyCard");
 
-  const subtitle =
-    document.getElementById("weekSubtitle");
+  $("weekLabel")
+    .textContent =
+      `неделя с ${formatWeekLabel()}`;
 
   const currentWeek =
     personalWeekKey();
 
-  const completed =
-    player.lastCompletedWeek===currentWeek;
+  if(
+    player.lastCompletedWeek ===
+    currentWeek
+  ){
 
-  if(completed){
+    box.innerHTML = `
 
-    subtitle.textContent =
-      "Ты уже выполнил задание этой недели. Возвращайся на следующей неделе!";
+      <div
+        style="
+          text-align:center;
+          padding:20px
+        "
+      >
 
-    content.innerHTML=`
-
-      <div class="selected-task">
-
-        <div class="task-meta">
-
-          <span class="badge badge-green">
-            ✓ Неделя выполнена
-          </span>
-
+        <div style="font-size:45px">
+          🎉
         </div>
 
-        <div class="task-text">
-          Отличная работа! 💪
-        </div>
+        <h3>
+          Задание недели выполнено!
+        </h3>
 
-        <div style="color:var(--muted);line-height:1.5;">
-          На следующей персональной неделе ты сможешь выбрать новое направление.
-        </div>
+        <p style="color:var(--muted)">
+          Следующее задание появится
+          с новой личной недели.
+        </p>
 
       </div>
 
     `;
 
     return;
-  }
-
-  if(
-    player.selectedWeek===currentWeek &&
-    player.selectedTaskId
-  ){
-
-    const task =
-      allTasks.find(
-        t=>t.id===player.selectedTaskId
-      );
-
-    if(task){
-
-      const direction =
-        DIRECTIONS[player.selectedDirection];
-
-      subtitle.textContent =
-        `Ты выбрал направление «${direction?.name || ""}».`;
-
-      content.innerHTML=`
-
-        <div class="selected-task">
-
-          <div class="task-meta">
-
-            <span class="badge badge-purple">
-              ${direction?.icon || ""} ${direction?.name || ""}
-            </span>
-
-            <span class="badge">
-              Уровень ${Number(task.level||1)}
-            </span>
-
-            <span class="badge badge-green">
-              +${Number(task.xp||0)} XP
-            </span>
-
-          </div>
-
-          <div class="task-text">
-            ${escapeHtml(task.text)}
-          </div>
-
-          <button
-            class="btn btn-green"
-            onclick="completeWeeklyTask()"
-          >
-            Выполнить задание ✓
-          </button>
-
-        </div>
-
-      `;
-
-      return;
-    }
 
   }
 
-  subtitle.textContent =
-    "Сначала выбери одно из четырёх направлений.";
 
-  content.innerHTML=`
+  if(!player.selectedDirection){
 
-    <div style="
-      padding:20px;
-      border:1px dashed #35415f;
-      border-radius:16px;
-      color:var(--muted);
-      line-height:1.5;
-    ">
-      Выбери направление ниже. После выбора тебе откроется
-      конкретное задание твоего текущего уровня.
+    box.innerHTML = `
+
+      <div class="badge">
+        1 задание · 1 направление
+      </div>
+
+      <div class="task-text">
+        Выбери направление развития
+      </div>
+
+      <div class="task-meta">
+
+        После выбора остальные направления
+        будут заблокированы до следующей
+        личной недели.
+
+      </div>
+
+      <button
+        class="primary"
+        onclick="
+          document
+            .getElementById('directions')
+            .scrollIntoView({
+              behavior:'smooth'
+            })
+        "
+      >
+        Выбрать направление
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+
+  const task =
+    allTasks.find(
+      t =>
+        t.id ===
+        player.selectedTaskId
+    );
+
+  if(!task){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        Задание не найдено.
+        Попроси администратора
+        проверить задания.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  currentTask =
+    task;
+
+  box.innerHTML = `
+
+    <div class="week-head">
+
+      <div class="badge">
+        ${DIRECTION_NAMES[
+          player.selectedDirection
+        ]}
+      </div>
+
+      <div class="xp">
+        +${Number(task.xp)} XP
+      </div>
+
     </div>
 
+    <div class="task-text">
+      ${escapeHtml(task.text)}
+    </div>
+
+    <div class="task-meta">
+
+      Уровень задания:
+      ${Number(task.level)}
+
+    </div>
+
+    <button
+      id="completeTaskBtn"
+      class="primary"
+    >
+      Я выполнил задание
+    </button>
+
   `;
+
+  $("completeTaskBtn")
+    .onclick =
+      completeWeeklyTask;
+
+}
+
+
+/* =========================================================
+   DAILY RENDER
+========================================================= */
+
+function renderDaily(){
+
+  if(!player)
+    return;
+
+  const prayerDone =
+    player.daily?.prayer === true;
+
+  const bibleDone =
+    player.daily?.bible === true;
+
+  $("prayerCard")
+    .classList
+    .toggle(
+      "done",
+      prayerDone
+    );
+
+  $("bibleCard")
+    .classList
+    .toggle(
+      "done",
+      bibleDone
+    );
+
+  $("prayerBtn").disabled =
+    prayerDone;
+
+  $("bibleBtn").disabled =
+    bibleDone;
+
+  $("prayerBtn").textContent =
+    prayerDone
+      ? "✓ Получено"
+      : "+10 XP";
+
+  $("bibleBtn").textContent =
+    bibleDone
+      ? "✓ Получено"
+      : "+10 XP";
+
 }
 
 
@@ -4007,367 +4432,235 @@ function renderWeekly(){
 
 function renderAchievements(){
 
-  const el =
-    document.getElementById("achievements");
+  const box =
+    $("achievements");
 
-  const directions =
-    normalizeDirections(player.directions);
+  box.innerHTML = "";
 
-  const achievements=[
+  ACHIEVEMENTS.forEach(
+    a => {
 
-    {
-      icon:"🎯",
-      name:"Первое задание",
-      unlocked:
-        Number(player.completedCount||0)>=1
-    },
+      const unlocked =
+        a.check(player);
 
-    {
-      icon:"🔥",
-      name:"3 недели подряд",
-      unlocked:
-        Number(player.streak||0)>=3
-    },
+      const div =
+        document.createElement(
+          "div"
+        );
 
-    {
-      icon:"🏆",
-      name:"10 недель подряд",
-      unlocked:
-        Number(player.streak||0)>=10
-    },
+      div.className =
+        "achievement" +
+        (
+          unlocked
+            ? " unlocked"
+            : ""
+        );
 
-    {
-      icon:"👑",
-      name:"Все направления — уровень 4",
-      unlocked:
-        Object.values(directions)
-          .every(d=>Number(d.level||1)>=4)
-    },
+      div.innerHTML = `
 
-    {
-      icon:"⭐",
-      name:"Уровень 10",
-      unlocked:
-        overallLevel(player.totalXP||0)>=10
+        <div class="a-icon">
+          ${a.icon}
+        </div>
+
+        <b>
+          ${escapeHtml(a.title)}
+        </b>
+
+        <small>
+          ${escapeHtml(a.text)}
+        </small>
+
+      `;
+
+      box.appendChild(div);
+
     }
+  );
 
-  ];
+}
 
-  el.innerHTML =
-    achievements.map(item=>`
 
-      <div class="
-        achievement
-        ${item.unlocked ? "unlocked" : ""}
-      ">
+/* =========================================================
+   HISTORY RENDER
+========================================================= */
 
-        <div class="achievement-icon">
-          ${item.icon}
-        </div>
+function renderHistory(){
 
-        <div class="achievement-name">
-          ${item.name}
-        </div>
+  const box =
+    $("history");
 
-        <div style="
-          margin-top:5px;
-          color:var(--muted);
-          font-size:11px;
-        ">
-          ${item.unlocked ? "Получено ✓" : "Пока закрыто"}
-        </div>
+  if(!currentHistory.length){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        Здесь появятся выполненные
+        недельные задания.
 
       </div>
 
-    `).join("");
+    `;
+
+    return;
+
+  }
+
+  box.innerHTML = "";
+
+  currentHistory.forEach(
+    item => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "history-item";
+
+      div.innerHTML = `
+
+        <div>
+
+          <b>
+
+            ${escapeHtml(
+              item.taskText ||
+              "Задание"
+            )}
+
+          </b>
+
+          <span>
+
+            ${escapeHtml(
+              item.directionName ||
+              ""
+            )}
+
+            ·
+
+            ${formatDate(
+              item.completedAt
+            )}
+
+          </span>
+
+        </div>
+
+        <div class="xp">
+
+          +${Number(
+            item.xp || 0
+          )} XP
+
+        </div>
+
+      `;
+
+      box.appendChild(div);
+
+    }
+  );
+
 }
 
 
 /* =========================================================
-   HISTORY
+   WEEK LABEL
 ========================================================= */
 
-async function loadHistoryAndRender(){
+function formatWeekLabel(){
 
-  const el =
-    document.getElementById("history");
+  const d =
+    new Date(
+      personalWeekKey() +
+      "T00:00:00"
+    );
 
-  try{
-
-    let docs=[];
-
-    try{
-
-      const q =
-        query(
-          collection(
-            db,
-            "users",
-            currentUser.uid,
-            "history"
-          ),
-          orderBy("completedAt","desc"),
-          limit(50)
-        );
-
-      const snap =
-        await getDocs(q);
-
-      docs =
-        snap.docs.map(d=>({
-          id:d.id,
-          ...d.data()
-        }));
-
-    }catch(queryError){
-
-      console.warn(
-        "История без индекса, используем fallback",
-        queryError
-      );
-
-      const snap =
-        await getDocs(
-          collection(
-            db,
-            "users",
-            currentUser.uid,
-            "history"
-          )
-        );
-
-      docs =
-        snap.docs
-          .map(d=>({
-            id:d.id,
-            ...d.data()
-          }))
-          .sort(
-            (a,b)=>
-              (b.completedAt?.toMillis?.()||0)-
-              (a.completedAt?.toMillis?.()||0)
-          )
-          .slice(0,50);
+  return d.toLocaleDateString(
+    "ru-RU",
+    {
+      day:"numeric",
+      month:"long"
     }
+  );
 
-    if(!docs.length){
-
-      el.innerHTML=
-        `<div style="color:var(--muted);">
-          Здесь пока ничего нет.
-        </div>`;
-
-      return;
-    }
-
-    el.innerHTML =
-      docs.map(item=>{
-
-        let label="Действие";
-
-        if(item.type==="weekly")
-          label="🎯 "+(item.text||"Задание");
-
-        if(item.type==="daily"){
-
-          label =
-            item.dailyType==="prayer"
-              ? "🙏 Молитва"
-              : "📖 Чтение Библии";
-        }
-
-        if(item.type==="urgent")
-          label="🔥 "+(item.text||"Срочное задание");
-
-        if(item.type==="admin_xp")
-          label="⭐ "+(item.text||"Начисление XP");
-
-        return `
-
-          <div class="history-item">
-
-            <div>
-
-              <div class="history-name">
-                ${escapeHtml(label)}
-              </div>
-
-              <div class="history-date">
-                ${formatDateTime(item.completedAt)}
-              </div>
-
-            </div>
-
-            <div class="history-xp">
-              +${Number(item.xp||0)} XP
-            </div>
-
-          </div>
-
-        `;
-
-      }).join("");
-
-  }catch(err){
-
-    console.error(err);
-
-    el.innerHTML=
-      `<div style="color:var(--muted);">
-        Не удалось загрузить историю.
-      </div>`;
-  }
 }
 
 
 /* =========================================================
-   APP START
+   SECURITY
 ========================================================= */
 
-onAuthStateChanged(
-  auth,
-  async user=>{
+function escapeHtml(value){
 
-    try{
+  return String(value ?? "")
 
-      if(!user){
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
-        currentUser=null;
-        player=null;
-
-        document
-          .getElementById("loadingScreen")
-          .classList.add("hidden");
-
-        document
-          .getElementById("appScreen")
-          .classList.add("hidden");
-
-        document
-          .getElementById("authScreen")
-          .classList.remove("hidden");
-
-        return;
-      }
-
-      currentUser=user;
-
-      await loadPlayer();
-
-      await loadTasks();
-
-      await loadUrgentTasks();
-
-      const admin =
-        await checkAdmin();
-
-      document
-        .getElementById("adminButton")
-        .classList.toggle(
-          "hidden",
-          !admin
-        );
-
-      document
-        .getElementById("loadingScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("authScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("appScreen")
-        .classList.remove("hidden");
-
-      render();
-
-      await renderUrgent();
-
-    }catch(err){
-
-      console.error(
-        "Ошибка запуска приложения:",
-        err
-      );
-
-      document
-        .getElementById("loadingScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("authScreen")
-        .classList.remove("hidden");
-
-      document.getElementById("authError").textContent =
-        "Не удалось загрузить данные. Проверь подключение к интернету.";
-
-    }
-
-  }
-);
+}
 
 
 /* =========================================================
-   BACKGROUND CHECKS
+   GLOBALS
+========================================================= */
+
+window.chooseDirection =
+  chooseDirection;
+
+
+/* =========================================================
+   VISIBILITY
 ========================================================= */
 
 document.addEventListener(
   "visibilitychange",
-  async()=>{
+  () => {
 
-    if(document.visibilityState!=="visible") return;
+    if(
+      document.visibilityState ===
+      "visible" &&
+      appReady
+    ){
 
-    if(!currentUser || !player) return;
+      checkDailyReset();
 
-    try{
-
-      await checkDailyReset();
-
-      await loadUrgentTasks();
-
-      await renderUrgent();
-
-      render();
-
-    }catch(err){
-
-      console.error(err);
     }
 
   }
 );
 
 
+/* =========================================================
+   MINUTE CHECK
+========================================================= */
+
 setInterval(
-  async()=>{
+  () => {
 
-    if(!currentUser || !player) return;
+    if(appReady){
 
-    try{
+      checkDailyReset();
 
-      await checkDailyReset();
-
-      const active =
-        getActiveUrgent();
-
-      if(!active){
-
-        await loadUrgentTasks();
-        await renderUrgent();
-
-      }else{
-
-        updateUrgentCountdown();
-      }
-
-    }catch(err){
-
-      console.error(err);
     }
 
   },
-  60000
+  60 * 1000
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+console.log(
+  "МОЛОДЁЖКА loaded."
 );
 
 </script>
