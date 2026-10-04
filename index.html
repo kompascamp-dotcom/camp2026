@@ -1301,7 +1301,7 @@ from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 ========================================================= */
 
 const firebaseConfig = {
-  apiKey:"AIzaSyAgb8Y0sKVQ7D7aCPLSzSndPAvXzHJqOI0",
+  apiKey:"AIzaSyAgb8y0sKVQ7D7aCPLSzSndPAvXzHJqOI0",
   authDomain:"level-up-d19f9.firebaseapp.com",
   projectId:"level-up-d19f9",
   storageBucket:"level-up-d19f9.firebasestorage.app",
@@ -1546,18 +1546,7 @@ let allTasks = [];
 
 let isAdmin = false;
 
-/*
-   ВАЖНО:
-   appReady не даёт автоматическому сбросу
-   вмешиваться в процесс входа и начальной загрузки.
-*/
-
 let appReady = false;
-
-/*
-   Защита от одновременного запуска
-   нескольких проверок ежедневного сброса.
-*/
 
 let dailyResetRunning = false;
 
@@ -2105,11 +2094,6 @@ onAuthStateChanged(
   auth,
   async user => {
 
-    /*
-       Если пользователь вышел,
-       полностью выключаем фоновые проверки.
-    */
-
     if(!user){
 
       currentUser =
@@ -2136,11 +2120,6 @@ onAuthStateChanged(
 
     }
 
-    /*
-       Пока приложение загружается,
-       автоматический daily reset выключен.
-    */
-
     appReady =
       false;
 
@@ -2149,21 +2128,9 @@ onAuthStateChanged(
 
     try{
 
-      /*
-         1. Загружаем игрока
-      */
-
       await loadPlayer();
 
-      /*
-         2. Проверяем администратора
-      */
-
       await checkAdmin();
-
-      /*
-         3. Показываем приложение
-      */
 
       $("authScreen")
         .classList
@@ -2173,30 +2140,12 @@ onAuthStateChanged(
         .classList
         .remove("hidden");
 
-      /*
-         4. Загружаем задания
-      */
-
       await loadTasks();
-
-      /*
-         5. Загружаем историю
-      */
 
       await loadHistory();
 
-      /*
-         6. Теперь приложение полностью готово.
-         Только после этого разрешаем
-         автоматический daily reset.
-      */
-
       appReady =
         true;
-
-      /*
-         7. Первый render.
-      */
 
       render();
 
@@ -2255,11 +2204,6 @@ async function loadPlayer(){
     player =
       snap.data();
 
-    /*
-       Гарантируем наличие всех
-       четырёх направлений.
-    */
-
     player.directions = {
 
       ...emptyDirections(),
@@ -2268,22 +2212,8 @@ async function loadPlayer(){
 
     };
 
-    /* =====================================================
-       DAILY RESET
-    ====================================================== */
-
     const today =
       dateKey();
-
-    /*
-       Если:
-       - daily отсутствует
-       ИЛИ
-       - дата старого daily не совпадает
-         с сегодняшней
-
-       создаём новый daily.
-    */
 
     if(
       !player.daily ||
@@ -2318,11 +2248,6 @@ async function loadPlayer(){
 
     }else{
 
-      /*
-         Если день тот же самый,
-         сохраняем только настоящие boolean.
-      */
-
       player.daily = {
 
         date:today,
@@ -2336,11 +2261,6 @@ async function loadPlayer(){
       };
 
     }
-
-    /*
-       Если старому игроку ещё не задан
-       startDate, создаём его.
-    */
 
     if(
       !player.startDate
@@ -2381,16 +2301,6 @@ async function loadPlayer(){
     }
 
   }
-
-  /*
-     =====================================================
-     НЕДЕЛЬНЫЙ RESET
-     
-     Эта часть осталась такой же по смыслу.
-     Она зависит от личной недели игрока,
-     а не от того, выходил он из приложения или нет.
-     =====================================================
-  */
 
   const currentWeek =
     personalWeekKey();
@@ -2438,13 +2348,6 @@ async function loadPlayer(){
 
 async function checkDailyReset(){
 
-  /*
-     Не запускаем проверку:
-     - пока нет пользователя;
-     - пока нет player;
-     - пока приложение ещё загружается.
-  */
-
   if(
     !currentUser ||
     !player ||
@@ -2454,11 +2357,6 @@ async function checkDailyReset(){
     return;
 
   }
-
-  /*
-     Если другая проверка уже идёт,
-     не запускаем вторую.
-  */
 
   if(
     dailyResetRunning
@@ -2471,10 +2369,6 @@ async function checkDailyReset(){
   const today =
     dateKey();
 
-  /*
-     Сегодня уже всё правильно.
-  */
-
   if(
     player.daily?.date === today
   ){
@@ -2482,10 +2376,6 @@ async function checkDailyReset(){
     return;
 
   }
-
-  /*
-     Ставим блокировку.
-  */
 
   dailyResetRunning =
     true;
@@ -2501,11 +2391,6 @@ async function checkDailyReset(){
   };
 
   try{
-
-    /*
-       Сначала сохраняем новый день
-       в Firebase.
-    */
 
     await updateDoc(
 
@@ -2527,18 +2412,8 @@ async function checkDailyReset(){
 
     );
 
-    /*
-       Только после успешного Firebase
-       обновляем локального игрока.
-    */
-
     player.daily =
       newDaily;
-
-    /*
-       Перерисовываем только daily,
-       а не всё приложение.
-    */
 
     renderDaily();
 
@@ -2550,10 +2425,6 @@ async function checkDailyReset(){
     );
 
   }finally{
-
-    /*
-       В любом случае снимаем блокировку.
-    */
 
     dailyResetRunning =
       false;
@@ -3730,22 +3601,40 @@ async function completeWeeklyTask(){
       level:1
     };
 
-  const newDirXP =
-    Number(
-      oldDir.xp || 0
-    ) +
-    Number(
-      currentTask.xp
-    );
+  /*
+     =====================================================
+     ИСПРАВЛЕНИЕ УРОВНЕЙ
+     
+     Раньше уровень вычислялся из количества XP.
+     Из-за этого уровень мог не соответствовать
+     количеству выполненных недельных заданий.
+
+     Теперь:
+       уровень 1 → выполнил → уровень 2
+       уровень 2 → выполнил → уровень 3
+       уровень 3 → выполнил → уровень 4
+       уровень 4 → выполнил → остаётся 4
+
+     XP при этом продолжает накапливаться отдельно.
+     =====================================================
+  */
 
   const newDir = {
 
     xp:
-      newDirXP,
+      Number(
+        oldDir.xp || 0
+      ) +
+      Number(
+        currentTask.xp
+      ),
 
     level:
-      directionLevel(
-        newDirXP
+      Math.min(
+        4,
+        Number(
+          oldDir.level || 1
+        ) + 1
       )
 
   };
@@ -3925,11 +3814,6 @@ async function claimDaily(
 
   }
 
-  /*
-     Перед выдачей XP проверяем,
-     не наступил ли новый день.
-  */
-
   await checkDailyReset();
 
   if(
@@ -4101,6 +3985,7 @@ async function loadHistory(){
             ...d.data()
 
           })
+
         )
 
         .sort(
@@ -4775,23 +4660,6 @@ window.chooseDirection =
    DAILY AUTO RESET
 ========================================================= */
 
-/*
-   Проверяем дату, когда пользователь
-   возвращается в приложение.
-
-   Это особенно важно для версии,
-   добавленной на экран телефона.
-
-   Например:
-
-   Вчера:
-   🙏 Получено
-   📖 Получено
-
-   Сегодня пользователь снова открывает
-   приложение — бонусы сбрасываются.
-*/
-
 document.addEventListener(
   "visibilitychange",
   () => {
@@ -4808,14 +4676,6 @@ document.addEventListener(
 
   }
 );
-
-/*
-   Дополнительно проверяем каждую минуту.
-
-   Если приложение осталось открытым
-   в момент наступления нового дня,
-   бонусы тоже сбросятся.
-*/
 
 setInterval(
   () => {
