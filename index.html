@@ -998,6 +998,13 @@ button{cursor:pointer}
   </section>
 
   <div class="section-title">
+    <h2>⚡ Срочные задания</h2>
+    <span>доступны только сегодня</span>
+  </div>
+
+  <section id="urgentTasks" class="daily"></section>
+
+  <div class="section-title">
     <h2>🏆 Достижения</h2>
   </div>
 
@@ -1096,6 +1103,31 @@ button{cursor:pointer}
         ⭐ Начислить XP
       </button>
 
+    </div>
+
+    <div class="admin-xp-card">
+      <div class="admin-xp-title">⚡ Добавить срочное задание на сегодня</div>
+      <div class="field">
+        <label for="urgentTaskText">Текст задания</label>
+        <input id="urgentTaskText" maxlength="250" placeholder="Например: Помочь подготовить зал к встрече">
+      </div>
+      <div class="field">
+        <label for="urgentTaskXP">Награда, XP</label>
+        <select id="urgentTaskXP">
+          <option value="10">10 XP</option>
+          <option value="20">20 XP</option>
+          <option value="30">30 XP</option>
+          <option value="40">40 XP</option>
+          <option value="50" selected>50 XP</option>
+          <option value="60">60 XP</option>
+          <option value="70">70 XP</option>
+          <option value="80">80 XP</option>
+          <option value="90">90 XP</option>
+          <option value="100">100 XP</option>
+        </select>
+      </div>
+      <div class="task-meta">Задание будет доступно 24 часа с момента публикации.</div>
+      <button id="addUrgentTaskBtn" class="primary">Добавить задание</button>
     </div>
 
     <div class="section-title">
@@ -1292,7 +1324,8 @@ import {
   query,
   orderBy,
   limit,
-  serverTimestamp
+  serverTimestamp,
+  runTransaction
 }
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
@@ -1543,6 +1576,12 @@ let currentTask = null;
 let currentHistory = [];
 
 let allTasks = [];
+
+let urgentTasks = [];
+
+let urgentClaimIds = new Set();
+
+let urgentTasksLoadFailed = false;
 
 let isAdmin = false;
 
@@ -2184,6 +2223,8 @@ onAuthStateChanged(
       */
 
       await loadHistory();
+
+      await loadUrgentTasks();
 
       /*
          6. Теперь приложение полностью готово.
@@ -3443,6 +3484,32 @@ $("addTaskBtn").onclick =
 
   };
 
+$("addUrgentTaskBtn").onclick =
+  async () => {
+    if(!isAdmin) return;
+    const text = $("urgentTaskText").value.trim();
+    const xp = Number($("urgentTaskXP").value);
+    if(!text){ showToast("Напиши текст срочного задания."); return; }
+    if(![10,20,30,40,50,60,70,80,90,100].includes(xp)){
+      showToast("Выбери награду от 10 до 100 XP с шагом 10.");
+      return;
+    }
+
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    try{
+      await addDoc(collection(db, "urgentTasks"), {
+        text, xp, active:true, createdAt:serverTimestamp(), expiresAt, createdBy:currentUser.uid
+      });
+      $("urgentTaskText").value = "";
+      showToast("Срочное задание добавлено на 24 часа.");
+      await loadUrgentTasks();
+      render();
+    }catch(error){
+      console.error(error);
+      showToast("Не удалось добавить задание. Проверьте правила доступа Firebase.");
+    }
+  };
+
 $("seedTasksBtn").onclick =
   async () => {
 
@@ -3922,6 +3989,90 @@ async function completeWeeklyTask(){
 }
 
 /* =========================================================
+   URGENT TASKS
+========================================================= */
+
+async function loadUrgentTasks(){
+  urgentTasksLoadFailed = false;
+  try{
+    const now = Date.now();
+    const taskSnapshot = await getDocs(collection(db, "urgentTasks"));
+    urgentTasks = taskSnapshot.docs.map(d => ({ id:d.id, ...d.data() }))
+      .filter(task => task.active !== false && task.expiresAt?.toMillis?.() > now);
+    const claimsSnapshot = await getDocs(collection(db, "users", currentUser.uid, "urgentClaims"));
+    urgentClaimIds = new Set(claimsSnapshot.docs.map(d => d.id));
+  }catch(error){
+    console.error("Не удалось загрузить срочные задания:", error);
+    urgentTasksLoadFailed = true;
+    urgentTasks = [];
+    urgentClaimIds = new Set();
+  }
+}
+
+async function claimUrgentTask(taskId){
+  const taskRef = doc(db, "urgentTasks", taskId);
+  const userRef = doc(db, "users", currentUser.uid);
+  const claimRef = doc(db, "users", currentUser.uid, "urgentClaims", taskId);
+  try{
+    const result = await runTransaction(db, async transaction => {
+      const taskSnap = await transaction.get(taskRef);
+      const claimSnap = await transaction.get(claimRef);
+      const userSnap = await transaction.get(userRef);
+      if(!taskSnap.exists() || !userSnap.exists()) throw new Error("Задание или профиль не найден.");
+      if(claimSnap.exists()) return { alreadyClaimed:true };
+      const task = taskSnap.data();
+      if(task.active === false || !task.expiresAt?.toMillis || task.expiresAt.toMillis() <= Date.now())
+        throw new Error("Срок задания закончился.");
+      const xp = Number(task.xp);
+      if(!Number.isInteger(xp) || xp < 1) throw new Error("Некорректная награда задания.");
+      const currentXP = Number(userSnap.data().totalXP || 0);
+      transaction.update(userRef, { totalXP:currentXP + xp, updatedAt:serverTimestamp() });
+      transaction.set(claimRef, { taskId, taskText:String(task.text || "Срочное задание"), xp, claimedAt:serverTimestamp() });
+      return { xp };
+    });
+    if(result.alreadyClaimed){
+      urgentClaimIds.add(taskId);
+      showToast("За это задание XP уже получены.");
+      render();
+      return;
+    }
+    player.totalXP = Number(player.totalXP || 0) + result.xp;
+    urgentClaimIds.add(taskId);
+    showToast(`⚡ +${result.xp} XP за срочное задание!`);
+    render();
+  }catch(error){
+    console.error(error);
+    showToast(error.message === "Срок задания закончился." ? error.message : "Не удалось получить XP. Проверьте подключение и правила доступа Firebase.");
+    await loadUrgentTasks();
+    render();
+  }
+}
+
+function renderUrgentTasks(){
+  const box = $("urgentTasks");
+  if(!box) return;
+  const activeTasks = urgentTasks.filter(task => task.expiresAt?.toMillis?.() > Date.now());
+  if(!activeTasks.length){
+    const message = urgentTasksLoadFailed
+      ? "Не удалось загрузить срочные задания. Проверьте подключение и правила доступа Firebase."
+      : "Сегодня срочных заданий нет.";
+    box.innerHTML = `<div class="empty" style="grid-column:1/-1">${message}</div>`;
+    return;
+  }
+  box.innerHTML = "";
+  activeTasks.forEach(task => {
+    const claimed = urgentClaimIds.has(task.id);
+    const card = document.createElement("div");
+    card.className = "daily-card" + (claimed ? " done" : "");
+    card.innerHTML = `<div class="emoji">⚡</div><h3>${escapeHtml(task.text || "Срочное задание")}</h3><p>Награда: +${Number(task.xp) || 0} XP · доступно 24 часа после публикации</p><button class="secondary urgent-claim-btn" data-id="${escapeHtml(task.id)}" ${claimed ? "disabled" : ""}>${claimed ? "✓ XP получены" : `Получить +${Number(task.xp) || 0} XP`}</button>`;
+    box.appendChild(card);
+  });
+  box.querySelectorAll(".urgent-claim-btn").forEach(button => {
+    button.onclick = () => claimUrgentTask(button.dataset.id);
+  });
+}
+
+/* =========================================================
    DAILY XP
 ========================================================= */
 
@@ -4205,6 +4356,8 @@ function render(){
   renderWeekly();
 
   renderDaily();
+
+  renderUrgentTasks();
 
   renderAchievements();
 
@@ -4816,6 +4969,7 @@ document.addEventListener(
     ){
 
       checkDailyReset();
+      loadUrgentTasks().then(render);
 
     }
 
@@ -4838,6 +4992,7 @@ setInterval(
     ){
 
       checkDailyReset();
+      loadUrgentTasks().then(render);
 
     }
 
