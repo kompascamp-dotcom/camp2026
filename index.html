@@ -3738,14 +3738,27 @@ async function completeWeeklyTask(){
       currentTask.xp
     );
 
+  // Уровень направления повышается после завершения задания.
+  // Накопленные XP считаются отдельно и не блокируют переход.
+  const completedLevel =
+    Number(
+      currentTask.level ||
+      oldDir.level ||
+      1
+    );
+
   const newDir = {
 
     xp:
       newDirXP,
 
     level:
-      directionLevel(
-        newDirXP
+      Math.min(
+        4,
+        Math.max(
+          Number(oldDir.level || 1),
+          completedLevel + 1
+        )
       )
 
   };
