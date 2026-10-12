@@ -2224,6 +2224,10 @@ onAuthStateChanged(
 
       await loadHistory();
 
+      // Восстанавливаем уровни направлений для старых профилей,
+      // у которых задания были завершены до сохранения поля level.
+      await syncDirectionLevelsFromHistory();
+
       await loadUrgentTasks();
 
       /*
@@ -3860,6 +3864,9 @@ async function completeWeeklyTask(){
 
     direction,
 
+    level:
+      completedLevel,
+
     directionName:
       DIRECTION_NAMES[
         direction
@@ -4292,6 +4299,81 @@ async function loadHistory(){
 
   }
 
+}
+
+/* =========================================================
+   RESTORE DIRECTION LEVELS FROM COMPLETED TASKS
+========================================================= */
+
+async function syncDirectionLevelsFromHistory(){
+
+  if(!player || !currentHistory.length || !allTasks.length){
+    return;
+  }
+
+  const taskById = new Map(
+    allTasks.map(task => [String(task.id), task])
+  );
+
+  const nextDirections = {
+    ...player.directions
+  };
+
+  let changed = false;
+
+  for(const direction of Object.keys(DIRECTION_NAMES)){
+
+    const directionHistory = currentHistory.filter(item =>
+      item.direction === direction
+    );
+
+    if(!directionHistory.length){
+      continue;
+    }
+
+    let highestCompletedLevel = 0;
+
+    for(const item of directionHistory){
+      const savedLevel = Number(item.level || 0);
+      const taskLevel = Number(
+        taskById.get(String(item.taskId))?.level || 0
+      );
+      highestCompletedLevel = Math.max(
+        highestCompletedLevel,
+        savedLevel,
+        taskLevel
+      );
+    }
+
+    if(!highestCompletedLevel){
+      continue;
+    }
+
+    const oldDirection = nextDirections[direction] || {xp:0, level:1};
+    const restoredLevel = Math.min(4, highestCompletedLevel + 1);
+
+    if(Number(oldDirection.level || 1) < restoredLevel){
+      nextDirections[direction] = {
+        ...oldDirection,
+        level: restoredLevel
+      };
+      changed = true;
+    }
+  }
+
+  if(!changed){
+    return;
+  }
+
+  await updateDoc(
+    doc(db, "users", currentUser.uid),
+    {
+      directions: nextDirections,
+      updatedAt: serverTimestamp()
+    }
+  );
+
+  player.directions = nextDirections;
 }
 
 /* =========================================================
