@@ -200,25 +200,6 @@ button{cursor:pointer}
   margin-top:9px;
 }
 
-.dir-level{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
-}
-
-.dir-bar{
-  margin-top:15px;
-  height:6px;
-  background:rgba(255,255,255,.08);
-  border-radius:99px;
-  overflow:hidden;
-}
-
-.dir-bar div{
-  height:100%;
-  background:var(--accent);
-}
-
 .week-card{
   border:1px solid var(--line);
   border-radius:24px;
@@ -1191,7 +1172,7 @@ button{cursor:pointer}
       <div class="field">
 
         <label>
-          Уровень
+          Номер задания
         </label>
 
         <select id="taskLevel">
@@ -1525,32 +1506,32 @@ const ACHIEVEMENTS = [
     id:"spirit4",
     icon:"✝️",
     title:"Сильный дух",
-    text:"Дух — уровень 4",
-    check:p => p.directions.spirit.level >= 4
+    text:"Дух — выполнены 4 задания",
+    check:() => completedDirectionTaskLevel("spirit") >= 4
   },
 
   {
     id:"strength4",
     icon:"💪",
     title:"Сильное тело",
-    text:"Сила — уровень 4",
-    check:p => p.directions.strength.level >= 4
+    text:"Сила — выполнены 4 задания",
+    check:() => completedDirectionTaskLevel("strength") >= 4
   },
 
   {
     id:"mind4",
     icon:"🧠",
     title:"Острый ум",
-    text:"Ум — уровень 4",
-    check:p => p.directions.mind.level >= 4
+    text:"Ум — выполнены 4 задания",
+    check:() => completedDirectionTaskLevel("mind") >= 4
   },
 
   {
     id:"soul4",
     icon:"❤️",
     title:"Большое сердце",
-    text:"Душа — уровень 4",
-    check:p => p.directions.soul.level >= 4
+    text:"Душа — выполнены 4 задания",
+    check:() => completedDirectionTaskLevel("soul") >= 4
   },
 
   {
@@ -1662,49 +1643,6 @@ function overallLevel(xp){
 function overallProgress(xp){
 
   return (xp || 0) % 500;
-
-}
-
-function directionLevel(xp){
-
-  if(xp >= 600)
-    return 4;
-
-  if(xp >= 400)
-    return 3;
-
-  if(xp >= 200)
-    return 2;
-
-  return 1;
-
-}
-
-function directionProgress(xp){
-
-  const level =
-    directionLevel(xp);
-
-  if(level >= 4){
-
-    return Math.min(
-      100,
-      Math.round(
-        ((xp - 600) / 200) * 100
-      )
-    );
-
-  }
-
-  const start =
-    (level - 1) * 200;
-
-  return Math.min(
-    100,
-    Math.round(
-      ((xp - start) / 200) * 100
-    )
-  );
 
 }
 
@@ -1845,23 +1783,19 @@ function emptyDirections(){
   return {
 
     spirit:{
-      xp:0,
-      level:1
+      xp:0
     },
 
     strength:{
-      xp:0,
-      level:1
+      xp:0
     },
 
     mind:{
-      xp:0,
-      level:1
+      xp:0
     },
 
     soul:{
-      xp:0,
-      level:1
+      xp:0
     }
 
   };
@@ -2224,10 +2158,6 @@ onAuthStateChanged(
 
       await loadHistory();
 
-      // Восстанавливаем уровни направлений для старых профилей,
-      // у которых задания были завершены до сохранения поля level.
-      await syncDirectionLevelsFromHistory();
-
       await loadUrgentTasks();
 
       /*
@@ -2312,6 +2242,36 @@ async function loadPlayer(){
       ...(player.directions || {})
 
     };
+
+    const hadDirectionLevels =
+      Object.values(player.directions).some(
+        direction =>
+          direction &&
+          Object.prototype.hasOwnProperty.call(
+            direction,
+            "level"
+          )
+      );
+
+    if(hadDirectionLevels){
+
+      Object.values(player.directions).forEach(
+        direction => {
+          if(direction){
+            delete direction.level;
+          }
+        }
+      );
+
+      await updateDoc(
+        ref,
+        {
+          directions: player.directions,
+          updatedAt: serverTimestamp()
+        }
+      );
+
+    }
 
     /* =====================================================
        DAILY RESET
@@ -2846,29 +2806,25 @@ async function renderAdminResults(){
               spirit:
                 p.directions?.spirit ||
                 {
-                  xp:0,
-                  level:1
+                  xp:0
                 },
 
               strength:
                 p.directions?.strength ||
                 {
-                  xp:0,
-                  level:1
+                  xp:0
                 },
 
               mind:
                 p.directions?.mind ||
                 {
-                  xp:0,
-                  level:1
+                  xp:0
                 },
 
               soul:
                 p.directions?.soul ||
                 {
-                  xp:0,
-                  level:1
+                  xp:0
                 }
 
             };
@@ -3272,7 +3228,7 @@ async function renderAdminTasks(){
                 task.direction
               )}
 
-              · уровень
+              · задание №
               ${Number(
                 task.level
               )}
@@ -3586,6 +3542,23 @@ $("seedTasksBtn").onclick =
    CHOOSE WEEKLY DIRECTION
 ========================================================= */
 
+function completedDirectionTaskLevel(direction){
+
+  const taskById = new Map(
+    allTasks.map(task => [String(task.id), task])
+  );
+
+  return currentHistory
+    .filter(item => item.direction === direction)
+    .reduce((highest, item) => {
+      const savedLevel = Number(item.level || 0);
+      const taskLevel = Number(
+        taskById.get(String(item.taskId))?.level || 0
+      );
+      return Math.max(highest, savedLevel, taskLevel);
+    }, 0);
+}
+
 async function chooseDirection(
   direction
 ){
@@ -3603,9 +3576,7 @@ async function chooseDirection(
   }
 
   const level =
-    player
-      .directions[direction]
-      ?.level || 1;
+    completedDirectionTaskLevel(direction) + 1;
 
   const available =
     allTasks.filter(
@@ -3629,7 +3600,9 @@ async function chooseDirection(
   ){
 
     showToast(
-      `Для «${DIRECTION_NAMES[direction]}» пока нет задания уровня ${level}.`
+      level > 4
+        ? `В направлении «${DIRECTION_NAMES[direction]}» выполнены все четыре задания.`
+        : `Для направления «${DIRECTION_NAMES[direction]}» пока нет следующего задания.`
     );
 
     return;
@@ -3796,10 +3769,7 @@ async function completeWeeklyTask(){
   const oldDir =
     player
       .directions[direction] ||
-    {
-      xp:0,
-      level:1
-    };
+    {xp:0};
 
   const newDirXP =
     Number(
@@ -3809,28 +3779,16 @@ async function completeWeeklyTask(){
       currentTask.xp
     );
 
-  // Уровень направления повышается после завершения задания.
-  // Накопленные XP считаются отдельно и не блокируют переход.
   const completedLevel =
     Number(
       currentTask.level ||
-      oldDir.level ||
-      1
+      completedDirectionTaskLevel(direction) + 1
     );
 
   const newDir = {
 
     xp:
-      newDirXP,
-
-    level:
-      Math.min(
-        4,
-        Math.max(
-          Number(oldDir.level || 1),
-          completedLevel + 1
-        )
-      )
+      newDirXP
 
   };
 
@@ -4302,81 +4260,6 @@ async function loadHistory(){
 }
 
 /* =========================================================
-   RESTORE DIRECTION LEVELS FROM COMPLETED TASKS
-========================================================= */
-
-async function syncDirectionLevelsFromHistory(){
-
-  if(!player || !currentHistory.length || !allTasks.length){
-    return;
-  }
-
-  const taskById = new Map(
-    allTasks.map(task => [String(task.id), task])
-  );
-
-  const nextDirections = {
-    ...player.directions
-  };
-
-  let changed = false;
-
-  for(const direction of Object.keys(DIRECTION_NAMES)){
-
-    const directionHistory = currentHistory.filter(item =>
-      item.direction === direction
-    );
-
-    if(!directionHistory.length){
-      continue;
-    }
-
-    let highestCompletedLevel = 0;
-
-    for(const item of directionHistory){
-      const savedLevel = Number(item.level || 0);
-      const taskLevel = Number(
-        taskById.get(String(item.taskId))?.level || 0
-      );
-      highestCompletedLevel = Math.max(
-        highestCompletedLevel,
-        savedLevel,
-        taskLevel
-      );
-    }
-
-    if(!highestCompletedLevel){
-      continue;
-    }
-
-    const oldDirection = nextDirections[direction] || {xp:0, level:1};
-    const restoredLevel = Math.min(4, highestCompletedLevel + 1);
-
-    if(Number(oldDirection.level || 1) < restoredLevel){
-      nextDirections[direction] = {
-        ...oldDirection,
-        level: restoredLevel
-      };
-      changed = true;
-    }
-  }
-
-  if(!changed){
-    return;
-  }
-
-  await updateDoc(
-    doc(db, "users", currentUser.uid),
-    {
-      directions: nextDirections,
-      updatedAt: serverTimestamp()
-    }
-  );
-
-  player.directions = nextDirections;
-}
-
-/* =========================================================
    RENDER
 ========================================================= */
 
@@ -4472,10 +4355,7 @@ function renderDirections(){
         const state =
           player
             .directions[key] ||
-          {
-            xp:0,
-            level:1
-          };
+          {xp:0};
 
         const locked =
           selected &&
@@ -4507,22 +4387,6 @@ function renderDirections(){
                 ""
               )
             )}
-          </div>
-
-          <div class="dir-level">
-            Уровень ${state.level}
-          </div>
-
-          <div class="dir-bar">
-
-            <div
-              style="width:${directionProgress(
-                Number(
-                  state.xp || 0
-                )
-              )}%"
-            ></div>
-
           </div>
 
           <div
@@ -4725,7 +4589,7 @@ function renderWeekly(){
 
     <div class="task-meta">
 
-      Уровень задания:
+      Задание по порядку:
       ${Number(
         task.level
       )}
