@@ -5076,6 +5076,7 @@ let tetrisPaused = false;
 let tetrisOver = false;
 let tetrisLastFrame = 0;
 let tetrisDropTimer = 0;
+let tetrisDownInterval = null;
 
 function tetrisMakeBoard(){
   return Array.from(
@@ -5174,6 +5175,7 @@ function tetrisSpawn(){
   if(tetrisCollides(tetrisPiece)){
     tetrisRunning = false;
     tetrisOver = true;
+    tetrisStopDown();
     document.getElementById("tetrisStatus").textContent =
       `Игра окончена. Счёт: ${tetrisScore}. Нажми кнопку, чтобы сыграть ещё раз.`;
     document.getElementById("tetrisStart").textContent = "Играть ещё";
@@ -5262,6 +5264,7 @@ function tetrisStartOrPause(){
   if(tetrisRunning){
     tetrisRunning = false;
     tetrisPaused = true;
+    tetrisStopDown();
     button.textContent = "Продолжить";
     status.textContent = "Пауза. Нажми «Продолжить», чтобы вернуться к игре.";
     return;
@@ -5293,10 +5296,47 @@ document.querySelectorAll("[data-tetris]").forEach(button =>
     const action = button.dataset.tetris;
     if(action === "left") tetrisMove(-1);
     if(action === "right") tetrisMove(1);
-    if(action === "down") tetrisMove(0, 1);
     if(action === "rotate") tetrisRotate();
   })
 );
+
+function tetrisStopDown(){
+  if(tetrisDownInterval !== null){
+    clearInterval(tetrisDownInterval);
+    tetrisDownInterval = null;
+  }
+}
+
+const tetrisDownButton =
+  document.querySelector('[data-tetris="down"]');
+
+if(tetrisDownButton){
+
+  tetrisDownButton.addEventListener("pointerdown", event => {
+    if(event.pointerType === "mouse" && event.button !== 0) return;
+    event.preventDefault();
+    if(!tetrisRunning) return;
+
+    tetrisStopDown();
+    tetrisMove(0, 1);
+    tetrisDownInterval = setInterval(
+      () => tetrisMove(0, 1),
+      80
+    );
+  });
+
+  ["pointerup", "pointercancel", "pointerleave"].forEach(eventName =>
+    tetrisDownButton.addEventListener(eventName, tetrisStopDown)
+  );
+
+  // Поддерживаем нажатие кнопки через клавиатуру.
+  tetrisDownButton.addEventListener("click", event => {
+    if(event.detail === 0) tetrisMove(0, 1);
+  });
+
+}
+
+window.addEventListener("blur", tetrisStopDown);
 
 document.addEventListener("keydown", event => {
   if(!tetrisRunning) return;
