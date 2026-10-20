@@ -290,6 +290,19 @@ button{cursor:pointer}
   font-size:13px;
 }
 
+.urgent-countdown{
+  display:block;
+  margin:12px 0 4px;
+  padding:9px 12px;
+  border:1px solid rgba(255,200,87,.25);
+  border-radius:12px;
+  background:rgba(255,200,87,.08);
+  color:var(--gold);
+  font-size:17px;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+
 .daily-card button{
   margin-top:15px;
   width:100%;
@@ -4109,15 +4122,48 @@ function renderUrgentTasks(){
   box.innerHTML = "";
   activeTasks.forEach(task => {
     const claimed = urgentClaimIds.has(task.id);
+    const expiresAt = task.expiresAt.toMillis();
     const card = document.createElement("div");
     card.className = "daily-card" + (claimed ? " done" : "");
-    card.innerHTML = `<div class="emoji">⚡</div><h3>${escapeHtml(task.text || "Срочное задание")}</h3><p>Награда: +${Number(task.xp) || 0} XP · доступно 24 часа после публикации</p><button class="secondary urgent-claim-btn" data-id="${escapeHtml(task.id)}" ${claimed ? "disabled" : ""}>${claimed ? "✓ XP получены" : `Получить +${Number(task.xp) || 0} XP`}</button>`;
+    card.innerHTML = `<div class="emoji">⚡</div><h3>${escapeHtml(task.text || "Срочное задание")}</h3><p>Награда: +${Number(task.xp) || 0} XP</p><div class="urgent-countdown" data-expires-at="${expiresAt}">⏳ Осталось: ${formatUrgentCountdown(expiresAt - Date.now())}</div><button class="secondary urgent-claim-btn" data-id="${escapeHtml(task.id)}" ${claimed ? "disabled" : ""}>${claimed ? "✓ XP получены" : `Получить +${Number(task.xp) || 0} XP`}</button>`;
     box.appendChild(card);
   });
   box.querySelectorAll(".urgent-claim-btn").forEach(button => {
     button.onclick = () => claimUrgentTask(button.dataset.id);
   });
 }
+
+function formatUrgentCountdown(milliseconds){
+  const secondsLeft = Math.max(0, Math.floor(milliseconds / 1000));
+  const hours = String(Math.floor(secondsLeft / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, "0");
+  const seconds = String(secondsLeft % 60).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
+}
+
+function updateUrgentCountdowns(){
+  const now = Date.now();
+  let expired = false;
+
+  document.querySelectorAll(".urgent-countdown").forEach(clock => {
+    const expiresAt = Number(clock.dataset.expiresAt);
+    const remaining = expiresAt - now;
+    if(remaining <= 0){
+      expired = true;
+    }else{
+      clock.textContent = `⏳ Осталось: ${formatUrgentCountdown(remaining)}`;
+    }
+  });
+
+  if(expired){
+    urgentTasks = urgentTasks.filter(
+      task => task.expiresAt?.toMillis?.() > now
+    );
+    renderUrgentTasks();
+  }
+}
+
+setInterval(updateUrgentCountdowns, 1000);
 
 /* =========================================================
    DAILY XP
