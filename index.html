@@ -300,11 +300,7 @@ button{cursor:pointer}
   border-color:rgba(37,214,162,.35)!important;
 }
 
-.tetris-card{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(180px,240px);
-  gap:18px;
-  align-items:center;
+.runner-card{
   padding:18px;
   border:1px solid var(--line);
   border-radius:22px;
@@ -312,60 +308,48 @@ button{cursor:pointer}
   box-shadow:var(--shadow);
 }
 
-.tetris-info p{
+.runner-info p{
   color:var(--muted);
   line-height:1.5;
 }
 
-.tetris-score{
+.runner-score{
   font-size:18px;
   font-weight:800;
   margin:12px 0;
 }
 
-.tetris-board-wrap{
-  position:relative;
-  width:min(100%,240px);
-  margin:auto;
-}
-
-#tetrisCanvas{
+#runnerCanvas{
   display:block;
   width:100%;
+  max-width:720px;
   height:auto;
-  background:#080d1b;
+  margin:14px auto 0;
+  background:#0b1222;
   border:1px solid rgba(255,255,255,.16);
-  border-radius:12px;
-  touch-action:none;
+  border-radius:14px;
+  touch-action:manipulation;
 }
 
-.tetris-controls{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
+.runner-controls{
+  display:flex;
+  justify-content:center;
   margin-top:10px;
 }
 
-.tetris-controls button{
-  min-height:42px;
+.runner-controls button{
+  width:min(100%,260px);
+  min-height:50px;
   border:1px solid var(--line);
-  border-radius:12px;
+  border-radius:14px;
   color:white;
-  background:rgba(255,255,255,.07);
-  font-size:18px;
-  touch-action:none;
+  background:rgba(255,255,255,.08);
+  font-size:17px;
+  font-weight:800;
+  touch-action:manipulation;
   user-select:none;
   -webkit-user-select:none;
   -webkit-touch-callout:none;
-}
-
-@media(max-width:600px){
-  .tetris-card{
-    grid-template-columns:1fr;
-  }
-  .tetris-board-wrap{
-    width:min(100%,220px);
-  }
 }
 
 .achievements{
@@ -1054,37 +1038,31 @@ button{cursor:pointer}
   <section id="urgentTasks" class="daily"></section>
 
   <div class="section-title">
-    <h2>🎮 Тетрис</h2>
+    <h2>🦖 Бег с препятствиями</h2>
     <span>игра без начисления XP</span>
   </div>
 
-  <section class="tetris-card" aria-label="Игра Тетрис">
+  <section class="runner-card" aria-label="Игра-бегалка">
 
-    <div class="tetris-info">
-      <h3>Собирай линии</h3>
+    <div class="runner-info">
+      <h3>Помоги динозаврику перепрыгивать препятствия</h3>
       <p>
-        Управление: ← → — двигать, ↑ — повернуть,
-        ↓ — ускорить, пробел — уронить фигуру.
-        На телефоне используй кнопки под полем.
+        Нажми пробел или ↑ на клавиатуре, либо кнопку под игрой.
+        На телефоне можно нажимать на игровое поле или кнопку.
       </p>
-      <div id="tetrisScore" class="tetris-score">Счёт: 0</div>
-      <div id="tetrisStatus" class="task-meta">
-        Нажми «Начать игру». Результат не влияет на XP.
+      <div id="runnerScore" class="runner-score">Счёт: 0</div>
+      <div id="runnerStatus" class="task-meta">
+        Нажми «Начать игру». Счёт игры не влияет на XP.
       </div>
-      <button id="tetrisStart" class="primary" type="button">
+      <button id="runnerStart" class="primary" type="button">
         Начать игру
       </button>
     </div>
 
-    <div class="tetris-board-wrap">
-      <canvas id="tetrisCanvas" width="240" height="480"
-        aria-label="Поле Тетриса"></canvas>
-      <div class="tetris-controls">
-        <button type="button" data-tetris="left" aria-label="Влево">←</button>
-        <button type="button" data-tetris="rotate" aria-label="Повернуть">↻</button>
-        <button type="button" data-tetris="right" aria-label="Вправо">→</button>
-        <button type="button" data-tetris="down" aria-label="Вниз">↓</button>
-      </div>
+    <canvas id="runnerCanvas" width="720" height="220"
+      aria-label="Динозаврик бежит и перепрыгивает препятствия"></canvas>
+    <div class="runner-controls">
+      <button id="runnerJump" type="button">Прыгнуть</button>
     </div>
 
   </section>
@@ -5051,319 +5029,247 @@ setInterval(
 );
 
 /* =========================================================
-   TETRIS MINI-GAME
-   Локальная игра в браузере, без XP и записи в Firebase.
+   DINOSAUR RUNNER MINI-GAME
+   Игра работает только в браузере и не начисляет XP.
 ========================================================= */
 
-const tetrisCanvas = document.getElementById("tetrisCanvas");
-const tetrisCtx = tetrisCanvas?.getContext("2d");
-const TETRIS_COLS = 10;
-const TETRIS_ROWS = 20;
-const TETRIS_CELL = 24;
-const TETRIS_SHAPES = [
-  {color:"#37d5f2", cells:[[1,1,1,1]]},
-  {color:"#477bff", cells:[[1,0,0],[1,1,1]]},
-  {color:"#ff9f43", cells:[[0,0,1],[1,1,1]]},
-  {color:"#ffd84d", cells:[[1,1],[1,1]]},
-  {color:"#39d98a", cells:[[0,1,1],[1,1,0]]},
-  {color:"#b46cff", cells:[[0,1,0],[1,1,1]]},
-  {color:"#ff5d73", cells:[[1,1,0],[0,1,1]]}
-];
+const runnerCanvas = document.getElementById("runnerCanvas");
+const runnerCtx = runnerCanvas?.getContext("2d");
+const runnerJumpButton = document.getElementById("runnerJump");
+const runnerStartButton = document.getElementById("runnerStart");
+const runnerGround = 184;
+const runnerDinoX = 72;
+const runnerDinoWidth = 38;
+const runnerDinoHeight = 44;
 
-let tetrisBoard = [];
-let tetrisPiece = null;
-let tetrisScore = 0;
-let tetrisLines = 0;
-let tetrisRunning = false;
-let tetrisPaused = false;
-let tetrisOver = false;
-let tetrisLastFrame = 0;
-let tetrisDropTimer = 0;
-let tetrisDownInterval = null;
+let runnerActive = false;
+let runnerPaused = false;
+let runnerOver = false;
+let runnerScore = 0;
+let runnerSpeed = 300;
+let runnerDinoY = runnerGround - runnerDinoHeight;
+let runnerVelocityY = 0;
+let runnerObstacles = [];
+let runnerSpawnTimer = 0;
+let runnerNextSpawn = 1;
+let runnerLastTime = 0;
+let runnerDistance = 0;
+let runnerLeg = 0;
 
-function tetrisMakeBoard(){
-  return Array.from(
-    {length:TETRIS_ROWS},
-    () => Array(TETRIS_COLS).fill(null)
-  );
-}
-
-function tetrisNewPiece(){
-  const template = TETRIS_SHAPES[
-    Math.floor(Math.random() * TETRIS_SHAPES.length)
-  ];
-  const shape = template.cells.map(row => row.slice());
-  return {
-    shape,
-    color:template.color,
-    x:Math.floor(TETRIS_COLS / 2) - Math.ceil(shape[0].length / 2),
-    y:0
-  };
-}
-
-function tetrisCollides(piece, dx=0, dy=0, shape=piece.shape){
-  for(let y=0; y<shape.length; y++){
-    for(let x=0; x<shape[y].length; x++){
-      if(!shape[y][x]) continue;
-      const boardX = piece.x + x + dx;
-      const boardY = piece.y + y + dy;
-      if(
-        boardX < 0 ||
-        boardX >= TETRIS_COLS ||
-        boardY >= TETRIS_ROWS ||
-        (boardY >= 0 && tetrisBoard[boardY][boardX])
-      ) return true;
-    }
-  }
-  return false;
-}
-
-function tetrisDrawCell(x, y, color){
-  if(y < 0) return;
-  tetrisCtx.fillStyle = color;
-  tetrisCtx.fillRect(
-    x*TETRIS_CELL + 1,
-    y*TETRIS_CELL + 1,
-    TETRIS_CELL - 2,
-    TETRIS_CELL - 2
-  );
-  tetrisCtx.fillStyle = "rgba(255,255,255,.20)";
-  tetrisCtx.fillRect(
-    x*TETRIS_CELL + 3,
-    y*TETRIS_CELL + 3,
-    TETRIS_CELL - 6,
-    3
-  );
-}
-
-function tetrisDraw(){
-  if(!tetrisCtx) return;
-  tetrisCtx.fillStyle = "#080d1b";
-  tetrisCtx.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
-  tetrisCtx.strokeStyle = "rgba(255,255,255,.055)";
-  tetrisCtx.lineWidth = 1;
-  for(let x=0; x<=TETRIS_COLS; x++){
-    tetrisCtx.beginPath();
-    tetrisCtx.moveTo(x*TETRIS_CELL + .5, 0);
-    tetrisCtx.lineTo(x*TETRIS_CELL + .5, tetrisCanvas.height);
-    tetrisCtx.stroke();
-  }
-  for(let y=0; y<=TETRIS_ROWS; y++){
-    tetrisCtx.beginPath();
-    tetrisCtx.moveTo(0, y*TETRIS_CELL + .5);
-    tetrisCtx.lineTo(tetrisCanvas.width, y*TETRIS_CELL + .5);
-    tetrisCtx.stroke();
-  }
-  for(let y=0; y<TETRIS_ROWS; y++){
-    for(let x=0; x<TETRIS_COLS; x++){
-      if(tetrisBoard[y][x]) tetrisDrawCell(x, y, tetrisBoard[y][x]);
-    }
-  }
-  if(tetrisPiece){
-    tetrisPiece.shape.forEach((row, y) =>
-      row.forEach((cell, x) => {
-        if(cell) tetrisDrawCell(tetrisPiece.x+x, tetrisPiece.y+y, tetrisPiece.color);
-      })
-    );
+function runnerDrawDino(){
+  const x = runnerDinoX;
+  const y = runnerDinoY;
+  runnerCtx.fillStyle = "#dce7f7";
+  runnerCtx.fillRect(x + 7, y + 14, 25, 24);
+  runnerCtx.fillRect(x + 20, y + 2, 18, 19);
+  runnerCtx.fillRect(x + 1, y + 20, 10, 8);
+  runnerCtx.fillRect(x + 27, y + 17, 13, 6);
+  runnerCtx.fillStyle = "#0b1222";
+  runnerCtx.fillRect(x + 31, y + 7, 3, 3);
+  if(runnerDinoY < runnerGround - runnerDinoHeight){
+    runnerCtx.fillStyle = "#dce7f7";
+    runnerCtx.fillRect(x + 10, y + 36, 7, 8);
+    runnerCtx.fillRect(x + 25, y + 36, 7, 8);
+  }else{
+    runnerCtx.fillStyle = "#dce7f7";
+    const step = Math.floor(runnerLeg) % 2;
+    runnerCtx.fillRect(x + 10, y + 36, 7, step ? 8 : 4);
+    runnerCtx.fillRect(x + 25, y + 36, 7, step ? 4 : 8);
   }
 }
 
-function tetrisSetScore(){
-  const scoreBox = document.getElementById("tetrisScore");
-  if(scoreBox) scoreBox.textContent = `Счёт: ${tetrisScore}`;
+function runnerDrawCactus(obstacle){
+  const x = obstacle.x;
+  const y = runnerGround - obstacle.height;
+  runnerCtx.fillStyle = "#54d68b";
+  runnerCtx.fillRect(x + obstacle.width * .36, y, obstacle.width * .3, obstacle.height);
+  runnerCtx.fillRect(x, y + obstacle.height * .4, obstacle.width * .4, 7);
+  runnerCtx.fillRect(x, y + obstacle.height * .27, 7, obstacle.height * .18);
+  runnerCtx.fillRect(x + obstacle.width * .55, y + obstacle.height * .58, obstacle.width * .4, 7);
+  runnerCtx.fillRect(x + obstacle.width * .8, y + obstacle.height * .42, 7, obstacle.height * .2);
 }
 
-function tetrisSpawn(){
-  tetrisPiece = tetrisNewPiece();
-  if(tetrisCollides(tetrisPiece)){
-    tetrisRunning = false;
-    tetrisOver = true;
-    tetrisStopDown();
-    document.getElementById("tetrisStatus").textContent =
-      `Игра окончена. Счёт: ${tetrisScore}. Нажми кнопку, чтобы сыграть ещё раз.`;
-    document.getElementById("tetrisStart").textContent = "Играть ещё";
+function runnerDraw(){
+  if(!runnerCtx) return;
+  const width = runnerCanvas.width;
+  const height = runnerCanvas.height;
+  runnerCtx.fillStyle = "#0b1222";
+  runnerCtx.fillRect(0, 0, width, height);
+
+  runnerCtx.fillStyle = "rgba(220,231,247,.28)";
+  runnerCtx.fillRect(140, 48, 48, 3);
+  runnerCtx.fillRect(158, 42, 24, 3);
+  runnerCtx.fillRect(430, 68, 58, 3);
+  runnerCtx.fillRect(452, 62, 24, 3);
+
+  runnerCtx.strokeStyle = "rgba(220,231,247,.65)";
+  runnerCtx.lineWidth = 2;
+  runnerCtx.beginPath();
+  runnerCtx.moveTo(0, runnerGround + 2);
+  runnerCtx.lineTo(width, runnerGround + 2);
+  runnerCtx.stroke();
+
+  runnerCtx.fillStyle = "rgba(220,231,247,.38)";
+  for(let i=0; i<12; i++){
+    const dashX = (i * 83 - (runnerDistance * .7) % 83 + width) % width;
+    runnerCtx.fillRect(dashX, runnerGround + 12 + (i % 2) * 5, 20, 2);
+  }
+
+  runnerObstacles.forEach(runnerDrawCactus);
+  runnerDrawDino();
+
+  if(!runnerActive && !runnerPaused && !runnerOver){
+    runnerCtx.fillStyle = "rgba(245,247,255,.8)";
+    runnerCtx.font = "bold 18px system-ui";
+    runnerCtx.textAlign = "center";
+    runnerCtx.fillText("Нажми «Начать игру»", width / 2, 120);
+  }
+  if(runnerPaused){
+    runnerCtx.fillStyle = "rgba(245,247,255,.9)";
+    runnerCtx.font = "bold 24px system-ui";
+    runnerCtx.textAlign = "center";
+    runnerCtx.fillText("ПАУЗА", width / 2, 115);
+  }
+  if(runnerOver){
+    runnerCtx.fillStyle = "rgba(245,247,255,.95)";
+    runnerCtx.font = "bold 24px system-ui";
+    runnerCtx.textAlign = "center";
+    runnerCtx.fillText("ИГРА ОКОНЧЕНА", width / 2, 112);
   }
 }
 
-function tetrisLockPiece(){
-  tetrisPiece.shape.forEach((row, y) =>
-    row.forEach((cell, x) => {
-      const boardY = tetrisPiece.y + y;
-      const boardX = tetrisPiece.x + x;
-      if(cell && boardY >= 0) tetrisBoard[boardY][boardX] = tetrisPiece.color;
-    })
-  );
-
-  let cleared = 0;
-  for(let y=TETRIS_ROWS-1; y>=0; y--){
-    if(tetrisBoard[y].every(Boolean)){
-      tetrisBoard.splice(y, 1);
-      tetrisBoard.unshift(Array(TETRIS_COLS).fill(null));
-      cleared++;
-      y++;
-    }
-  }
-  if(cleared){
-    const points = [0, 100, 300, 500, 800][cleared] || cleared*200;
-    tetrisScore += points;
-    tetrisLines += cleared;
-    tetrisSetScore();
-  }
-  tetrisSpawn();
+function runnerSetStatus(text){
+  const status = document.getElementById("runnerStatus");
+  if(status) status.textContent = text;
 }
 
-function tetrisMove(dx, dy=0){
-  if(!tetrisRunning || !tetrisPiece) return;
-  if(!tetrisCollides(tetrisPiece, dx, dy)){
-    tetrisPiece.x += dx;
-    tetrisPiece.y += dy;
-  }else if(dy > 0){
-    tetrisLockPiece();
-  }
-  tetrisDraw();
+function runnerSetScore(){
+  const scoreBox = document.getElementById("runnerScore");
+  if(scoreBox) scoreBox.textContent = `Счёт: ${runnerScore}`;
 }
 
-function tetrisRotate(){
-  if(!tetrisRunning || !tetrisPiece) return;
-  const rotated = tetrisPiece.shape[0].map((_, index) =>
-    tetrisPiece.shape.map(row => row[index]).reverse()
-  );
-  if(!tetrisCollides(tetrisPiece, 0, 0, rotated)){
-    tetrisPiece.shape = rotated;
-  }else if(!tetrisCollides(tetrisPiece, -1, 0, rotated)){
-    tetrisPiece.x--;
-    tetrisPiece.shape = rotated;
-  }else if(!tetrisCollides(tetrisPiece, 1, 0, rotated)){
-    tetrisPiece.x++;
-    tetrisPiece.shape = rotated;
-  }
-  tetrisDraw();
+function runnerStart(){
+  runnerActive = true;
+  runnerPaused = false;
+  runnerOver = false;
+  runnerScore = 0;
+  runnerSpeed = 300;
+  runnerDinoY = runnerGround - runnerDinoHeight;
+  runnerVelocityY = 0;
+  runnerObstacles = [];
+  runnerSpawnTimer = 0;
+  runnerNextSpawn = .9;
+  runnerDistance = 0;
+  runnerLastTime = performance.now();
+  runnerSetScore();
+  runnerSetStatus("Прыгай через препятствия. Игра не добавляет XP.");
+  runnerStartButton.textContent = "Пауза";
+  requestAnimationFrame(runnerFrame);
 }
 
-function tetrisHardDrop(){
-  if(!tetrisRunning || !tetrisPiece) return;
-  while(!tetrisCollides(tetrisPiece, 0, 1)) tetrisPiece.y++;
-  tetrisLockPiece();
-  tetrisDraw();
-}
-
-function tetrisFrame(timestamp){
-  if(!tetrisRunning) return;
-  const delta = timestamp - tetrisLastFrame;
-  tetrisLastFrame = timestamp;
-  tetrisDropTimer += delta;
-  const interval = Math.max(100, 650 - Math.floor(tetrisLines / 5) * 35);
-  if(tetrisDropTimer >= interval){
-    tetrisDropTimer = 0;
-    tetrisMove(0, 1);
-  }
-  tetrisDraw();
-  if(tetrisRunning) requestAnimationFrame(tetrisFrame);
-}
-
-function tetrisStartOrPause(){
-  const status = document.getElementById("tetrisStatus");
-  const button = document.getElementById("tetrisStart");
-  if(tetrisRunning){
-    tetrisRunning = false;
-    tetrisPaused = true;
-    tetrisStopDown();
-    button.textContent = "Продолжить";
-    status.textContent = "Пауза. Нажми «Продолжить», чтобы вернуться к игре.";
+function runnerToggle(){
+  if(runnerActive){
+    runnerActive = false;
+    runnerPaused = true;
+    runnerStartButton.textContent = "Продолжить";
+    runnerSetStatus("Пауза. Нажми «Продолжить», чтобы вернуться в игру.");
+    runnerDraw();
     return;
   }
-  if(tetrisOver || !tetrisPaused){
-    tetrisBoard = tetrisMakeBoard();
-    tetrisScore = 0;
-    tetrisLines = 0;
-    tetrisOver = false;
-    tetrisSetScore();
-    tetrisSpawn();
+  if(runnerOver || !runnerPaused){
+    runnerStart();
+    return;
   }
-  if(tetrisOver) return;
-  tetrisPaused = false;
-  tetrisRunning = true;
-  tetrisLastFrame = performance.now();
-  tetrisDropTimer = 0;
-  button.textContent = "Пауза";
-  status.textContent = "Игра идёт. Очки Тетриса не добавляются к XP.";
-  tetrisDraw();
-  requestAnimationFrame(tetrisFrame);
+  runnerPaused = false;
+  runnerActive = true;
+  runnerLastTime = performance.now();
+  runnerStartButton.textContent = "Пауза";
+  runnerSetStatus("Прыгай через препятствия. Игра не добавляет XP.");
+  requestAnimationFrame(runnerFrame);
 }
 
-document.getElementById("tetrisStart")
-  ?.addEventListener("click", tetrisStartOrPause);
-
-document.querySelectorAll("[data-tetris]").forEach(button =>
-  button.addEventListener("click", () => {
-    const action = button.dataset.tetris;
-    if(action === "left") tetrisMove(-1);
-    if(action === "right") tetrisMove(1);
-    if(action === "rotate") tetrisRotate();
-  })
-);
-
-function tetrisStopDown(){
-  if(tetrisDownInterval !== null){
-    clearInterval(tetrisDownInterval);
-    tetrisDownInterval = null;
+function runnerJump(){
+  if(!runnerActive){
+    if(!runnerPaused && !runnerOver) runnerStart();
+    else if(runnerOver) runnerStart();
+    else return;
+  }
+  if(runnerDinoY >= runnerGround - runnerDinoHeight - 1){
+    runnerVelocityY = -600;
   }
 }
 
-const tetrisDownButton =
-  document.querySelector('[data-tetris="down"]');
+function runnerFrame(time){
+  if(!runnerActive) return;
+  const dt = Math.min((time - runnerLastTime) / 1000, .04);
+  runnerLastTime = time;
+  runnerDistance += runnerSpeed * dt;
+  runnerLeg += dt * 14;
+  runnerScore = Math.floor(runnerDistance / 12);
+  runnerSpeed = Math.min(620, 300 + runnerScore * .45);
+  runnerSetScore();
 
-if(tetrisDownButton){
+  runnerVelocityY += 1650 * dt;
+  runnerDinoY += runnerVelocityY * dt;
+  if(runnerDinoY >= runnerGround - runnerDinoHeight){
+    runnerDinoY = runnerGround - runnerDinoHeight;
+    runnerVelocityY = 0;
+  }
 
-  tetrisDownButton.addEventListener("contextmenu", event =>
-    event.preventDefault()
-  );
+  runnerSpawnTimer += dt;
+  if(runnerSpawnTimer >= runnerNextSpawn){
+    const h = 28 + Math.random() * 26;
+    const w = 18 + Math.random() * 13;
+    runnerObstacles.push({x:runnerCanvas.width + 10, width:w, height:h});
+    runnerSpawnTimer = 0;
+    runnerNextSpawn = .85 + Math.random() * .85;
+  }
 
-  tetrisDownButton.addEventListener("pointerdown", event => {
-    if(event.pointerType === "mouse" && event.button !== 0) return;
-    event.preventDefault();
-    if(!tetrisRunning) return;
+  runnerObstacles.forEach(obstacle => obstacle.x -= runnerSpeed * dt);
+  runnerObstacles = runnerObstacles.filter(o => o.x + o.width > -5);
 
-    tetrisStopDown();
-    tetrisMove(0, 1);
-    tetrisDownInterval = setInterval(
-      () => tetrisMove(0, 1),
-      80
-    );
-  });
-
-  ["pointerup", "pointercancel", "pointerleave"].forEach(eventName =>
-    tetrisDownButton.addEventListener(eventName, tetrisStopDown)
-  );
-
-  // Поддерживаем нажатие кнопки через клавиатуру.
-  tetrisDownButton.addEventListener("click", event => {
-    if(event.detail === 0) tetrisMove(0, 1);
-  });
-
-}
-
-window.addEventListener("blur", tetrisStopDown);
-
-document.addEventListener("keydown", event => {
-  if(!tetrisRunning) return;
-  const target = event.target;
-  if(target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
-  const actions = {
-    ArrowLeft:() => tetrisMove(-1),
-    ArrowRight:() => tetrisMove(1),
-    ArrowDown:() => tetrisMove(0, 1),
-    ArrowUp:tetrisRotate,
-    " ":tetrisHardDrop
+  const dinoBox = {
+    x:runnerDinoX + 7,
+    y:runnerDinoY + 8,
+    w:runnerDinoWidth - 8,
+    h:runnerDinoHeight - 10
   };
-  if(actions[event.key]){
-    event.preventDefault();
-    actions[event.key]();
+  const hit = runnerObstacles.some(o =>
+    dinoBox.x < o.x + o.width - 3 &&
+    dinoBox.x + dinoBox.w > o.x + 3 &&
+    dinoBox.y < runnerGround &&
+    dinoBox.y + dinoBox.h > runnerGround - o.height + 3
+  );
+
+  if(hit){
+    runnerActive = false;
+    runnerOver = true;
+    runnerStartButton.textContent = "Играть ещё";
+    runnerSetStatus(`Игра окончена. Счёт: ${runnerScore}. XP не начисляется.`);
+    runnerDraw();
+    return;
   }
+
+  runnerDraw();
+  requestAnimationFrame(runnerFrame);
+}
+
+runnerStartButton?.addEventListener("click", runnerToggle);
+runnerJumpButton?.addEventListener("click", runnerJump);
+runnerCanvas?.addEventListener("pointerdown", event => {
+  event.preventDefault();
+  runnerJump();
 });
 
-tetrisBoard = tetrisMakeBoard();
-tetrisDraw();
+document.addEventListener("keydown", event => {
+  if(![" ", "ArrowUp"].includes(event.key)) return;
+  const target = event.target;
+  if(target && ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(target.tagName)) return;
+  event.preventDefault();
+  runnerJump();
+});
+
+runnerDraw();
 
 /* =========================================================
    START
